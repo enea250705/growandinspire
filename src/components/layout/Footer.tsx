@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 
 const FOOTER_LINKS = {
@@ -124,7 +125,13 @@ export function Footer() {
         {/* Links grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="col-span-1">
-            <p className="font-serif text-lg font-semibold text-brand-white mb-3">GROW & INSPIRE</p>
+            <Image
+              src="/logo.png"
+              alt="INSPIRE podCLASS by Alketa Vejsiu"
+              width={120}
+              height={40}
+              className="h-10 w-auto object-contain mb-3"
+            />
             <p className="text-sm leading-relaxed mb-6">
               A premium platform for personal growth, business leadership, and meaningful connections.
             </p>

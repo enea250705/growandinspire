@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function LoginPage() {
   const [mode, setMode] = useState<'login' | 'signup'>('login')
@@ -14,8 +15,15 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link href="/" className="font-serif text-2xl font-bold text-brand-white">
-            GROW & INSPIRE
+          <Link href="/" className="inline-flex justify-center">
+            <Image
+              src="/logo.png"
+              alt="INSPIRE podCLASS by Alketa Vejsiu"
+              width={140}
+              height={47}
+              className="h-12 w-auto object-contain"
+              priority
+            />
           </Link>
           <p className="text-white/40 text-sm mt-2">
             {mode === 'login' ? 'Welcome back' : 'Create your account'}

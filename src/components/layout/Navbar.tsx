@@ -6,11 +6,12 @@ import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 
 const NAV_LINKS = [
-  { label: 'Watch', href: '/watch' },
+  { label: 'Learning', href: '/watch' },
   { label: 'Coaching', href: '/coaching' },
-  { label: 'Membership', href: '/membership' },
   { label: 'Events', href: '/events' },
-  { label: 'Apply', href: '/apply' },
+  { label: 'Community', href: '/community' },
+  { label: 'Insights', href: '/insights' },
+  { label: 'About', href: '/about' },
 ]
 
 export function Navbar() {
