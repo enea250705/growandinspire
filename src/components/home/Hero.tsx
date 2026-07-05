@@ -4,7 +4,7 @@ export function Hero() {
   return (
     <section className="relative min-h-screen bg-brand-black flex items-center pt-16 lg:pt-24">
       {/* Subtle texture overlay */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(196,167,107,0.08)_0%,_transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(0,180,166,0.08)_0%,_transparent_60%)]" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -41,7 +41,7 @@ export function Hero() {
           <div className="hidden lg:block">
             <div className="relative">
               <div className="aspect-[4/5] rounded-2xl bg-gradient-to-br from-brand-dark to-brand-black border border-white/10 overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(196,167,107,0.15)_0%,_transparent_70%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(0,180,166,0.15)_0%,_transparent_70%)]" />
                 <div className="absolute bottom-8 left-8 right-8">
                   <div className="w-12 h-px bg-brand-gold mb-4" />
                   <p className="font-serif text-2xl text-brand-white font-medium leading-snug">
