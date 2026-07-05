@@ -22,7 +22,7 @@ const EVENTS = [
     location: 'Tirana, Albania',
     price: 'By application',
     capacity: '8–12 people',
-    description: 'An intimate executive dinner - curated conversations with purposeful leaders.',
+    description: 'An exclusive executive dinner - curated conversations with purposeful leaders.',
     cta: { label: 'Apply to Join', href: '/dinner-with-alketa' },
     featured: false,
   },

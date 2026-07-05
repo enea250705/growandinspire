@@ -2,7 +2,7 @@ import { Users, Star, MessageCircle, Utensils, Network, Check } from 'lucide-rea
 import { DinnerForm } from '@/components/forms/DinnerForm'
 
 const PERKS = [
-  { icon: Users, label: '8–12 people', desc: 'Intimate group, carefully curated' },
+  { icon: Users, label: '8–12 people', desc: 'Select group, carefully curated' },
   { icon: Star, label: 'Invitation only', desc: 'Every seat is earned, not bought' },
   { icon: MessageCircle, label: 'Real conversation', desc: 'No pitches. No panels. Pure dialogue.' },
 ]

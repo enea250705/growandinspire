@@ -32,7 +32,7 @@ export default function CoachingPage() {
             Business and Life Coaching
           </h1>
           <p className="text-white/50 text-lg max-w-2xl">
-            Two flagship formats - a national business conference and intimate small-group coaching programs.
+            Two flagship formats - a national business conference and exclusive small-group coaching programs.
           </p>
         </div>
       </section>
@@ -125,7 +125,7 @@ export default function CoachingPage() {
                 <Users size={28} className="text-brand-gold" strokeWidth={1.5} />
               </div>
               <p className="font-serif text-3xl font-bold text-brand-white mb-2">Max 10 people</p>
-              <p className="text-white/40">per group - intimate by design</p>
+              <p className="text-white/40">per group - small by design</p>
               <div className="mt-8 pt-8 border-t border-white/10 grid grid-cols-2 gap-6 text-center">
                 <div>
                   <p className="font-serif text-2xl font-bold text-brand-gold">Business</p>
@@ -147,7 +147,7 @@ export default function CoachingPage() {
                 Small Group Coaching
               </h2>
               <p className="text-black/60 leading-relaxed mb-6">
-                Intimate coaching groups of maximum 10 people. Business coaching focused on strategy, growth, and leadership. Life coaching centered on clarity, purpose, and high performance.
+                Small coaching groups of maximum 10 people. Business coaching focused on strategy, growth, and leadership. Life coaching centered on clarity, purpose, and high performance.
               </p>
               <p className="text-black/60 leading-relaxed mb-8">
                 Led personally by Alketa Vejsiu with structured curriculum and peer accountability.

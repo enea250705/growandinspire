@@ -107,7 +107,7 @@ export function RetreatSection() {
             <p className="text-white/40 text-xs uppercase tracking-widest mb-6">Pse Retreat?</p>
             <div className="space-y-5">
               {[
-                { q: 'Ndryshe nga konferenca', a: 'Më intim, më i përzgjedhur, më transformues. Nuk inspiron vetëm - ndryshon.' },
+                { q: 'Ndryshe nga konferenca', a: 'Më personal, më i përzgjedhur, më transformues. Nuk inspiron vetëm - ndryshon.' },
                 { q: 'Qartësi dhe Hapa Konkretë', a: 'Del me vendime të vetëdijshme dhe një plan të qartë zhvillimi.' },
                 { q: 'Bllokime dhe Breakthrough', a: 'Identifikon çfarë të ndalon dhe punon drejtpërdrejt mbi të.' },
                 { q: 'Komunitet i Mbyllur', a: 'Lidhje autentike me individë me nivel, vizion dhe ambicie të ngjashme.' },

@@ -23,13 +23,13 @@ export function DinnerSection() {
               Dinner with Alketa
             </h2>
             <p className="text-black/60 text-lg leading-relaxed mb-8">
-              Një darkë networking intime me Alketa Vejsiu - ushqim i zgjedhur, ambient premium, dhe biseda që inspirojnë. Vende të kufizuara për gratë lider dhe sipërmarrëse me vizion.
+              Një darkë networking ekskluzive me Alketa Vejsiu - ushqim i zgjedhur, ambient premium, dhe biseda që inspirojnë. Vende të kufizuara për gratë lider dhe sipërmarrëse me vizion.
             </p>
 
             <div className="space-y-4">
               {[
                 { label: 'Ushqim dhe Pije', desc: 'Meny e kuruar, verëra të zgjedhura, dhe ëmbëlsira artizanale.' },
-                { label: 'Ambient', desc: 'Lokacion premium me ndriçim intimate dhe dekor të kujdesshëm.' },
+                { label: 'Ambient', desc: 'Lokacion premium me ndriçim të ngrohtë dhe dekor të kujdesshëm.' },
                 { label: 'Audio-Vizual', desc: 'Prezantime të shkurtra inspiruese dhe momente të dokumentuara.' },
                 { label: 'Networking', desc: 'Lidhje reale me gra të suksesshme nga fusha të ndryshme.' },
               ].map((item) => (
