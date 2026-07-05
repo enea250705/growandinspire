@@ -4,7 +4,7 @@ import { Calendar, MapPin, Users, ArrowRight } from 'lucide-react'
 const EVENTS = [
   {
     id: '1',
-    title: 'Grow & Inspire Business Conference',
+    title: 'Grow and Inspire Business Conference',
     type: 'Conference',
     date: 'April 25–26, 2026',
     location: 'Tirana, Albania',
@@ -22,7 +22,7 @@ const EVENTS = [
     location: 'Tirana, Albania',
     price: 'By application',
     capacity: '8–12 people',
-    description: 'An intimate executive dinner — curated conversations with purposeful leaders.',
+    description: 'An intimate executive dinner - curated conversations with purposeful leaders.',
     cta: { label: 'Apply to Join', href: '/dinner-with-alketa' },
     featured: false,
   },
@@ -40,7 +40,7 @@ const EVENTS = [
   },
   {
     id: '4',
-    title: 'Coaching Cohort — Summer 2026',
+    title: 'Coaching Cohort - Summer 2026',
     type: 'Group Coaching',
     date: 'July 15, 2026',
     location: 'Online',
@@ -52,13 +52,13 @@ const EVENTS = [
   },
   {
     id: '5',
-    title: 'Business Breakfast — September',
+    title: 'Business Breakfast - September',
     type: 'Networking',
     date: 'September 2026',
     location: 'Tirana, Albania',
     price: 'Members priority',
     capacity: 'Open registration',
-    description: 'A morning of structured networking and peer learning for Grow & Inspire community members.',
+    description: 'A morning of structured networking and peer learning for Grow and Inspire community members.',
     cta: { label: 'Register Interest', href: '/membership' },
     featured: false,
   },
@@ -90,7 +90,7 @@ export default function EventsPage() {
             Business Events
           </h1>
           <p className="text-white/50 text-lg max-w-xl">
-            Conferences, dinners, coaching cohorts, and networking — curated experiences for purposeful growth.
+            Conferences, dinners, coaching cohorts, and networking - curated experiences for purposeful growth.
           </p>
         </div>
       </section>

@@ -35,12 +35,12 @@ const TIERS = [
 
 const HIGHLIGHTS = [
   {
-    quote: 'Komuniteti Grow & Inspire më ndihmoi të gjeja partneren e biznesit tim. Mundësi të vërteta lindin këtu.',
+    quote: 'Komuniteti Grow and Inspire më ndihmoi të gjeja partneren e biznesit tim. Mundësi të vërteta lindin këtu.',
     name: 'Erinda M.',
     role: 'Co-founder, Studio Tirana',
   },
   {
-    quote: 'Mastermind sessions çdo javë — niveli i bisedave dhe niveli i njerëzve është krejtësisht tjetër.',
+    quote: 'Mastermind sessions çdo javë - niveli i bisedave dhe niveli i njerëzve është krejtësisht tjetër.',
     name: 'Blerina K.',
     role: 'CEO, BK Consulting',
   },
@@ -62,7 +62,7 @@ export default function CommunityPage() {
             Komunitet i Vërtetë.<br />Rritje e Vërtetë.
           </h1>
           <p className="text-white/50 text-xl max-w-2xl mx-auto mb-10">
-            Bashkohu me gratë lider, sipërmarrëse dhe profesioniste ambicioze nga e gjithë Shqipëria dhe diaspora — në një hapësirë të kurdisur për mbështetje, bashkëpunim dhe rritje.
+            Bashkohu me gratë lider, sipërmarrëse dhe profesioniste ambicioze nga e gjithë Shqipëria dhe diaspora - në një hapësirë të kurdisur për mbështetje, bashkëpunim dhe rritje.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -143,12 +143,12 @@ export default function CommunityPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              { icon: MessageCircle, title: 'Diskutime & Forum', desc: 'Pyet, ndaj, mëso. Forumi aktiv 24/7 me anëtarë nga gjithë komuniteti.' },
-              { icon: Users, title: 'Mastermind Groups', desc: 'Grupe të vogla fokusi — 6-8 anëtarë — që takohen rregullisht për progres dhe llogaridhënie.' },
+              { icon: MessageCircle, title: 'Diskutime dhe Forum', desc: 'Pyet, ndaj, mëso. Forumi aktiv 24/7 me anëtarë nga gjithë komuniteti.' },
+              { icon: Users, title: 'Mastermind Groups', desc: 'Grupe të vogla fokusi - 6-8 anëtarë - që takohen rregullisht për progres dhe llogaridhënie.' },
               { icon: Zap, title: 'Sfida Mujore', desc: 'Sfida praktike çdo muaj: biznesi, produktiviteti, mirëqenia, marke personale.' },
-              { icon: Heart, title: 'Mbështetje & Empati', desc: 'Hapësirë e sigurt për të qenë autentike — pa gjykim, me mbështetje reale.' },
+              { icon: Heart, title: 'Mbështetje dhe Empati', desc: 'Hapësirë e sigurt për të qenë autentike - pa gjykim, me mbështetje reale.' },
               { icon: Star, title: 'Expert Sessions', desc: 'Q&A live me ekspertë, coach dhe sipërmarrës të ftuar nga Alketa Vejsiu.' },
-              { icon: Lock, title: 'Networking Ekskluziv', desc: 'Lidhje direkte me anëtarë Inner Circle — bashkëpunime, partneritete, mundësi.' },
+              { icon: Lock, title: 'Networking Ekskluziv', desc: 'Lidhje direkte me anëtarë Inner Circle - bashkëpunime, partneritete, mundësi.' },
             ].map(({ icon: Icon, title, desc }) => (
               <div key={title} className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-brand-gold/30 transition-colors">
                 <Icon size={20} className="text-brand-gold mb-4" strokeWidth={1.5} />
@@ -184,7 +184,7 @@ export default function CommunityPage() {
               href="/membership"
               className="inline-flex items-center justify-center bg-brand-black text-brand-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-brand-dark transition-colors"
             >
-              Bashkohu sot — Vende të kufizuara
+              Bashkohu sot - Vende të kufizuara
             </Link>
           </div>
         </div>

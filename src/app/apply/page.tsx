@@ -10,7 +10,7 @@ export default function ApplyPage() {
             Get Involved
           </h1>
           <p className="text-white/50 text-lg max-w-xl">
-            Three ways to be part of the Grow & Inspire ecosystem — as a team member, a guest voice, or an idea worth backing.
+            Three ways to be part of the Grow and Inspire ecosystem - as a team member, a guest voice, or an idea worth backing.
           </p>
         </div>
       </section>

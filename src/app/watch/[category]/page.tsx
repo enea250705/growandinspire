@@ -43,7 +43,7 @@ export default async function CategoryPage({ params }: Props) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {isExclusive ? (
-          /* Exclusive — show all locked */
+          /* Exclusive - show all locked */
           <div>
             <div className="bg-brand-black rounded-2xl p-8 mb-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>

@@ -8,7 +8,7 @@ export function Hero() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Left — text */}
+          {/* Left - text */}
           <div>
             <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-6">
               A Premium Platform
@@ -37,7 +37,7 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right — visual block */}
+          {/* Right - visual block */}
           <div className="hidden lg:block">
             <div className="relative">
               <div className="aspect-[4/5] rounded-2xl bg-gradient-to-br from-brand-dark to-brand-black border border-white/10 overflow-hidden">
@@ -47,7 +47,7 @@ export function Hero() {
                   <p className="font-serif text-2xl text-brand-white font-medium leading-snug">
                     &ldquo;Build something that outlasts the moment.&rdquo;
                   </p>
-                  <p className="text-white/40 text-sm mt-3">— Alketa Vejsiu</p>
+                  <p className="text-white/40 text-sm mt-3">- Alketa Vejsiu</p>
                 </div>
               </div>
               {/* Floating badge */}

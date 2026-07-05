@@ -23,7 +23,7 @@ const PACKAGES = [
     tagline: 'Ndërtim i qëndrueshëm',
     features: [
       '4 sesione coaching/muaj (60 min)',
-      'Priority email & WhatsApp support',
+      'Priority email dhe WhatsApp support',
       'Materiale dhe burime personalizuara',
       'Accountability check-ins javore',
       'Akses në regjistrime sesionesh',
@@ -40,7 +40,7 @@ const PACKAGES = [
       '8 sesione coaching/muaj (90 min)',
       'Akses i drejtpërdrejtë 24/7',
       'Strategji dhe plan veprimi i plotë',
-      'Mentorship & advisory i vazhdueshëm',
+      'Mentorship dhe advisory i vazhdueshëm',
       'Rrjet ekskluziv lidhje biznesi',
       'Sesion bonus çdo tremujor',
     ],
@@ -60,7 +60,7 @@ export function CoachingSection() {
             Paketa Coaching
           </h2>
           <p className="text-white/50 text-lg max-w-xl mx-auto">
-            Coaching personal me Alketa Vejsiu — i dizajnuar për liderë, sipërmarrëse, dhe gra me ambicie të mëdha.
+            Coaching personal me Alketa Vejsiu - i dizajnuar për liderë, sipërmarrëse, dhe gra me ambicie të mëdha.
           </p>
         </div>
 

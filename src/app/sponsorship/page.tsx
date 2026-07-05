@@ -7,7 +7,7 @@ import { Check, Megaphone, Mic2, Users, BookOpen, Building2, Sparkles, TrendingU
 const OPPORTUNITIES = [
   {
     icon: Globe,
-    title: 'Alketa Marketing & Brand Ambassador',
+    title: 'Alketa Marketing and Brand Ambassador',
     desc: 'Alketa represents your brand across digital, social, and live formats. Authentic storytelling built on trust.',
   },
   {
@@ -17,12 +17,12 @@ const OPPORTUNITIES = [
   },
   {
     icon: Mic2,
-    title: 'Sponsorship — Inspire Podcast',
+    title: 'Sponsorship - Inspire Podcast',
     desc: 'Reach a dedicated audience of Albanian professionals and business leaders. Pre-roll, mid-roll, and integration options.',
   },
   {
     icon: Users,
-    title: 'Sponsorship — Meet the Founder',
+    title: 'Sponsorship - Meet the Founder',
     desc: 'Associate your brand with Albania\'s most compelling founder stories.',
   },
   {

@@ -11,7 +11,7 @@ const CATEGORIES = [
   {
     icon: Users,
     title: 'Meet the Founder',
-    description: 'Raw, unfiltered founder stories — the pivots, the failures, the breakthroughs.',
+    description: 'Raw, unfiltered founder stories - the pivots, the failures, the breakthroughs.',
     href: '/watch/meet-the-founder',
   },
   {

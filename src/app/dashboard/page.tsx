@@ -100,7 +100,7 @@ export default function DashboardPage() {
       <div className="bg-brand-black rounded-2xl p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
         <div>
           <p className="text-brand-gold text-xs font-semibold uppercase tracking-widest mb-2">Next Event</p>
-          <p className="font-serif text-xl font-bold text-brand-white">Grow & Inspire Conference</p>
+          <p className="font-serif text-xl font-bold text-brand-white">Grow and Inspire Conference</p>
           <p className="text-white/50 text-sm mt-1">April 25–26, 2026 · Tirana, Albania</p>
         </div>
         <Link

@@ -15,7 +15,7 @@ export default function TermsPage() {
 
             <h2 className="font-serif text-2xl font-bold text-brand-black">1. Acceptance of Terms</h2>
             <p>
-              By accessing or using Grow & Inspire, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our platform.
+              By accessing or using Grow and Inspire, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our platform.
             </p>
 
             <h2 className="font-serif text-2xl font-bold text-brand-black">2. Membership</h2>
@@ -35,12 +35,12 @@ export default function TermsPage() {
 
             <h2 className="font-serif text-2xl font-bold text-brand-black">5. Intellectual Property</h2>
             <p>
-              All content on this platform — videos, articles, guides, and materials — is the intellectual property of Grow & Inspire / Class Media. Reproduction or redistribution without written permission is prohibited.
+              All content on this platform - videos, articles, guides, and materials - is the intellectual property of Grow and Inspire / Class Media. Reproduction or redistribution without written permission is prohibited.
             </p>
 
             <h2 className="font-serif text-2xl font-bold text-brand-black">6. Limitation of Liability</h2>
             <p>
-              Grow & Inspire is provided &quot;as is.&quot; We make no warranties regarding uninterrupted availability or fitness for a particular purpose. Our liability is limited to the amount paid for the current billing period.
+              Grow and Inspire is provided &quot;as is.&quot; We make no warranties regarding uninterrupted availability or fitness for a particular purpose. Our liability is limited to the amount paid for the current billing period.
             </p>
 
             <h2 className="font-serif text-2xl font-bold text-brand-black">7. Contact</h2>

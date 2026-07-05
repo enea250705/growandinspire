@@ -170,7 +170,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs">© {new Date().getFullYear()} Grow & Inspire / Class Media. All rights reserved.</p>
+          <p className="text-xs">© {new Date().getFullYear()} Grow and Inspire / Class Media. All rights reserved.</p>
           <div className="flex gap-4">
             <Link href="/privacy" className="text-xs hover:text-brand-white transition-colors">Privacy</Link>
             <Link href="/terms" className="text-xs hover:text-brand-white transition-colors">Terms</Link>

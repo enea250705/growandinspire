@@ -74,7 +74,7 @@ export default function SettingsPage() {
             {([
               { key: 'events', label: 'Evente dhe konfirmacie', desc: 'Njoftohu për eventet e reja dhe statusin e aplikimeve.' },
               { key: 'content', label: 'Përmbajtje e re', desc: 'Kur shtohen video ose artikuj të rinj.' },
-              { key: 'coaching', label: 'Coaching & sesione', desc: 'Kujtues për sesionte dhe materiale të reja.' },
+              { key: 'coaching', label: 'Coaching dhe sesione', desc: 'Kujtues për sesionte dhe materiale të reja.' },
               { key: 'newsletter', label: 'Newsletter javor', desc: 'Insights javore nga Alketa Vejsiu.' },
             ] as const).map(({ key, label, desc }) => (
               <label key={key} className="flex items-start justify-between gap-4 cursor-pointer">

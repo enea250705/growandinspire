@@ -40,7 +40,7 @@ export default function PrivacyPage() {
 
             <h2 className="font-serif text-2xl font-bold text-brand-black">6. Contact</h2>
             <p>
-              Grow & Inspire / Class Media<br />
+              Grow and Inspire / Class Media<br />
               Tirana, Albania<br />
               <a href="mailto:info@growinspire.al" className="text-brand-gold hover:underline">info@growinspire.al</a>
             </p>

@@ -16,14 +16,14 @@ export function AngelInvestorSection() {
     <section className="bg-brand-cream py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          {/* Left — info */}
+          {/* Left - info */}
           <div>
             <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">Mundësi Investimi</p>
             <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-black mb-6">
-              Ideas & Angel Investor
+              Ideas and Angel Investor
             </h2>
             <p className="text-black/60 text-lg leading-relaxed mb-8">
-              Ke një ide biznesi me potencial? Grow & Inspire lidh sipërmarrëset e talentuar me investitorë angjell dhe mentorë strategjik. Nëse ke vizion dhe vendosmëri — ne kemi rrjetin dhe burimet.
+              Ke një ide biznesi me potencial? Grow and Inspire lidh sipërmarrëset e talentuar me investitorë angjell dhe mentorë strategjik. Nëse ke vizion dhe vendosmëri - ne kemi rrjetin dhe burimet.
             </p>
 
             <div className="space-y-6 mb-8">
@@ -32,7 +32,7 @@ export function AngelInvestorSection() {
                   <Lightbulb size={18} className="text-brand-gold" strokeWidth={1.5} />
                 </div>
                 <div>
-                  <p className="font-semibold text-brand-black mb-1">Pitch & Feedback</p>
+                  <p className="font-semibold text-brand-black mb-1">Pitch dhe Feedback</p>
                   <p className="text-black/50 text-sm">Prezanto idenë tënde para panelit tonë dhe merr feedback të vlefshëm nga ekspertë të industrisë.</p>
                 </div>
               </div>
@@ -65,7 +65,7 @@ export function AngelInvestorSection() {
             </div>
           </div>
 
-          {/* Right — form */}
+          {/* Right - form */}
           <div className="bg-brand-white rounded-3xl border border-black/8 p-8 shadow-sm">
             <h3 className="font-serif text-2xl font-bold text-brand-black mb-6">Dërgo Idenë Tënde</h3>
 
@@ -79,7 +79,7 @@ export function AngelInvestorSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <Input label="Emri & Mbiemri" required placeholder="Emri juaj i plotë" />
+                <Input label="Emri dhe Mbiemri" required placeholder="Emri juaj i plotë" />
                 <Input label="Email" type="email" required placeholder="email@juaj.com" />
                 <Input label="Numri i Telefonit" type="tel" placeholder="+355 6X XXX XXXX" />
                 <Input label="Emri i Projektit / Startup" required placeholder="Emri i idesë suaj" />
@@ -87,7 +87,7 @@ export function AngelInvestorSection() {
                   label="Faza e Projektit"
                   required
                   options={[
-                    { label: 'Ide — ende pa filluar', value: 'idea' },
+                    { label: 'Ide - ende pa filluar', value: 'idea' },
                     { label: 'Prototip / MVP', value: 'mvp' },
                     { label: 'Biznes aktiv (nën 1 vit)', value: 'early' },
                     { label: 'Biznes në rritje (1+ vit)', value: 'growth' },

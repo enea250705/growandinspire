@@ -20,7 +20,7 @@ const TIER_CONTENT: Record<Tier, { title: string; items: string[] }> = {
       'Sesione live Q&A me Alketën (mujore)',
       '4 evente biznesi në vit',
       'Networking me komunitetin',
-      'Guida & template të shkarkueshme',
+      'Guida dhe template të shkarkueshme',
     ],
   },
   professional: {
@@ -58,7 +58,7 @@ export function InsideSection() {
           <div className="flex items-center justify-center gap-2 mb-4">
             <Lock size={14} className="text-brand-gold" />
             <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em]">
-              GROW Exclusive — vetëm për anëtarë
+              GROW Exclusive - vetëm për anëtarë
             </p>
           </div>
           <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-white">

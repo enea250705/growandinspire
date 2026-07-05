@@ -6,7 +6,7 @@ export const MOCK_CONTENT: ContentItem[] = [
     id: '1',
     type: 'podcast',
     title: 'The New Era of Leadership',
-    description: 'Alketa explores what it means to lead in 2026 — vulnerability, vision, and velocity.',
+    description: 'Alketa explores what it means to lead in 2026 - vulnerability, vision, and velocity.',
     youtube_id: 'dQw4w9WgXcQ',
     thumbnail_url: null,
     is_premium: false,
@@ -141,7 +141,7 @@ export const MOCK_CONTENT: ContentItem[] = [
     id: '14',
     type: 'exclusive',
     title: 'Business Growth Plan',
-    description: 'Step-by-step template walkthrough — live session recording.',
+    description: 'Step-by-step template walkthrough - live session recording.',
     youtube_id: 'dQw4w9WgXcQ',
     thumbnail_url: null,
     is_premium: true,
@@ -168,7 +168,7 @@ export const CATEGORY_META: Record<ContentType, { label: string; slug: string; d
   founder: {
     label: 'Meet the Founder',
     slug: 'meet-the-founder',
-    description: 'Raw, unfiltered founder stories — the pivots, the failures, the breakthroughs.',
+    description: 'Raw, unfiltered founder stories - the pivots, the failures, the breakthroughs.',
   },
   artist: {
     label: 'Meet the Artist',

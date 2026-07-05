@@ -3,16 +3,16 @@ import { Calendar, MapPin, Clock, ChevronRight } from 'lucide-react'
 
 const EVENTS = [
   {
-    title: 'Grow & Inspire Business Conference',
+    title: 'Grow and Inspire Business Conference',
     date: '25–26 Prill, 2026',
     location: 'Tirana International Hotel, Tiranë',
     time: '09:00 – 18:00',
     status: 'registered',
-    ticket: 'Standard — €249',
+    ticket: 'Standard - €249',
     href: '/events',
   },
   {
-    title: 'Dinner with Alketa — Qershor',
+    title: 'Dinner with Alketa - Qershor',
     date: '18 Qershor, 2026',
     location: 'Restaurant Oda, Tiranë',
     time: '19:30 – 22:00',
@@ -21,9 +21,9 @@ const EVENTS = [
     href: '/dinner-with-alketa',
   },
   {
-    title: 'Grow & Inspire Retreat 2026',
+    title: 'Grow and Inspire Retreat 2026',
     date: 'Shtator, 2026',
-    location: 'TBA — Shpallet pas konfirmimit',
+    location: 'TBA - Shpallet pas konfirmimit',
     time: '2 ditë / 1 natë',
     status: 'interested',
     ticket: 'Interest List',

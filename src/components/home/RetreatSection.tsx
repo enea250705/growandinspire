@@ -5,17 +5,17 @@ import { Mountain, Brain, TrendingUp, Heart, Users, Compass } from 'lucide-react
 import { Input, Textarea, Select } from '@/components/ui/FormField'
 
 const THEMES = [
-  { icon: TrendingUp, label: 'Lidership & Biznes', desc: 'Qartësi strategjike, vendimmarrje, founder energy.' },
-  { icon: Brain, label: 'Clarity & Mindset', desc: 'Heq bllokimet, qartëso qëllimet, rikonstrukto perspektivën.' },
-  { icon: Heart, label: 'Wellbeing & Energji', desc: 'Burnout prevention, balancë emocionale, qasje somatike.' },
-  { icon: Users, label: 'Komunikim & Brand', desc: 'Personal brand, prezencë, komunikim autentik.' },
-  { icon: Compass, label: 'Transition Moments', desc: 'Piketa kyçe jete e karriere — vendime të vetëdijshme.' },
-  { icon: Mountain, label: 'Ekip & Organizatë', desc: 'Retreat korporativ për ekipe dhe drejtues.' },
+  { icon: TrendingUp, label: 'Lidership dhe Biznes', desc: 'Qartësi strategjike, vendimmarrje, founder energy.' },
+  { icon: Brain, label: 'Clarity dhe Mindset', desc: 'Heq bllokimet, qartëso qëllimet, rikonstrukto perspektivën.' },
+  { icon: Heart, label: 'Wellbeing dhe Energji', desc: 'Burnout prevention, balancë emocionale, qasje somatike.' },
+  { icon: Users, label: 'Komunikim dhe Brand', desc: 'Personal brand, prezencë, komunikim autentik.' },
+  { icon: Compass, label: 'Transition Moments', desc: 'Piketa kyçe jete e karriere - vendime të vetëdijshme.' },
+  { icon: Mountain, label: 'Ekip dhe Organizatë', desc: 'Retreat korporativ për ekipe dhe drejtues.' },
 ]
 
 const FORMATS = [
   { name: 'Retreat Njëditor', hours: '8–10 orë', spots: 'deri 20 vende', desc: 'Zhytje e thellë në një temë të vetme. Ideal për rikalibrim dhe qartësi.' },
-  { name: 'Retreat Dyditor', hours: '2 ditë / 1 natë', spots: 'deri 15 vende', desc: 'Eksperiencë transformuese — reflektim, coaching, mindfulness dhe hapa konkretë.' },
+  { name: 'Retreat Dyditor', hours: '2 ditë / 1 natë', spots: 'deri 15 vende', desc: 'Eksperiencë transformuese - reflektim, coaching, mindfulness dhe hapa konkretë.' },
   { name: 'Retreat Tematik', hours: 'Format i personalizuar', spots: 'deri 12 vende', desc: 'Fokus i posaçëm. Kuruar tërësisht sipas nevojave të grupit ose organizatës.' },
 ]
 
@@ -35,10 +35,10 @@ export function RetreatSection() {
         <div className="max-w-3xl mb-20">
           <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">Eksperiencë Premium</p>
           <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-white mb-6">
-            The Grow & Inspire Retreat
+            The Grow and Inspire Retreat
           </h2>
           <p className="text-white/60 text-lg leading-relaxed">
-            Një hapësirë e dedikuar jashtë ritmit të përditshëm — ku ndalon, reflekton, qartëson qëllimet dhe punon mbi sfidat personale e profesionale. Zhvillimi trajtohet si proces <span className="text-brand-gold font-medium">360°</span>: mendësi, energji, komunikim, qartësi strategjike, balancë emocionale.
+            Një hapësirë e dedikuar jashtë ritmit të përditshëm - ku ndalon, reflekton, qartëson qëllimet dhe punon mbi sfidat personale e profesionale. Zhvillimi trajtohet si proces <span className="text-brand-gold font-medium">360°</span>: mendësi, energji, komunikim, qartësi strategjike, balancë emocionale.
           </p>
         </div>
 
@@ -82,7 +82,7 @@ export function RetreatSection() {
           <div className="flex flex-wrap gap-3">
             {[
               'Business Coach',
-              'Wellbeing & Somatic Coach',
+              'Wellbeing and Somatic Coach',
               'Psikolog',
               'Facilitator Mindfulness',
               'Ekspert Komunikimi',
@@ -107,9 +107,9 @@ export function RetreatSection() {
             <p className="text-white/40 text-xs uppercase tracking-widest mb-6">Pse Retreat?</p>
             <div className="space-y-5">
               {[
-                { q: 'Ndryshe nga konferenca', a: 'Më intim, më i përzgjedhur, më transformues. Nuk inspiron vetëm — ndryshon.' },
-                { q: 'Qartësi & Hapa Konkretë', a: 'Del me vendime të vetëdijshme dhe një plan të qartë zhvillimi.' },
-                { q: 'Bllokime & Breakthrough', a: 'Identifikon çfarë të ndalon dhe punon drejtpërdrejt mbi të.' },
+                { q: 'Ndryshe nga konferenca', a: 'Më intim, më i përzgjedhur, më transformues. Nuk inspiron vetëm - ndryshon.' },
+                { q: 'Qartësi dhe Hapa Konkretë', a: 'Del me vendime të vetëdijshme dhe një plan të qartë zhvillimi.' },
+                { q: 'Bllokime dhe Breakthrough', a: 'Identifikon çfarë të ndalon dhe punon drejtpërdrejt mbi të.' },
                 { q: 'Komunitet i Mbyllur', a: 'Lidhje autentike me individë me nivel, vizion dhe ambicie të ngjashme.' },
               ].map((item) => (
                 <div key={item.q} className="flex gap-4">
@@ -151,7 +151,7 @@ export function RetreatSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <Input dark label="Emri & Mbiemri" required placeholder="Emri juaj i plotë" />
+                <Input dark label="Emri dhe Mbiemri" required placeholder="Emri juaj i plotë" />
                 <Input dark label="Email" type="email" required placeholder="email@juaj.com" />
                 <Input dark label="Numri i Telefonit" type="tel" placeholder="+355 6X XXX XXXX" />
                 <Select
@@ -168,10 +168,10 @@ export function RetreatSection() {
                   dark
                   label="Tematika e preferuar"
                   options={[
-                    { label: 'Lidership & Biznes', value: 'leadership' },
-                    { label: 'Clarity & Mindset', value: 'clarity' },
-                    { label: 'Wellbeing & Energji', value: 'wellbeing' },
-                    { label: 'Komunikim & Personal Brand', value: 'brand' },
+                    { label: 'Lidership dhe Biznes', value: 'leadership' },
+                    { label: 'Clarity dhe Mindset', value: 'clarity' },
+                    { label: 'Wellbeing dhe Energji', value: 'wellbeing' },
+                    { label: 'Komunikim dhe Personal Brand', value: 'brand' },
                     { label: 'Transition Moments', value: 'transition' },
                     { label: 'Retreat Korporativ', value: 'corporate' },
                   ]}

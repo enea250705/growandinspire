@@ -23,7 +23,7 @@ const PRICES = [
     features: [
       'Gjithçka nga Early Bird',
       'Workshop Ekskluziv VIP',
-      'Foto & Video personale',
+      'Foto dhe Video personale',
       'Darkë networking pas konferencës',
     ],
   },
@@ -35,7 +35,7 @@ const PRICES = [
       'Gjithçka nga Standard',
       'Takimi 1:1 me Alketa Vejsiu',
       'Ulëse rezervuar rreshti i parë',
-      'Akses backstage & speaker lounge',
+      'Akses backstage dhe speaker lounge',
     ],
   },
 ]
@@ -55,7 +55,7 @@ export function ConferenceSection() {
         <div className="text-center mb-16">
           <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">Eveniment Vjetor</p>
           <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-black mb-4">
-            Grow & Inspire Business Conference
+            Grow and Inspire Business Conference
           </h2>
           <p className="text-black/60 text-lg max-w-2xl mx-auto">
             Konferenca më e rëndësishme për gratë lider dhe sipërmarrëse në Shqipëri. Speaker ndërkombëtarë, panel diskutime, dhe mundësi networking të vërteta.
@@ -116,16 +116,16 @@ export function ConferenceSection() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
-              <Input label="Emri & Mbiemri" required placeholder="Emri juaj i plotë" />
+              <Input label="Emri dhe Mbiemri" required placeholder="Emri juaj i plotë" />
               <Input label="Email" type="email" required placeholder="email@juaj.com" />
               <Input label="Numri i Telefonit" type="tel" placeholder="+355 6X XXX XXXX" />
               <Select
                 label="Paketa"
                 required
                 options={[
-                  { label: 'Early Bird — €149', value: 'early-bird' },
-                  { label: 'Standard — €249', value: 'standard' },
-                  { label: 'Premium VIP — €499', value: 'vip' },
+                  { label: 'Early Bird - €149', value: 'early-bird' },
+                  { label: 'Standard - €249', value: 'standard' },
+                  { label: 'Premium VIP - €499', value: 'vip' },
                 ]}
               />
               <button

@@ -3,9 +3,9 @@ import Link from 'next/link'
 import { PremiumBadge } from '@/components/ui/LockBadge'
 
 const FREE_CONTENT = {
-  title: 'Trailer — Ç\'është Grow & Inspire?',
+  title: 'Trailer - Ç\'është Grow and Inspire?',
   duration: '3:24',
-  description: 'Zbulo platformën dhe vizionin pas lëvizjes Grow & Inspire.',
+  description: 'Zbulo platformën dhe vizionin pas lëvizjes Grow and Inspire.',
 }
 
 const EXCLUSIVE_PROGRAMS = [
@@ -17,7 +17,7 @@ const EXCLUSIVE_PROGRAMS = [
   {
     title: 'Business Foundations',
     episodes: 12,
-    description: 'Bazat e ndërtimit të biznesit — nga ideja deri te produkti i parë.',
+    description: 'Bazat e ndërtimit të biznesit - nga ideja deri te produkti i parë.',
   },
   {
     title: 'Personal Branding Masterclass',
@@ -27,7 +27,7 @@ const EXCLUSIVE_PROGRAMS = [
 ]
 
 const EXCLUSIVE_VIDEOS = [
-  { title: 'Alketa Vejsiu — Historia ime', category: 'Meet the Founder' },
+  { title: 'Alketa Vejsiu - Historia ime', category: 'Meet the Founder' },
   { title: 'Si ta transformosh idenë në produkt', category: 'Class Business' },
   { title: 'Psikologjia e suksesit', category: 'Inspire Podcast' },
   { title: 'Ndërtimi i rrjetit profesional', category: 'Class Business' },
@@ -41,10 +41,10 @@ export function ELearningSection() {
         <div className="mb-16">
           <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">E-Learning</p>
           <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-white mb-4">
-            Programet & Përmbajtja
+            Programet dhe Përmbajtja
           </h2>
           <p className="text-white/50 text-lg max-w-2xl">
-            Mëso nga Alketa Vejsiu dhe ekspertë të fushës. Programet ekskluzive dhe videot premium — ngjitur me komunitetin.
+            Mëso nga Alketa Vejsiu dhe ekspertë të fushës. Programet ekskluzive dhe videot premium - ngjitur me komunitetin.
           </p>
         </div>
 
@@ -127,7 +127,7 @@ export function ELearningSection() {
               href="/membership"
               className="inline-flex items-center justify-center bg-brand-gold text-brand-black px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"
             >
-              Bëhu Anëtar — Zhblloko të Gjitha
+              Bëhu Anëtar - Zhblloko të Gjitha
             </Link>
           </div>
         </div>

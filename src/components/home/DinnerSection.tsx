@@ -16,19 +16,19 @@ export function DinnerSection() {
     <section className="bg-brand-cream py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          {/* Left — info */}
+          {/* Left - info */}
           <div>
             <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">Eksperiencë Ekskluzive</p>
             <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-black mb-6">
               Dinner with Alketa
             </h2>
             <p className="text-black/60 text-lg leading-relaxed mb-8">
-              Një darkë networking intime me Alketa Vejsiu — ushqim i zgjedhur, ambient premium, dhe biseda që inspirojnë. Vende të kufizuara për gratë lider dhe sipërmarrëse me vizion.
+              Një darkë networking intime me Alketa Vejsiu - ushqim i zgjedhur, ambient premium, dhe biseda që inspirojnë. Vende të kufizuara për gratë lider dhe sipërmarrëse me vizion.
             </p>
 
             <div className="space-y-4">
               {[
-                { label: 'Ushqim & Pije', desc: 'Meny e kuruar, verëra të zgjedhura, dhe ëmbëlsira artizanale.' },
+                { label: 'Ushqim dhe Pije', desc: 'Meny e kuruar, verëra të zgjedhura, dhe ëmbëlsira artizanale.' },
                 { label: 'Ambient', desc: 'Lokacion premium me ndriçim intimate dhe dekor të kujdesshëm.' },
                 { label: 'Audio-Vizual', desc: 'Prezantime të shkurtra inspiruese dhe momente të dokumentuara.' },
                 { label: 'Networking', desc: 'Lidhje reale me gra të suksesshme nga fusha të ndryshme.' },
@@ -45,11 +45,11 @@ export function DinnerSection() {
 
             <div className="mt-8 inline-flex items-center gap-3 bg-brand-gold/10 border border-brand-gold/20 rounded-2xl px-5 py-4">
               <UtensilsCrossed size={20} className="text-brand-gold" strokeWidth={1.5} />
-              <p className="text-sm text-brand-black font-medium">Vende të kufizuara — apliko tani</p>
+              <p className="text-sm text-brand-black font-medium">Vende të kufizuara - apliko tani</p>
             </div>
           </div>
 
-          {/* Right — form */}
+          {/* Right - form */}
           <div className="bg-brand-white rounded-3xl border border-black/8 p-8 shadow-sm">
             <h3 className="font-serif text-2xl font-bold text-brand-black mb-6">Formular Aplikimi</h3>
 
@@ -63,7 +63,7 @@ export function DinnerSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <Input label="Emri & Mbiemri" required placeholder="Emri juaj i plotë" />
+                <Input label="Emri dhe Mbiemri" required placeholder="Emri juaj i plotë" />
                 <Input label="Email" type="email" required placeholder="email@juaj.com" />
                 <Input label="Numri i Telefonit" type="tel" placeholder="+355 6X XXX XXXX" />
                 <Input label="Profesioni / Fusha" placeholder="p.sh. Sipërmarrëse, CEO, Konsulente..." />

@@ -8,9 +8,9 @@ const PERKS = [
 ]
 
 const WHO_CAN_APPLY = [
-  'Founders & Co-Founders',
-  'CEOs & Business Owners',
-  'Executives & Leaders',
+  'Founders and Co-Founders',
+  'CEOs and Business Owners',
+  'Executives and Leaders',
   'Investors',
 ]
 
@@ -36,7 +36,7 @@ export default function DinnerPage() {
                 Dinner with Alketa
               </h1>
               <p className="text-white/60 text-lg leading-relaxed mb-8">
-                An executive dinner exchange — 8 to 12 carefully selected leaders sharing one table, one evening, and conversations that matter.
+                An executive dinner exchange - 8 to 12 carefully selected leaders sharing one table, one evening, and conversations that matter.
               </p>
               <div className="flex flex-col gap-4">
                 {PERKS.map(({ icon: Icon, label, desc }) => (

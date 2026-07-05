@@ -15,7 +15,7 @@ const PLANS = [
       'Monthly live Q&A with Alketa',
       '4 business events per year',
       'Community network access',
-      'Downloadable guides & templates',
+      'Downloadable guides and templates',
     ],
   },
   {
@@ -34,7 +34,7 @@ const PLANS = [
       'Business Growth Plan template',
       'Direct community introductions',
       'Early access to new content',
-      'Dinner with Alketa — application priority',
+      'Dinner with Alketa - application priority',
     ],
   },
   {
@@ -166,13 +166,13 @@ export default function MembershipPage() {
               >
                 <div className="p-4 text-black/70 font-medium">{row.feature}</div>
                 <div className="p-4 flex justify-center">
-                  {row.individual ? <Check size={16} className="text-brand-gold" strokeWidth={2.5} /> : <span className="text-black/20">—</span>}
+                  {row.individual ? <Check size={16} className="text-brand-gold" strokeWidth={2.5} /> : <span className="text-black/20">-</span>}
                 </div>
                 <div className="p-4 flex justify-center">
-                  {row.professional ? <Check size={16} className="text-brand-gold" strokeWidth={2.5} /> : <span className="text-black/20">—</span>}
+                  {row.professional ? <Check size={16} className="text-brand-gold" strokeWidth={2.5} /> : <span className="text-black/20">-</span>}
                 </div>
                 <div className="p-4 flex justify-center">
-                  {row.corporate ? <Check size={16} className="text-brand-gold" strokeWidth={2.5} /> : <span className="text-black/20">—</span>}
+                  {row.corporate ? <Check size={16} className="text-brand-gold" strokeWidth={2.5} /> : <span className="text-black/20">-</span>}
                 </div>
               </div>
             ))}
@@ -184,7 +184,7 @@ export default function MembershipPage() {
       <section className="bg-brand-black py-20">
         <div className="max-w-2xl mx-auto px-4 text-center">
           <h2 className="font-serif text-3xl font-bold text-brand-white mb-4">Not sure which plan?</h2>
-          <p className="text-white/50 mb-8">Start free — upgrade when you&apos;re ready.</p>
+          <p className="text-white/50 mb-8">Start free - upgrade when you&apos;re ready.</p>
           <Link
             href="/login"
             className="inline-flex items-center justify-center bg-brand-gold text-brand-black px-8 py-4 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"

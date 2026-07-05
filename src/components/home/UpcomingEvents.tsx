@@ -4,7 +4,7 @@ const EVENTS = [
   {
     initial: 'G',
     date: 'APR 25, 2026',
-    title: 'Grow & Inspire Conference',
+    title: 'Grow and Inspire Conference',
     location: 'Tirana, Albania',
     cta: { text: 'Register Interest →', href: '/events' },
   },

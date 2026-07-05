@@ -17,7 +17,7 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: 'Grow & Inspire',
+  title: 'Grow and Inspire',
   description: 'A premium platform for personal growth, business leadership, meaningful connections, and curated experiences.',
 }
 

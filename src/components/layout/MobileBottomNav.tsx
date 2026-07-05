@@ -13,7 +13,7 @@ const TABS = [
 export function MobileBottomNav() {
   const pathname = usePathname()
 
-  // hide on login page — it's a full-screen auth flow
+  // hide on login page - it's a full-screen auth flow
   if (pathname === '/login') return null
 
   return (

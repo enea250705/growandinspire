@@ -6,7 +6,7 @@ const DOWNLOADS = [
   { title: 'Business Growth Plan Template', type: 'PDF', size: '1.8 MB', free: true, date: '3 Prill, 2026' },
   { title: 'Personal Brand Strategy Guide', type: 'PDF', size: '3.1 MB', free: false, date: null },
   { title: 'Founder Mindset Toolkit', type: 'PDF', size: '4.2 MB', free: false, date: null },
-  { title: 'Coaching Session Notes — Q1 2026', type: 'PDF', size: '0.9 MB', free: false, date: null },
+  { title: 'Coaching Session Notes - Q1 2026', type: 'PDF', size: '0.9 MB', free: false, date: null },
 ]
 
 export default function DownloadsPage() {

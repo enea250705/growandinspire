@@ -3,7 +3,7 @@ import { Calendar, Users, Clock, MapPin } from 'lucide-react'
 import { DownloadProgram } from '@/components/coaching/DownloadProgram'
 
 const DAY1 = [
-  'Opening keynote — Alketa Vejsiu',
+  'Opening keynote - Alketa Vejsiu',
   'Guest speaker: Leadership in Emerging Markets',
   'Smart Talks (10-min spotlight sessions)',
   'Networking lunch',
@@ -13,12 +13,12 @@ const DAY1 = [
 ]
 
 const DAY2 = [
-  'Morning session — Alketa Vejsiu',
+  'Morning session - Alketa Vejsiu',
   'Guest speaker: Digital Transformation',
   'Expert discussion groups (small groups)',
   'Networking lunch',
   'Audience Q&A with all speakers',
-  'Closing ceremony & awards',
+  'Closing ceremony and awards',
 ]
 
 export default function CoachingPage() {
@@ -29,10 +29,10 @@ export default function CoachingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-4">Coaching</p>
           <h1 className="font-serif text-5xl lg:text-6xl font-bold text-brand-white mb-4">
-            Business & Life Coaching
+            Business and Life Coaching
           </h1>
           <p className="text-white/50 text-lg max-w-2xl">
-            Two flagship formats — a national business conference and intimate small-group coaching programs.
+            Two flagship formats - a national business conference and intimate small-group coaching programs.
           </p>
         </div>
       </section>
@@ -47,10 +47,10 @@ export default function CoachingPage() {
                 Annual Event
               </span>
               <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-black mb-6">
-                Grow & Inspire Business Conference
+                Grow and Inspire Business Conference
               </h2>
               <p className="text-black/60 leading-relaxed mb-8">
-                Albania&apos;s premier business leadership conference. Two days of keynotes, expert panels, Smart Talks, and unparalleled networking — designed for founders, executives, and ambitious professionals.
+                Albania&apos;s premier business leadership conference. Two days of keynotes, expert panels, Smart Talks, and unparalleled networking - designed for founders, executives, and ambitious professionals.
               </p>
 
               <div className="flex flex-col gap-3 mb-8">
@@ -60,7 +60,7 @@ export default function CoachingPage() {
                 </div>
                 <div className="flex items-center gap-3 text-sm text-black/60">
                   <MapPin size={16} className="text-brand-gold shrink-0" />
-                  <span>Tirana, Albania — venue TBC</span>
+                  <span>Tirana, Albania - venue TBC</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-black/60">
                   <Clock size={16} className="text-brand-gold shrink-0" />
@@ -86,7 +86,7 @@ export default function CoachingPage() {
               </Link>
             </div>
 
-            {/* Right — agenda */}
+            {/* Right - agenda */}
             <div className="flex flex-col gap-6">
               <div className="bg-brand-white rounded-2xl border border-black/8 p-6">
                 <p className="text-xs font-semibold uppercase tracking-widest text-brand-gold mb-4">Day 1</p>
@@ -125,15 +125,15 @@ export default function CoachingPage() {
                 <Users size={28} className="text-brand-gold" strokeWidth={1.5} />
               </div>
               <p className="font-serif text-3xl font-bold text-brand-white mb-2">Max 10 people</p>
-              <p className="text-white/40">per group — intimate by design</p>
+              <p className="text-white/40">per group - intimate by design</p>
               <div className="mt-8 pt-8 border-t border-white/10 grid grid-cols-2 gap-6 text-center">
                 <div>
                   <p className="font-serif text-2xl font-bold text-brand-gold">Business</p>
-                  <p className="text-white/40 text-sm mt-1">Strategy & Growth</p>
+                  <p className="text-white/40 text-sm mt-1">Strategy and Growth</p>
                 </div>
                 <div>
                   <p className="font-serif text-2xl font-bold text-brand-gold">Life</p>
-                  <p className="text-white/40 text-sm mt-1">Clarity & Direction</p>
+                  <p className="text-white/40 text-sm mt-1">Clarity and Direction</p>
                 </div>
               </div>
             </div>

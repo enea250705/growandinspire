@@ -8,11 +8,11 @@ const FEATURED_TOPICS = [
   'Lidership femëror',
   'Sipërmarrje',
   'Biznesi shqiptar',
-  'Mirëqenie & performancë',
+  'Mirëqenie dhe performancë',
   'Personal brand',
   'Financat personale',
   'Komunikim',
-  'Teknologji & inovacion',
+  'Teknologji dhe inovacion',
 ]
 
 export default function InsightsPage() {
@@ -26,7 +26,7 @@ export default function InsightsPage() {
             Ide. Analiza. Perspektiva.
           </h1>
           <p className="text-white/50 text-xl max-w-xl">
-            Artikuj dhe analiza të thellë nga ekipi editorial i Grow & Inspire dhe Revista Class — për liderë që duan të mendojnë ndryshe.
+            Artikuj dhe analiza të thellë nga ekipi editorial i Grow and Inspire dhe Revista Class - për liderë që duan të mendojnë ndryshe.
           </p>
         </div>
       </section>
