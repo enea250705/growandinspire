@@ -11,17 +11,17 @@ export default function LoginPage() {
   function set(f: string, v: string) { setForm((p) => ({ ...p, [f]: v })) }
 
   return (
-    <div className="pt-16 min-h-screen bg-brand-black flex items-center justify-center px-4">
+    <div className="pt-16 lg:pt-24 min-h-screen bg-brand-black flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex justify-center">
             <Image
-              src="/logo.png"
+              src="/logo-v2.png"
               alt="INSPIRE podCLASS by Alketa Vejsiu"
-              width={140}
-              height={47}
-              className="h-12 w-auto object-contain"
+              width={244}
+              height={122}
+              className="h-20 w-auto object-contain"
               priority
             />
           </Link>

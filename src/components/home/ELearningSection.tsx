@@ -1,6 +1,6 @@
 import { Play, Lock } from 'lucide-react'
 import Link from 'next/link'
-import { LockBadge, PremiumBadge } from '@/components/ui/LockBadge'
+import { PremiumBadge } from '@/components/ui/LockBadge'
 
 const FREE_CONTENT = {
   title: 'Trailer — Ç\'është Grow & Inspire?',
@@ -74,14 +74,24 @@ export function ELearningSection() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {EXCLUSIVE_PROGRAMS.map((program) => (
-              <div key={program.title} className="relative rounded-2xl border border-white/10 p-6 bg-brand-dark overflow-hidden">
-                <div className="mb-4">
+              <Link
+                key={program.title}
+                href="/membership"
+                className="group relative rounded-2xl border border-white/10 p-6 bg-brand-dark hover:border-brand-gold/40 transition-colors"
+              >
+                <div className="flex items-center justify-between mb-4">
                   <span className="text-white/30 text-xs">{program.episodes} episode</span>
+                  <span className="flex items-center gap-1.5 text-brand-gold text-xs font-semibold">
+                    <Lock size={11} strokeWidth={2} />
+                    Members only
+                  </span>
                 </div>
                 <h3 className="font-serif text-xl text-brand-white font-medium mb-2">{program.title}</h3>
-                <p className="text-white/40 text-sm leading-relaxed">{program.description}</p>
-                <LockBadge />
-              </div>
+                <p className="text-white/40 text-sm leading-relaxed mb-4">{program.description}</p>
+                <span className="text-brand-gold text-sm font-medium group-hover:underline">
+                  Zhblloko me membership →
+                </span>
+              </Link>
             ))}
           </div>
         </div>
@@ -94,16 +104,22 @@ export function ELearningSection() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {EXCLUSIVE_VIDEOS.map((video) => (
-              <div key={video.title} className="relative flex items-center gap-4 rounded-xl border border-white/10 p-4 bg-brand-dark overflow-hidden">
-                <div className="flex-shrink-0 w-10 h-10 bg-white/5 rounded-full flex items-center justify-center">
-                  <Lock size={14} className="text-brand-gold/60" strokeWidth={1.5} />
+              <Link
+                key={video.title}
+                href="/membership"
+                className="group flex items-center gap-4 rounded-xl border border-white/10 p-4 bg-brand-dark hover:border-brand-gold/40 transition-colors"
+              >
+                <div className="flex-shrink-0 w-10 h-10 bg-white/5 rounded-full flex items-center justify-center group-hover:bg-brand-gold/15 transition-colors">
+                  <Lock size={14} className="text-brand-gold/60 group-hover:text-brand-gold transition-colors" strokeWidth={1.5} />
                 </div>
-                <div>
-                  <p className="text-brand-white text-sm font-medium">{video.title}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-brand-white text-sm font-medium truncate">{video.title}</p>
                   <p className="text-white/30 text-xs mt-0.5">{video.category}</p>
                 </div>
-                <LockBadge size="sm" />
-              </div>
+                <span className="shrink-0 text-brand-gold/60 text-xs font-medium group-hover:text-brand-gold transition-colors">
+                  Zhblloko
+                </span>
+              </Link>
             ))}
           </div>
           <div className="mt-8 text-center">

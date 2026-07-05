@@ -17,7 +17,7 @@ const FEATURED_TOPICS = [
 
 export default function InsightsPage() {
   return (
-    <div className="pt-16 min-h-screen">
+    <div className="pt-16 lg:pt-24 min-h-screen">
       {/* Hero */}
       <section className="bg-brand-black py-24 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

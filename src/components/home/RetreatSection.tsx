@@ -151,26 +151,11 @@ export function RetreatSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <Input
-                  label="Emri & Mbiemri"
-                  required
-                  placeholder="Emri juaj i plotë"
-                  className="bg-brand-black border-white/15 text-brand-white placeholder:text-white/20"
-                />
-                <Input
-                  label="Email"
-                  type="email"
-                  required
-                  placeholder="email@juaj.com"
-                  className="bg-brand-black border-white/15 text-brand-white placeholder:text-white/20"
-                />
-                <Input
-                  label="Numri i Telefonit"
-                  type="tel"
-                  placeholder="+355 6X XXX XXXX"
-                  className="bg-brand-black border-white/15 text-brand-white placeholder:text-white/20"
-                />
+                <Input dark label="Emri & Mbiemri" required placeholder="Emri juaj i plotë" />
+                <Input dark label="Email" type="email" required placeholder="email@juaj.com" />
+                <Input dark label="Numri i Telefonit" type="tel" placeholder="+355 6X XXX XXXX" />
                 <Select
+                  dark
                   label="Formati që ju intereson"
                   required
                   options={[
@@ -178,9 +163,9 @@ export function RetreatSection() {
                     { label: 'Retreat Dyditor', value: '2-day' },
                     { label: 'Retreat Tematik / Korporativ', value: 'thematic' },
                   ]}
-                  className="bg-brand-black border-white/15 text-brand-white"
                 />
                 <Select
+                  dark
                   label="Tematika e preferuar"
                   options={[
                     { label: 'Lidership & Biznes', value: 'leadership' },
@@ -190,13 +175,12 @@ export function RetreatSection() {
                     { label: 'Transition Moments', value: 'transition' },
                     { label: 'Retreat Korporativ', value: 'corporate' },
                   ]}
-                  className="bg-brand-black border-white/15 text-brand-white"
                 />
                 <Textarea
+                  dark
                   label="Çfarë kërkoni nga ky retreat?"
                   placeholder="Ndani shkurtimisht ku ndodheni dhe çfarë dëshironi të arrini..."
                   rows={3}
-                  className="bg-brand-black border-white/15 text-brand-white placeholder:text-white/20"
                 />
                 <button
                   type="submit"

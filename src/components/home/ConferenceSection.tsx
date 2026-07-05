@@ -132,7 +132,7 @@ export function ConferenceSection() {
                 type="submit"
                 className="w-full bg-brand-black text-brand-white py-3.5 rounded-full text-sm font-semibold hover:bg-brand-dark transition-colors"
               >
-                Konfirmo Regjistimin
+                Konfirmo Regjistrimin
               </button>
             </form>
           )}

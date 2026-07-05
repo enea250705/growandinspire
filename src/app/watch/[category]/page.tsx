@@ -23,7 +23,7 @@ export default async function CategoryPage({ params }: Props) {
   const isExclusive = type === 'exclusive'
 
   return (
-    <div className="pt-16 min-h-screen bg-brand-cream">
+    <div className="pt-16 lg:pt-24 min-h-screen bg-brand-cream">
       {/* Header */}
       <section className={`py-20 lg:py-28 ${isExclusive ? 'bg-brand-dark' : 'bg-brand-black'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

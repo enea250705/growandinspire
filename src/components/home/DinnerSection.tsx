@@ -34,7 +34,7 @@ export function DinnerSection() {
                 { label: 'Networking', desc: 'Lidhje reale me gra të suksesshme nga fusha të ndryshme.' },
               ].map((item) => (
                 <div key={item.label} className="flex gap-4">
-                  <div className="flex-shrink-0 mt-1 w-1 h-1 rounded-full bg-brand-gold mt-2.5" />
+                  <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-brand-gold mt-2" />
                   <div>
                     <p className="font-semibold text-brand-black text-sm">{item.label}</p>
                     <p className="text-black/50 text-sm">{item.desc}</p>

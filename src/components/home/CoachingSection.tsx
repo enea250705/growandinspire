@@ -128,7 +128,7 @@ export function CoachingSection() {
         <p className="text-center text-white/30 text-sm mt-10">
           Nuk je e sigurt cilën pakëtë të zgjedhësh?{' '}
           <Link href="/coaching" className="text-brand-gold hover:underline">
-            Rezervo një seisonde discovery falas →
+            Rezervo një sesion discovery falas →
           </Link>
         </p>
       </div>

@@ -5,13 +5,14 @@ interface FieldWrapperProps {
   label: string
   required?: boolean
   error?: string
+  dark?: boolean
   children: React.ReactNode
 }
 
-export function FieldWrapper({ label, required, error, children }: FieldWrapperProps) {
+export function FieldWrapper({ label, required, error, dark, children }: FieldWrapperProps) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-sm font-medium text-brand-black">
+      <label className={cn('text-sm font-medium', dark ? 'text-brand-white' : 'text-brand-black')}>
         {label}
         {required && <span className="text-brand-gold ml-0.5">*</span>}
       </label>
@@ -24,14 +25,18 @@ export function FieldWrapper({ label, required, error, children }: FieldWrapperP
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string
   error?: string
+  dark?: boolean
 }
 
-export function Input({ label, required, error, className, ...props }: InputProps) {
+export function Input({ label, required, error, dark, className, ...props }: InputProps) {
   return (
-    <FieldWrapper label={label} required={required} error={error}>
+    <FieldWrapper label={label} required={required} error={error} dark={dark}>
       <input
         className={cn(
-          'border border-black/15 rounded-lg px-4 py-2.5 text-sm bg-brand-white placeholder:text-black/30 focus:outline-none focus:border-brand-gold transition-colors',
+          'border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-gold transition-colors',
+          dark
+            ? 'bg-brand-black border-white/15 text-brand-white placeholder:text-white/25'
+            : 'bg-brand-white border-black/15 text-brand-black placeholder:text-black/30',
           error && 'border-red-400',
           className
         )}
@@ -44,15 +49,19 @@ export function Input({ label, required, error, className, ...props }: InputProp
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string
   error?: string
+  dark?: boolean
 }
 
-export function Textarea({ label, required, error, className, ...props }: TextareaProps) {
+export function Textarea({ label, required, error, dark, className, ...props }: TextareaProps) {
   return (
-    <FieldWrapper label={label} required={required} error={error}>
+    <FieldWrapper label={label} required={required} error={error} dark={dark}>
       <textarea
         rows={4}
         className={cn(
-          'border border-black/15 rounded-lg px-4 py-2.5 text-sm bg-brand-white placeholder:text-black/30 focus:outline-none focus:border-brand-gold transition-colors resize-none',
+          'border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-gold transition-colors resize-none',
+          dark
+            ? 'bg-brand-black border-white/15 text-brand-white placeholder:text-white/25'
+            : 'bg-brand-white border-black/15 text-brand-black placeholder:text-black/30',
           error && 'border-red-400',
           className
         )}
@@ -65,15 +74,19 @@ export function Textarea({ label, required, error, className, ...props }: Textar
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label: string
   error?: string
+  dark?: boolean
   options: { label: string; value: string }[]
 }
 
-export function Select({ label, required, error, options, className, ...props }: SelectProps) {
+export function Select({ label, required, error, dark, options, className, ...props }: SelectProps) {
   return (
-    <FieldWrapper label={label} required={required} error={error}>
+    <FieldWrapper label={label} required={required} error={error} dark={dark}>
       <select
         className={cn(
-          'border border-black/15 rounded-lg px-4 py-2.5 text-sm bg-brand-white focus:outline-none focus:border-brand-gold transition-colors',
+          'border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-gold transition-colors',
+          dark
+            ? 'bg-brand-black border-white/15 text-brand-white'
+            : 'bg-brand-white border-black/15 text-brand-black',
           error && 'border-red-400',
           className
         )}

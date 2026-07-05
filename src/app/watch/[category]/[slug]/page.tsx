@@ -35,7 +35,7 @@ export default async function EpisodePage({ params }: Props) {
     .slice(0, 3)
 
   return (
-    <div className="pt-16 min-h-screen bg-brand-cream">
+    <div className="pt-16 lg:pt-24 min-h-screen bg-brand-cream">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-black/40 mb-8">
