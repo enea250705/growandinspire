@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { BookOpen, Calendar, Download, Users, Settings, LogOut, LayoutDashboard, FileText } from 'lucide-react'
+import { BookOpen, Calendar, Download, Users, Settings, LogOut, LayoutDashboard, FileText, ShieldCheck } from 'lucide-react'
 import { signOut } from '@/lib/actions/auth'
 
 const NAV = [
@@ -19,9 +19,10 @@ interface Props {
   name: string
   email: string
   tier: string
+  isAdmin?: boolean
 }
 
-export function DashboardSidebar({ name, email, tier }: Props) {
+export function DashboardSidebar({ name, email, tier, isAdmin }: Props) {
   const pathname = usePathname()
   const initial = name[0]?.toUpperCase() ?? 'M'
 
@@ -56,6 +57,18 @@ export function DashboardSidebar({ name, email, tier }: Props) {
             )
           })}
         </nav>
+
+        {isAdmin && (
+          <div className="p-2 pt-0">
+            <Link
+              href="/admin"
+              className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm bg-brand-gold/10 text-brand-gold-dark hover:bg-brand-gold/20 transition-colors"
+            >
+              <ShieldCheck size={15} strokeWidth={1.5} />
+              Admin Panel
+            </Link>
+          </div>
+        )}
 
         <div className="p-2 pt-0 border-t border-black/6 mt-2">
           <form action={signOut}>

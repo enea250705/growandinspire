@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const PROTECTED = ['/dashboard']
+const PROTECTED = ['/dashboard', '/admin']
 const AUTH_ONLY = ['/login']
 
 export async function updateSession(request: NextRequest) {
