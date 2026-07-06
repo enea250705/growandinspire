@@ -18,11 +18,21 @@ export function ContentCard({ item, isMember = false }: ContentCardProps) {
   return (
     <div className="group relative bg-brand-white rounded-2xl border border-black/8 overflow-hidden hover:shadow-md transition-shadow">
       {/* Thumbnail */}
-      <div className="relative aspect-video bg-gradient-to-br from-brand-dark to-brand-black flex items-center justify-center">
+      <div className="relative aspect-video bg-gradient-to-br from-brand-dark to-brand-black flex items-center justify-center overflow-hidden">
         {hasVideo ? (
-          <div className="w-12 h-12 rounded-full bg-brand-white/10 border border-white/20 flex items-center justify-center group-hover:bg-brand-gold/20 transition-colors">
-            <Play size={20} className="text-brand-white ml-0.5" fill="currentColor" />
-          </div>
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={item.thumbnail_url ?? `https://img.youtube.com/vi/${item.youtube_id}/hqdefault.jpg`}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-brand-black/30 group-hover:bg-brand-black/15 transition-colors" />
+            <div className="relative w-12 h-12 rounded-full bg-brand-black/50 border border-white/30 flex items-center justify-center group-hover:bg-brand-gold group-hover:border-brand-gold transition-colors">
+              <Play size={20} className="text-brand-white ml-0.5 group-hover:text-brand-black transition-colors" fill="currentColor" />
+            </div>
+          </>
         ) : (
           <FileText size={24} className="text-white/40" />
         )}

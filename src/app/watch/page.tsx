@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { BookOpen, Mic2, Users, Briefcase, Sparkles, Lock } from 'lucide-react'
-import { MOCK_CONTENT, CATEGORY_META } from '@/lib/mock-content'
+import { MOCK_CONTENT, CATEGORY_META, slugify } from '@/lib/mock-content'
 import { ContentCard } from '@/components/watch/ContentCard'
 
 const CATEGORIES = [
@@ -61,11 +61,18 @@ export default function WatchPage() {
         {featured && (
           <div className="mb-16">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/40 mb-6">Featured</p>
-            <Link href={`/watch/${CATEGORY_META[featured.type].slug}/${featured.id}`} className="group block">
+            <Link href={`/watch/${CATEGORY_META[featured.type].slug}/${slugify(featured.title)}`} className="group block">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-brand-white rounded-2xl border border-black/8 overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="aspect-video lg:aspect-auto bg-gradient-to-br from-brand-dark to-brand-black flex items-center justify-center min-h-[260px]">
-                  <div className="w-16 h-16 rounded-full bg-white/10 border border-white/20 flex items-center justify-center group-hover:bg-brand-gold/20 transition-colors">
-                    <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                <div className="relative aspect-video lg:aspect-auto bg-gradient-to-br from-brand-dark to-brand-black flex items-center justify-center min-h-[260px] overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={featured.thumbnail_url ?? `https://img.youtube.com/vi/${featured.youtube_id}/hqdefault.jpg`}
+                    alt=""
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-brand-black/30 group-hover:bg-brand-black/15 transition-colors" />
+                  <div className="relative w-16 h-16 rounded-full bg-brand-black/50 border border-white/30 flex items-center justify-center group-hover:bg-brand-gold group-hover:border-brand-gold transition-colors">
+                    <svg className="w-6 h-6 text-white ml-1 group-hover:text-brand-black transition-colors" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M8 5v14l11-7z" />
                     </svg>
                   </div>

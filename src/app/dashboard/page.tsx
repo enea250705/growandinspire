@@ -48,9 +48,19 @@ export default function DashboardPage() {
               href={`/watch/${CATEGORY_META[item.type].slug}/${slugify(item.title)}`}
               className="group bg-brand-white rounded-xl border border-black/8 overflow-hidden hover:shadow-md transition-shadow"
             >
-              <div className="aspect-video bg-gradient-to-br from-brand-dark to-brand-black flex items-center justify-center">
-                <div className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center group-hover:bg-brand-gold/20 transition-colors">
-                  <svg className="w-3 h-3 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+              <div className="relative aspect-video bg-gradient-to-br from-brand-dark to-brand-black flex items-center justify-center overflow-hidden">
+                {item.youtube_id && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={item.thumbnail_url ?? `https://img.youtube.com/vi/${item.youtube_id}/hqdefault.jpg`}
+                    alt=""
+                    className="absolute inset-0 w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                )}
+                <div className="absolute inset-0 bg-brand-black/30 group-hover:bg-brand-black/15 transition-colors" />
+                <div className="relative w-8 h-8 rounded-full bg-brand-black/50 border border-white/30 flex items-center justify-center group-hover:bg-brand-gold transition-colors">
+                  <svg className="w-3 h-3 text-white ml-0.5 group-hover:text-brand-black transition-colors" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z" />
                   </svg>
                 </div>
@@ -79,11 +89,21 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {exclusiveContent.map((item) => (
             <div key={item.id} className="bg-brand-white rounded-xl border border-black/8 overflow-hidden">
-              <div className="relative aspect-video bg-gradient-to-br from-brand-dark to-brand-black flex items-center justify-center">
+              <div className="relative aspect-video bg-gradient-to-br from-brand-dark to-brand-black flex items-center justify-center overflow-hidden">
+                {item.youtube_id && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={item.thumbnail_url ?? `https://img.youtube.com/vi/${item.youtube_id}/hqdefault.jpg`}
+                    alt=""
+                    className="absolute inset-0 w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                )}
+                <div className="absolute inset-0 bg-brand-black/40" />
                 <span className="absolute top-2 right-2 bg-brand-gold text-brand-black text-[10px] font-bold px-2 py-0.5 rounded-full">
                   PREMIUM
                 </span>
-                <div className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
+                <div className="relative w-8 h-8 rounded-full bg-brand-black/50 border border-white/30 flex items-center justify-center">
                   <svg className="w-3 h-3 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z" />
                   </svg>
