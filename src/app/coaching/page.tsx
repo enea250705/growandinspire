@@ -110,6 +110,39 @@ export default function CoachingPage() {
                   ))}
                 </ul>
               </div>
+
+              {/* Format chips */}
+              <div className="flex flex-wrap gap-2">
+                {['Keynotes', 'Panels', 'Workshops', 'Networking', 'VIP Dinner'].map((f) => (
+                  <span
+                    key={f}
+                    className="inline-flex items-center bg-brand-gold/10 border border-brand-gold/25 text-brand-gold-dark text-xs font-semibold px-3 py-1.5 rounded-full"
+                  >
+                    {f}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Speakers */}
+          <div className="mt-16">
+            <p className="text-xs font-semibold uppercase tracking-widest text-brand-gold mb-6">Speakers</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { name: 'Alketa Vejsiu', role: 'Host and Spokesperson' },
+                { name: 'Speaker TBA', role: 'Announced soon' },
+                { name: 'Speaker TBA', role: 'Announced soon' },
+                { name: 'Speaker TBA', role: 'Announced soon' },
+              ].map((s, i) => (
+                <div key={i} className="bg-brand-white rounded-2xl border border-black/8 p-6 text-center">
+                  <div className="w-14 h-14 rounded-full bg-brand-gold/15 flex items-center justify-center mx-auto mb-4">
+                    <span className="font-serif font-bold text-brand-gold text-lg">{s.name[0]}</span>
+                  </div>
+                  <p className="font-semibold text-brand-black text-sm">{s.name}</p>
+                  <p className="text-black/40 text-xs mt-1">{s.role}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

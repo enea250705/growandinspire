@@ -47,6 +47,47 @@ export function AngelInvestorSection() {
               </div>
             </div>
 
+            {/* Idea Tables themes */}
+            <div className="mb-8">
+              <p className="text-black/40 text-xs uppercase tracking-widest mb-4">Tematikat e Idea Tables</p>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  'Ide të Reja Biznesi',
+                  'Gra me Ide',
+                  'Ide Kreative dhe Media',
+                  'Lifestyle dhe Wellbeing',
+                  'Edukim dhe Projekte Rinore',
+                  'Nga Ideja te Klienti i Parë',
+                ].map((t) => (
+                  <span
+                    key={t}
+                    className="inline-flex items-center bg-brand-gold/10 border border-brand-gold/25 text-brand-gold-dark text-xs font-semibold px-3 py-1.5 rounded-full"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Process steps */}
+            <div className="mb-8">
+              <p className="text-black/40 text-xs uppercase tracking-widest mb-4">Si Funksionon</p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {[
+                  { step: '1', label: 'Apliko', desc: 'Dërgo idenë tënde' },
+                  { step: '2', label: 'Përzgjedhja', desc: 'Zgjedhim pjesëmarrëset' },
+                  { step: '3', label: 'Idea Table', desc: 'Puno me ekspertë' },
+                  { step: '4', label: 'Feedback', desc: 'Hapat e ardhshëm' },
+                ].map((s) => (
+                  <div key={s.step} className="bg-brand-white rounded-2xl border border-black/8 p-4 text-center">
+                    <span className="font-serif text-brand-gold text-xl font-bold block mb-1">{s.step}</span>
+                    <p className="text-brand-black text-xs font-semibold">{s.label}</p>
+                    <p className="text-black/40 text-xs mt-0.5">{s.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <div className="bg-brand-black rounded-2xl p-6">
               <p className="text-brand-gold text-xs font-semibold uppercase tracking-widest mb-2">Kritere Bazë</p>
               <ul className="text-white/60 text-sm space-y-2">

@@ -7,35 +7,24 @@ import { Input, Select } from '@/components/ui/FormField'
 const PRICES = [
   {
     name: 'Early Bird',
-    price: '€149',
+    price: '€150',
     badge: null,
     features: [
-      'Hyrje në të gjitha sesionet',
+      'Hyrje në të dyja ditët',
+      'Keynotes dhe panele',
+      'Smart Talks',
       'Materiale konference',
-      'Networking Lunch',
-      'Certifikatë pjesëmarrjeje',
     ],
   },
   {
     name: 'Standard',
-    price: '€249',
+    price: '€175',
     badge: 'Më Popullor',
     features: [
-      'Gjithçka nga Early Bird',
-      'Workshop Ekskluziv VIP',
-      'Foto dhe Video personale',
-      'Darkë networking pas konferencës',
-    ],
-  },
-  {
-    name: 'Premium VIP',
-    price: '€499',
-    badge: 'Ekskluziv',
-    features: [
-      'Gjithçka nga Standard',
-      'Takimi 1:1 me Alketa Vejsiu',
-      'Ulëse rezervuar rreshti i parë',
-      'Akses backstage dhe speaker lounge',
+      'Hyrje në të dyja ditët',
+      'Keynotes, panele dhe Smart Talks',
+      'Grupet e diskutimit me ekspertë',
+      'Networking me pjesëmarrëset',
     ],
   },
 ]
@@ -67,7 +56,7 @@ export function ConferenceSection() {
         </div>
 
         {/* Price Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20 max-w-3xl mx-auto">
           {PRICES.map((tier, i) => (
             <div
               key={tier.name}
@@ -123,9 +112,8 @@ export function ConferenceSection() {
                 label="Paketa"
                 required
                 options={[
-                  { label: 'Early Bird - €149', value: 'early-bird' },
-                  { label: 'Standard - €249', value: 'standard' },
-                  { label: 'Premium VIP - €499', value: 'vip' },
+                  { label: 'Early Bird - €150', value: 'early-bird' },
+                  { label: 'Standard - €175', value: 'standard' },
                 ]}
               />
               <button

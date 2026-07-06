@@ -45,6 +45,11 @@ const OPPORTUNITIES = [
     title: 'Influencer Campaigns',
     desc: 'Curated influencer campaigns through the Class network. Authentic reach across Albania and the diaspora.',
   },
+  {
+    icon: Check,
+    title: 'Custom Packages and Budgets',
+    desc: 'Tailored partnership packages built around your goals and budget. Tell us what you need - we design the offer.',
+  },
 ]
 
 const INTEREST_OPTIONS = OPPORTUNITIES.map((o) => ({ label: o.title, value: o.title }))
