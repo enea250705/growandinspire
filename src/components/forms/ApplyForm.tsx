@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Input, Textarea } from '@/components/ui/FormField'
 import { Check, Briefcase, Mic2, Lightbulb } from 'lucide-react'
+import { submitApplication } from '@/lib/actions/forms'
 
 type TabType = 'job' | 'guest' | 'investment'
 
@@ -17,14 +18,47 @@ type SubmittedState = Partial<Record<TabType, boolean>>
 export function ApplyForm() {
   const [active, setActive] = useState<TabType>('job')
   const [submitted, setSubmitted] = useState<SubmittedState>({})
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const [job, setJob] = useState({ name: '', email: '', role: '', message: '' })
   const [guest, setGuest] = useState({ name: '', email: '', bio: '', reason: '', social: '' })
   const [invest, setInvest] = useState({ name: '', email: '', idea: '', sector: '', pitch: '' })
 
-  function submit() {
-    setSubmitted((s) => ({ ...s, [active]: true }))
-    /* TODO: POST to /api/apply */
+  async function submit() {
+    setLoading(true)
+    setError('')
+
+    let result
+    if (active === 'job') {
+      result = await submitApplication({
+        type: 'job',
+        name: job.name,
+        email: job.email,
+        payload: { role: job.role, message: job.message },
+      })
+    } else if (active === 'guest') {
+      result = await submitApplication({
+        type: 'guest',
+        name: guest.name,
+        email: guest.email,
+        payload: { bio: guest.bio, reason: guest.reason, social: guest.social },
+      })
+    } else {
+      result = await submitApplication({
+        type: 'investment',
+        name: invest.name,
+        email: invest.email,
+        payload: { idea: invest.idea, sector: invest.sector, pitch: invest.pitch },
+      })
+    }
+
+    setLoading(false)
+    if (result.ok) {
+      setSubmitted((s) => ({ ...s, [active]: true }))
+    } else {
+      setError('Ka ndodhur një problem. Ju lutem provoni sërish.')
+    }
   }
 
   const isSubmitted = submitted[active]
@@ -43,7 +77,7 @@ export function ApplyForm() {
                 : 'bg-brand-white border-black/8 text-brand-black hover:border-black/20'
             }`}
           >
-            <Icon size={18} className={active === id ? 'text-brand-gold mb-2' : 'text-brand-gold mb-2'} strokeWidth={1.5} />
+            <Icon size={18} className="text-brand-gold mb-2" strokeWidth={1.5} />
             <p className="font-semibold text-sm">{label}</p>
             <p className={`text-xs mt-0.5 ${active === id ? 'text-white/50' : 'text-black/40'}`}>{desc}</p>
           </button>
@@ -77,15 +111,14 @@ export function ApplyForm() {
                 <Textarea label="Cover message" required rows={5} value={job.message} onChange={(e) => setJob({ ...job, message: e.target.value })} placeholder="Tell us about yourself and why you want to work with Class..." />
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-medium text-brand-black">
-                    CV / Resume<span className="text-brand-gold ml-0.5">*</span>
+                    CV / Resume <span className="text-black/30 text-xs font-normal">(optional in this version)</span>
                   </label>
                   <input
                     type="file"
                     accept=".pdf,.doc,.docx"
-                    required
                     className="border border-black/15 rounded-lg px-4 py-2.5 text-sm bg-brand-white focus:outline-none focus:border-brand-gold transition-colors file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brand-gold/15 file:text-brand-gold-dark hover:file:bg-brand-gold/25 cursor-pointer"
                   />
-                  <p className="text-xs text-black/35">PDF, DOC, or DOCX · Max 5MB</p>
+                  <p className="text-xs text-black/35">PDF, DOC, or DOCX - Max 5MB</p>
                 </div>
               </div>
             )}
@@ -114,12 +147,15 @@ export function ApplyForm() {
               </div>
             )}
 
+            {error && <p className="mt-4 text-sm text-red-500">{error}</p>}
+
             <div className="mt-8 pt-6 border-t border-black/6 flex justify-end">
               <button
                 onClick={submit}
-                className="bg-brand-gold text-brand-black px-7 py-3 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"
+                disabled={loading}
+                className="bg-brand-gold text-brand-black px-7 py-3 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors disabled:opacity-50"
               >
-                Submit Application
+                {loading ? 'Duke dërguar...' : 'Submit Application'}
               </button>
             </div>
           </>

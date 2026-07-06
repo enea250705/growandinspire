@@ -3,13 +3,36 @@
 import { useState } from 'react'
 import { Lightbulb, TrendingUp } from 'lucide-react'
 import { Input, Textarea, Select } from '@/components/ui/FormField'
+import { submitApplication } from '@/lib/actions/forms'
 
 export function AngelInvestorSection() {
+  const [form, setForm] = useState({ name: '', email: '', phone: '', project: '', phase: '', description: '' })
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  function handleSubmit(e: React.FormEvent) {
+  function set(field: string, value: string) {
+    setForm((f) => ({ ...f, [field]: value }))
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setSubmitted(true)
+    setLoading(true)
+    setError('')
+    const result = await submitApplication({
+      type: 'investment',
+      name: form.name,
+      email: form.email,
+      payload: {
+        phone: form.phone,
+        project: form.project,
+        phase: form.phase,
+        description: form.description,
+      },
+    })
+    setLoading(false)
+    if (result.ok) setSubmitted(true)
+    else setError('Ka ndodhur një problem. Ju lutem provoni sërish.')
   }
 
   return (
@@ -120,10 +143,10 @@ export function AngelInvestorSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <Input label="Emri dhe Mbiemri" required placeholder="Emri juaj i plotë" />
-                <Input label="Email" type="email" required placeholder="email@juaj.com" />
-                <Input label="Numri i Telefonit" type="tel" placeholder="+355 6X XXX XXXX" />
-                <Input label="Emri i Projektit / Startup" required placeholder="Emri i idesë suaj" />
+                <Input label="Emri dhe Mbiemri" required placeholder="Emri juaj i plotë" value={form.name} onChange={(e) => set('name', e.target.value)} />
+                <Input label="Email" type="email" required placeholder="email@juaj.com" value={form.email} onChange={(e) => set('email', e.target.value)} />
+                <Input label="Numri i Telefonit" type="tel" placeholder="+355 6X XXX XXXX" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
+                <Input label="Emri i Projektit / Startup" required placeholder="Emri i idesë suaj" value={form.project} onChange={(e) => set('project', e.target.value)} />
                 <Select
                   label="Faza e Projektit"
                   required
@@ -133,18 +156,24 @@ export function AngelInvestorSection() {
                     { label: 'Biznes aktiv (nën 1 vit)', value: 'early' },
                     { label: 'Biznes në rritje (1+ vit)', value: 'growth' },
                   ]}
+                  value={form.phase}
+                  onChange={(e) => set('phase', e.target.value)}
                 />
                 <Textarea
                   label="Përshkruaj idenë tënde"
                   required
                   placeholder="Çfarë problem zgjidh? Kush është tregu? Pse tani?..."
                   rows={4}
+                  value={form.description}
+                  onChange={(e) => set('description', e.target.value)}
                 />
+                {error && <p className="text-sm text-red-500">{error}</p>}
                 <button
                   type="submit"
-                  className="w-full bg-brand-black text-brand-white py-3.5 rounded-full text-sm font-semibold hover:bg-brand-dark transition-colors"
+                  disabled={loading}
+                  className="w-full bg-brand-black text-brand-white py-3.5 rounded-full text-sm font-semibold hover:bg-brand-dark transition-colors disabled:opacity-50"
                 >
-                  Dërgo Aplikimin
+                  {loading ? 'Duke dërguar...' : 'Dërgo Aplikimin'}
                 </button>
               </form>
             )}

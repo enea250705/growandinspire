@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Check, Users } from 'lucide-react'
 import { Input, Select } from '@/components/ui/FormField'
+import { submitEventRegistration } from '@/lib/actions/forms'
 
 const PRICES = [
   {
@@ -30,11 +31,28 @@ const PRICES = [
 ]
 
 export function ConferenceSection() {
+  const [form, setForm] = useState({ name: '', email: '', phone: '', package: '' })
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  function handleSubmit(e: React.FormEvent) {
+  function set(field: string, value: string) {
+    setForm((f) => ({ ...f, [field]: value }))
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setSubmitted(true)
+    setLoading(true)
+    setError('')
+    const result = await submitEventRegistration({
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      notes: form.package,
+    })
+    setLoading(false)
+    if (result.ok) setSubmitted(true)
+    else setError('Ka ndodhur një problem. Ju lutem provoni sërish.')
   }
 
   return (
@@ -105,9 +123,9 @@ export function ConferenceSection() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
-              <Input label="Emri dhe Mbiemri" required placeholder="Emri juaj i plotë" />
-              <Input label="Email" type="email" required placeholder="email@juaj.com" />
-              <Input label="Numri i Telefonit" type="tel" placeholder="+355 6X XXX XXXX" />
+              <Input label="Emri dhe Mbiemri" required placeholder="Emri juaj i plotë" value={form.name} onChange={(e) => set('name', e.target.value)} />
+              <Input label="Email" type="email" required placeholder="email@juaj.com" value={form.email} onChange={(e) => set('email', e.target.value)} />
+              <Input label="Numri i Telefonit" type="tel" placeholder="+355 6X XXX XXXX" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
               <Select
                 label="Paketa"
                 required
@@ -115,12 +133,16 @@ export function ConferenceSection() {
                   { label: 'Early Bird - €150', value: 'early-bird' },
                   { label: 'Standard - €175', value: 'standard' },
                 ]}
+                value={form.package}
+                onChange={(e) => set('package', e.target.value)}
               />
+              {error && <p className="text-sm text-red-500">{error}</p>}
               <button
                 type="submit"
-                className="w-full bg-brand-black text-brand-white py-3.5 rounded-full text-sm font-semibold hover:bg-brand-dark transition-colors"
+                disabled={loading}
+                className="w-full bg-brand-black text-brand-white py-3.5 rounded-full text-sm font-semibold hover:bg-brand-dark transition-colors disabled:opacity-50"
               >
-                Konfirmo Regjistrimin
+                {loading ? 'Duke dërguar...' : 'Konfirmo Regjistrimin'}
               </button>
             </form>
           )}

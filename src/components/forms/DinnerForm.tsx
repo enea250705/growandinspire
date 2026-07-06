@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Input, Textarea } from '@/components/ui/FormField'
 import { Check } from 'lucide-react'
+import { submitDinnerApplication } from '@/lib/actions/forms'
 
 interface FormData {
   fullName: string
@@ -20,14 +21,31 @@ const EMPTY: FormData = {
 export function DinnerForm() {
   const [form, setForm] = useState<FormData>(EMPTY)
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   function set(field: keyof FormData, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }))
   }
 
-  function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault()
-    setSubmitted(true) /* TODO: POST to /api/dinner */
+    setLoading(true)
+    setError('')
+    const result = await submitDinnerApplication({
+      name: form.fullName,
+      email: form.email,
+      phone: form.phone,
+      profession: form.profession,
+      reason: form.reason,
+      social_link: form.social,
+    })
+    setLoading(false)
+    if (result.ok) {
+      setSubmitted(true)
+    } else {
+      setError('Ka ndodhur një problem. Ju lutem provoni sërish.')
+    }
   }
 
   if (submitted) {
@@ -38,7 +56,7 @@ export function DinnerForm() {
         </div>
         <h3 className="font-serif text-2xl font-bold text-brand-black mb-3">Application Submitted</h3>
         <p className="text-black/50 max-w-sm mx-auto">
-          We review every application carefully. You&apos;ll hear from us within 5–7 business days.
+          We review every application carefully. You&apos;ll hear from us within 5-7 business days.
         </p>
       </div>
     )
@@ -69,12 +87,15 @@ export function DinnerForm() {
           </div>
         </div>
 
+        {error && <p className="mt-4 text-sm text-red-500">{error}</p>}
+
         <div className="flex justify-end mt-8 pt-6 border-t border-black/6">
           <button
             type="submit"
-            className="bg-brand-gold text-brand-black px-7 py-3 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"
+            disabled={loading}
+            className="bg-brand-gold text-brand-black px-7 py-3 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors disabled:opacity-50"
           >
-            Submit Application
+            {loading ? 'Duke dërguar...' : 'Submit Application'}
           </button>
         </div>
       </form>

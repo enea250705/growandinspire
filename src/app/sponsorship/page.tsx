@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Input, Textarea, Select } from '@/components/ui/FormField'
+import { submitSponsorshipLead } from '@/lib/actions/forms'
 import { Check, Megaphone, Mic2, Users, BookOpen, Building2, Sparkles, TrendingUp, Globe } from 'lucide-react'
 
 const OPPORTUNITIES = [
@@ -60,15 +61,29 @@ export default function SponsorshipPage() {
     interest: '', budget: '', message: '',
   })
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   function set(field: string, value: string) {
     setForm((f) => ({ ...f, [field]: value }))
   }
 
-  function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault()
-    setSubmitted(true)
-    /* TODO: POST to /api/sponsorship */
+    setLoading(true)
+    setError('')
+    const result = await submitSponsorshipLead({
+      company_name: form.company,
+      contact_name: form.contact,
+      email: form.email,
+      phone: form.phone,
+      interest_area: form.interest,
+      budget: form.budget,
+      message: form.message,
+    })
+    setLoading(false)
+    if (result.ok) setSubmitted(true)
+    else setError('Ka ndodhur një problem. Ju lutem provoni sërish.')
   }
 
   return (
@@ -154,9 +169,10 @@ export default function SponsorshipPage() {
                 onChange={(e) => set('budget', e.target.value)}
               />
               <Textarea label="Message" required rows={4} value={form.message} onChange={(e) => set('message', e.target.value)} placeholder="Tell us about your goals and what you are looking to achieve..." />
+              {error && <p className="text-sm text-red-500">{error}</p>}
               <div className="pt-4 border-t border-black/6 flex justify-end">
-                <button type="submit" className="bg-brand-gold text-brand-black px-7 py-3 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors">
-                  Send Inquiry
+                <button type="submit" disabled={loading} className="bg-brand-gold text-brand-black px-7 py-3 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors disabled:opacity-50">
+                  {loading ? 'Duke dërguar...' : 'Send Inquiry'}
                 </button>
               </div>
             </form>

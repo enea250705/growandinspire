@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Mountain, Brain, TrendingUp, Heart, Users, Compass } from 'lucide-react'
 import { Input, Textarea, Select } from '@/components/ui/FormField'
+import { submitEventRegistration } from '@/lib/actions/forms'
 
 const THEMES = [
   { icon: TrendingUp, label: 'Lidership dhe Biznes', desc: 'Qartësi strategjike, vendimmarrje, founder energy.' },
@@ -14,17 +15,34 @@ const THEMES = [
 ]
 
 const FORMATS = [
-  { name: 'Retreat Njëditor', hours: '8–10 orë', spots: 'deri 20 vende', desc: 'Zhytje e thellë në një temë të vetme. Ideal për rikalibrim dhe qartësi.' },
+  { name: 'Retreat Njëditor', hours: '8-10 orë', spots: 'deri 20 vende', desc: 'Zhytje e thellë në një temë të vetme. Ideal për rikalibrim dhe qartësi.' },
   { name: 'Retreat Dyditor', hours: '2 ditë / 1 natë', spots: 'deri 15 vende', desc: 'Eksperiencë transformuese - reflektim, coaching, mindfulness dhe hapa konkretë.' },
   { name: 'Retreat Tematik', hours: 'Format i personalizuar', spots: 'deri 12 vende', desc: 'Fokus i posaçëm. Kuruar tërësisht sipas nevojave të grupit ose organizatës.' },
 ]
 
 export function RetreatSection() {
+  const [form, setForm] = useState({ name: '', email: '', phone: '', format: '', theme: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  function handleSubmit(e: React.FormEvent) {
+  function set(field: string, value: string) {
+    setForm((f) => ({ ...f, [field]: value }))
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setSubmitted(true)
+    setLoading(true)
+    setError('')
+    const result = await submitEventRegistration({
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      notes: `format:${form.format} theme:${form.theme} message:${form.message}`,
+    })
+    setLoading(false)
+    if (result.ok) setSubmitted(true)
+    else setError('Ka ndodhur një problem. Ju lutem provoni sërish.')
   }
 
   return (
@@ -97,7 +115,7 @@ export function RetreatSection() {
             ))}
           </div>
           <p className="text-white/40 text-sm mt-4">
-            Çdo retreat udhëhiqet nga 1–3 ekspertë të zgjedhur sipas temës, me ekip të kuruar nga Alketa Vejsiu.
+            Çdo retreat udhëhiqet nga 1-3 ekspertë të zgjedhur sipas temës, me ekip të kuruar nga Alketa Vejsiu.
           </p>
         </div>
 
@@ -124,7 +142,7 @@ export function RetreatSection() {
 
             <div className="grid grid-cols-3 gap-4 mt-10">
               {[
-                { num: '12–20', label: 'Vende / Retreat' },
+                { num: '12-20', label: 'Vende / Retreat' },
                 { num: '360°', label: 'Zhvillim Holistik' },
                 { num: '100%', label: 'Eksperiencë Premium' },
               ].map((s) => (
@@ -151,9 +169,9 @@ export function RetreatSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <Input dark label="Emri dhe Mbiemri" required placeholder="Emri juaj i plotë" />
-                <Input dark label="Email" type="email" required placeholder="email@juaj.com" />
-                <Input dark label="Numri i Telefonit" type="tel" placeholder="+355 6X XXX XXXX" />
+                <Input dark label="Emri dhe Mbiemri" required placeholder="Emri juaj i plotë" value={form.name} onChange={(e) => set('name', e.target.value)} />
+                <Input dark label="Email" type="email" required placeholder="email@juaj.com" value={form.email} onChange={(e) => set('email', e.target.value)} />
+                <Input dark label="Numri i Telefonit" type="tel" placeholder="+355 6X XXX XXXX" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
                 <Select
                   dark
                   label="Formati që ju intereson"
@@ -163,6 +181,8 @@ export function RetreatSection() {
                     { label: 'Retreat Dyditor', value: '2-day' },
                     { label: 'Retreat Tematik / Korporativ', value: 'thematic' },
                   ]}
+                  value={form.format}
+                  onChange={(e) => set('format', e.target.value)}
                 />
                 <Select
                   dark
@@ -175,18 +195,24 @@ export function RetreatSection() {
                     { label: 'Transition Moments', value: 'transition' },
                     { label: 'Retreat Korporativ', value: 'corporate' },
                   ]}
+                  value={form.theme}
+                  onChange={(e) => set('theme', e.target.value)}
                 />
                 <Textarea
                   dark
                   label="Çfarë kërkoni nga ky retreat?"
                   placeholder="Ndani shkurtimisht ku ndodheni dhe çfarë dëshironi të arrini..."
                   rows={3}
+                  value={form.message}
+                  onChange={(e) => set('message', e.target.value)}
                 />
+                {error && <p className="text-sm text-red-400">{error}</p>}
                 <button
                   type="submit"
-                  className="w-full bg-brand-gold text-brand-black py-3.5 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"
+                  disabled={loading}
+                  className="w-full bg-brand-gold text-brand-black py-3.5 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors disabled:opacity-50"
                 >
-                  Regjistrohu për Interest List
+                  {loading ? 'Duke dërguar...' : 'Regjistrohu për Interest List'}
                 </button>
               </form>
             )}

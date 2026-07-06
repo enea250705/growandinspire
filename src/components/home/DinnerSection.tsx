@@ -3,13 +3,32 @@
 import { useState } from 'react'
 import { UtensilsCrossed } from 'lucide-react'
 import { Input, Textarea } from '@/components/ui/FormField'
+import { submitDinnerApplication } from '@/lib/actions/forms'
 
 export function DinnerSection() {
+  const [form, setForm] = useState({ name: '', email: '', phone: '', profession: '', reason: '' })
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  function handleSubmit(e: React.FormEvent) {
+  function set(field: string, value: string) {
+    setForm((f) => ({ ...f, [field]: value }))
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setSubmitted(true)
+    setLoading(true)
+    setError('')
+    const result = await submitDinnerApplication({
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      profession: form.profession,
+      reason: form.reason,
+    })
+    setLoading(false)
+    if (result.ok) setSubmitted(true)
+    else setError('Ka ndodhur një problem. Ju lutem provoni sërish.')
   }
 
   return (
@@ -63,21 +82,25 @@ export function DinnerSection() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <Input label="Emri dhe Mbiemri" required placeholder="Emri juaj i plotë" />
-                <Input label="Email" type="email" required placeholder="email@juaj.com" />
-                <Input label="Numri i Telefonit" type="tel" placeholder="+355 6X XXX XXXX" />
-                <Input label="Profesioni / Fusha" placeholder="p.sh. Sipërmarrëse, CEO, Konsulente..." />
+                <Input label="Emri dhe Mbiemri" required placeholder="Emri juaj i plotë" value={form.name} onChange={(e) => set('name', e.target.value)} />
+                <Input label="Email" type="email" required placeholder="email@juaj.com" value={form.email} onChange={(e) => set('email', e.target.value)} />
+                <Input label="Numri i Telefonit" type="tel" placeholder="+355 6X XXX XXXX" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
+                <Input label="Profesioni / Fusha" placeholder="p.sh. Sipërmarrëse, CEO, Konsulente..." value={form.profession} onChange={(e) => set('profession', e.target.value)} />
                 <Textarea
                   label="Pse dëshiron të jesh pjesë?"
                   required
                   placeholder="Ndaj pak nga historia dhe motivimi yt..."
                   rows={4}
+                  value={form.reason}
+                  onChange={(e) => set('reason', e.target.value)}
                 />
+                {error && <p className="text-sm text-red-500">{error}</p>}
                 <button
                   type="submit"
-                  className="w-full bg-brand-black text-brand-white py-3.5 rounded-full text-sm font-semibold hover:bg-brand-dark transition-colors"
+                  disabled={loading}
+                  className="w-full bg-brand-black text-brand-white py-3.5 rounded-full text-sm font-semibold hover:bg-brand-dark transition-colors disabled:opacity-50"
                 >
-                  Dërgo Aplikimin
+                  {loading ? 'Duke dërguar...' : 'Dërgo Aplikimin'}
                 </button>
               </form>
             )}
