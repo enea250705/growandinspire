@@ -3,7 +3,7 @@
 -- (that account must have signed up first).
 
 insert into admins (user_id)
-select id from auth.users where email = 'growandinspir4e@admin.com'
+select id from auth.users where email = 'growandinspire@admin.com'
 on conflict (user_id) do nothing;
 
 -- Verify:
