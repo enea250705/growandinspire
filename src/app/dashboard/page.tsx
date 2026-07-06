@@ -2,25 +2,41 @@ import Link from 'next/link'
 import { BookOpen, Calendar, Download, Users, Lock, ChevronRight } from 'lucide-react'
 import { MOCK_CONTENT, CATEGORY_META, slugify } from '@/lib/mock-content'
 import { createClient } from '@/lib/supabase/server'
+import { getMembership, tierLabel } from '@/lib/membership'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   const name = user?.user_metadata?.full_name ?? user?.email?.split('@')[0] ?? 'Member'
-  return <DashboardContent name={name} />
-}
+  const email = user?.email ?? ''
 
-const MOCK_STATS = [
-  { label: 'My Membership', value: 'Premium', icon: Users, href: '/dashboard/membership' },
-  { label: 'Saved Content', value: '4 items', icon: BookOpen, href: '/dashboard/saved' },
-  { label: 'My Downloads', value: '2 guides', icon: Download, href: '/dashboard/downloads' },
-  { label: 'Upcoming Events', value: '1 event', icon: Calendar, href: '/dashboard/events' },
-]
+  const membership = await getMembership()
+  const { count: eventCount } = await supabase
+    .from('event_registrations')
+    .select('id', { count: 'exact', head: true })
+    .eq('email', email)
+
+  const stats = [
+    { label: 'My Membership', value: membership ? tierLabel(membership.tier) : 'Free', icon: Users, href: '/dashboard/membership' },
+    { label: 'Saved Content', value: '-', icon: BookOpen, href: '/dashboard/saved' },
+    { label: 'My Downloads', value: '-', icon: Download, href: '/dashboard/downloads' },
+    { label: 'Upcoming Events', value: `${eventCount ?? 0}`, icon: Calendar, href: '/dashboard/events' },
+  ]
+
+  return <DashboardContent name={name} stats={stats} />
+}
 
 const recentContent = MOCK_CONTENT.filter((c) => !c.is_premium).slice(0, 4)
 const exclusiveContent = MOCK_CONTENT.filter((c) => c.is_premium).slice(0, 4)
 
-function DashboardContent({ name }: { name: string }) {
+interface Stat {
+  label: string
+  value: string
+  icon: typeof Users
+  href: string
+}
+
+function DashboardContent({ name, stats }: { name: string; stats: Stat[] }) {
   return (
     <>
       <div className="mb-8">
@@ -31,7 +47,7 @@ function DashboardContent({ name }: { name: string }) {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-        {MOCK_STATS.map(({ label, value, icon: Icon, href }) => (
+        {stats.map(({ label, value, icon: Icon, href }) => (
           <Link key={label} href={href} className="bg-brand-white rounded-2xl border border-black/8 p-5 hover:border-brand-gold/30 transition-colors">
             <Icon size={16} className="text-brand-gold mb-3" strokeWidth={1.5} />
             <p className="text-xs text-black/40 uppercase tracking-widest mb-1">{label}</p>

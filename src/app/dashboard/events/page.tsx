@@ -1,55 +1,44 @@
 import Link from 'next/link'
-import { Calendar, MapPin, Clock, ChevronRight } from 'lucide-react'
+import { Calendar, ChevronRight, Ticket } from 'lucide-react'
+import { createClient } from '@/lib/supabase/server'
 
-const EVENTS = [
-  {
-    title: 'Grow and Inspire Business Conference',
-    date: '25–26 Prill, 2026',
-    location: 'Tirana International Hotel, Tiranë',
-    time: '09:00 – 18:00',
-    status: 'registered',
-    ticket: 'Standard - €249',
-    href: '/events',
-  },
-  {
-    title: 'Dinner with Alketa - Qershor',
-    date: '18 Qershor, 2026',
-    location: 'Restaurant Oda, Tiranë',
-    time: '19:30 – 22:00',
-    status: 'pending',
-    ticket: 'Invitation Only',
-    href: '/dinner-with-alketa',
-  },
-  {
-    title: 'Grow and Inspire Retreat 2026',
-    date: 'Shtator, 2026',
-    location: 'TBA - Shpallet pas konfirmimit',
-    time: '2 ditë / 1 natë',
-    status: 'interested',
-    ticket: 'Interest List',
-    href: '/',
-  },
-]
-
-const STATUS_STYLE = {
-  registered: 'bg-green-50 text-green-700 border-green-200',
+const STATUS_STYLE: Record<string, string> = {
+  confirmed: 'bg-green-50 text-green-700 border-green-200',
+  paid: 'bg-green-50 text-green-700 border-green-200',
   pending: 'bg-amber-50 text-amber-600 border-amber-200',
-  interested: 'bg-brand-gold/10 text-brand-gold border-brand-gold/20',
+  cancelled: 'bg-red-50 text-red-500 border-red-200',
 }
 
-const STATUS_LABEL = {
-  registered: 'I Regjistruar',
-  pending: 'Aplikim në pritje',
-  interested: 'Interest List',
+const STATUS_LABEL: Record<string, string> = {
+  confirmed: 'I Regjistruar',
+  paid: 'Paguar',
+  pending: 'Në pritje',
+  cancelled: 'Anuluar',
 }
 
-export default function DashboardEventsPage() {
+function fmt(iso: string): string {
+  return new Date(iso).toLocaleDateString('sq-AL', { day: 'numeric', month: 'long', year: 'numeric' })
+}
+
+export default async function DashboardEventsPage() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  const email = user?.email ?? ''
+
+  const { data } = await supabase
+    .from('event_registrations')
+    .select('id, name, status, created_at')
+    .eq('email', email)
+    .order('created_at', { ascending: false })
+
+  const regs = data ?? []
+
   return (
     <>
       <div className="mb-8 flex items-center justify-between gap-4">
         <div>
           <h1 className="font-serif text-3xl font-bold text-brand-black mb-1">Upcoming Events</h1>
-          <p className="text-black/50">Eventet e tua të ardhshme dhe statuset.</p>
+          <p className="text-black/50">Regjistrimet e tua në evente.</p>
         </div>
         <Link
           href="/events"
@@ -59,42 +48,36 @@ export default function DashboardEventsPage() {
         </Link>
       </div>
 
-      <div className="space-y-4">
-        {EVENTS.map((event) => (
-          <div key={event.title} className="bg-brand-white rounded-2xl border border-black/8 p-6">
-            <div className="flex items-start justify-between gap-4 flex-wrap mb-4">
-              <div>
-                <p className="font-semibold text-brand-black text-lg">{event.title}</p>
-                <p className="text-xs text-brand-gold font-medium mt-1">{event.ticket}</p>
+      {regs.length === 0 ? (
+        <div className="text-center py-20 bg-brand-white rounded-2xl border border-black/8">
+          <Ticket size={32} className="text-black/20 mx-auto mb-3" strokeWidth={1.5} />
+          <p className="text-black/40 mb-4">Nuk je regjistruar në asnjë event ende.</p>
+          <Link href="/events" className="text-brand-gold text-sm font-medium hover:underline">
+            Shfleto eventet →
+          </Link>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {regs.map((event) => (
+            <div key={event.id} className="bg-brand-white rounded-2xl border border-black/8 p-6">
+              <div className="flex items-start justify-between gap-4 flex-wrap">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-brand-gold/10 rounded-xl flex items-center justify-center shrink-0">
+                    <Calendar size={18} className="text-brand-gold" strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-brand-black">Regjistrim Eventi</p>
+                    <p className="text-xs text-black/40 mt-0.5">Regjistruar {fmt(event.created_at)}</p>
+                  </div>
+                </div>
+                <span className={`inline-flex items-center text-xs font-semibold px-3 py-1.5 rounded-full border ${STATUS_STYLE[event.status] ?? STATUS_STYLE.pending}`}>
+                  {STATUS_LABEL[event.status] ?? 'Në pritje'}
+                </span>
               </div>
-              <span className={`inline-flex items-center text-xs font-semibold px-3 py-1.5 rounded-full border ${STATUS_STYLE[event.status as keyof typeof STATUS_STYLE]}`}>
-                {STATUS_LABEL[event.status as keyof typeof STATUS_LABEL]}
-              </span>
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm text-black/50">
-              <div className="flex items-center gap-2">
-                <Calendar size={14} className="text-brand-gold shrink-0" strokeWidth={1.5} />
-                {event.date}
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock size={14} className="text-brand-gold shrink-0" strokeWidth={1.5} />
-                {event.time}
-              </div>
-              <div className="flex items-center gap-2">
-                <MapPin size={14} className="text-brand-gold shrink-0" strokeWidth={1.5} />
-                <span className="truncate">{event.location}</span>
-              </div>
-            </div>
-
-            <div className="mt-4 pt-4 border-t border-black/6 flex justify-end">
-              <Link href={event.href} className="text-xs text-brand-gold hover:underline font-medium">
-                Detaje →
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </>
   )
 }

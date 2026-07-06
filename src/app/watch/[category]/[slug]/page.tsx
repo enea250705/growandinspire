@@ -5,6 +5,8 @@ import { MOCK_CONTENT, CATEGORY_META, SLUG_TO_TYPE, slugify, formatDate, getCont
 import { VideoPlayer } from '@/components/watch/VideoPlayer'
 import { ContentCard } from '@/components/watch/ContentCard'
 import { PremiumBadge } from '@/components/ui/LockBadge'
+import { createClient } from '@/lib/supabase/server'
+import { isMember as checkMembership } from '@/lib/membership'
 
 interface Props {
   params: Promise<{ category: string; slug: string }>
@@ -26,9 +28,14 @@ export default async function EpisodePage({ params }: Props) {
   if (!item) notFound()
 
   const meta = CATEGORY_META[type]
-  // TODO: replace with real membership check from Supabase session
-  const isMember = false
+
+  // Server-side membership gate. Never render the player (or leak youtube_id)
+  // to a non-member when the item is premium.
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  const isMember = item.is_premium ? await checkMembership() : false
   const isLocked = item.is_premium && !isMember
+  const watermark = user?.email ?? 'Grow and Inspire · Member'
 
   const related = getContentByType(type)
     .filter((c) => c.id !== item.id)
@@ -76,8 +83,7 @@ export default async function EpisodePage({ params }: Props) {
           </div>
         ) : item.youtube_id ? (
           <div className="mb-8">
-            {/* TODO: replace watermark with the logged-in member's email once auth is wired */}
-            <VideoPlayer youtubeId={item.youtube_id} title={item.title} watermark="Grow and Inspire · Member" />
+            <VideoPlayer youtubeId={item.youtube_id} title={item.title} watermark={watermark} />
           </div>
         ) : null}
 

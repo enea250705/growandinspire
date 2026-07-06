@@ -3,6 +3,7 @@ import { Lock } from 'lucide-react'
 import Link from 'next/link'
 import { MOCK_CONTENT, CATEGORY_META, SLUG_TO_TYPE } from '@/lib/mock-content'
 import { ContentCard } from '@/components/watch/ContentCard'
+import { isMember as checkMembership } from '@/lib/membership'
 
 interface Props {
   params: Promise<{ category: string }>
@@ -21,6 +22,7 @@ export default async function CategoryPage({ params }: Props) {
   const meta = CATEGORY_META[type]
   const items = MOCK_CONTENT.filter((c) => c.type === type)
   const isExclusive = type === 'exclusive'
+  const member = await checkMembership()
 
   return (
     <div className="pt-16 lg:pt-24 min-h-screen bg-brand-cream">
@@ -59,7 +61,7 @@ export default async function CategoryPage({ params }: Props) {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {items.map((item) => (
-                <ContentCard key={item.id} item={item} isMember={false} />
+                <ContentCard key={item.id} item={item} isMember={member} />
               ))}
             </div>
           </div>
@@ -68,7 +70,7 @@ export default async function CategoryPage({ params }: Props) {
             <p className="text-black/40 text-sm mb-8">{items.length} episodes</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {items.map((item) => (
-                <ContentCard key={item.id} item={item} isMember={false} />
+                <ContentCard key={item.id} item={item} isMember={member} />
               ))}
             </div>
           </div>

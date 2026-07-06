@@ -60,7 +60,12 @@ Wire via Next.js server actions (never expose service key client-side):
 
 ---
 
-## Phase B4 - Stripe Payments (~1-2 days)
+## Phase B4 - Stripe Payments (~1-2 days) - DEFERRED TO LAST
+
+**Moved to the end of the roadmap per client decision (2026-07-06).** All
+other phases proceed without it. Until B4 runs, `memberships` rows are created
+manually (service-role insert or admin panel B7); B5 gating reads the table
+regardless of who wrote the row.
 
 **Goal:** money flows. Test mode first, live keys only at deploy.
 
@@ -145,14 +150,17 @@ Spec explicitly says do not block on this - DB saves are enough until here.
 
 ## Progress
 
+Execution order (revised 2026-07-06): B1 → B2 → B3 → B5 → B6 → B7 → B8 → B4 → B9.
+Stripe (B4) deferred to just before deploy.
+
 | Phase | Status | Date |
 |-------|--------|------|
-| B1 Supabase Foundation | not started | |
-| B2 Forms Save | not started | |
-| B3 Auth | not started | |
-| B4 Stripe | not started | |
-| B5 Premium Gating | not started | |
+| B1 Supabase Foundation | done | 2026-07-06 |
+| B2 Forms Save | done | 2026-07-06 |
+| B3 Auth | done (needs live login test + disable email-confirm) | 2026-07-06 |
+| B5 Premium Gating | done (member + non-member paths verified) | 2026-07-06 |
 | B6 Content From DB | not started | |
 | B7 Admin Panel | not started | |
 | B8 Email | not started | |
+| B4 Stripe | deferred (second to last) | |
 | B9 Deploy | not started | |
