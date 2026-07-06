@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Input, Textarea } from '@/components/ui/FormField'
 import { Check, Briefcase, Mic2, Lightbulb } from 'lucide-react'
 import { submitApplication } from '@/lib/actions/forms'
+import { createClient } from '@/lib/supabase/client'
 
 type TabType = 'job' | 'guest' | 'investment'
 
@@ -24,6 +25,7 @@ export function ApplyForm() {
   const [job, setJob] = useState({ name: '', email: '', role: '', message: '' })
   const [guest, setGuest] = useState({ name: '', email: '', bio: '', reason: '', social: '' })
   const [invest, setInvest] = useState({ name: '', email: '', idea: '', sector: '', pitch: '' })
+  const [cvFile, setCvFile] = useState<File | null>(null)
 
   async function submit() {
     setLoading(true)
@@ -31,11 +33,25 @@ export function ApplyForm() {
 
     let result
     if (active === 'job') {
+      // Upload CV to the private 'cvs' bucket first (if provided).
+      let cvPath = ''
+      if (cvFile) {
+        const supabase = createClient()
+        const ext = cvFile.name.split('.').pop() ?? 'pdf'
+        const path = `${crypto.randomUUID()}.${ext}`
+        const { error: upErr } = await supabase.storage.from('cvs').upload(path, cvFile)
+        if (upErr) {
+          setLoading(false)
+          setError('Ngarkimi i CV-së dështoi. Provo sërish ose hiq skedarin.')
+          return
+        }
+        cvPath = path
+      }
       result = await submitApplication({
         type: 'job',
         name: job.name,
         email: job.email,
-        payload: { role: job.role, message: job.message },
+        payload: { role: job.role, message: job.message, cv_path: cvPath },
       })
     } else if (active === 'guest') {
       result = await submitApplication({
@@ -111,11 +127,12 @@ export function ApplyForm() {
                 <Textarea label="Cover message" required rows={5} value={job.message} onChange={(e) => setJob({ ...job, message: e.target.value })} placeholder="Tell us about yourself and why you want to work with Class..." />
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-medium text-brand-black">
-                    CV / Resume <span className="text-black/30 text-xs font-normal">(optional in this version)</span>
+                    CV / Resume <span className="text-black/30 text-xs font-normal">(optional)</span>
                   </label>
                   <input
                     type="file"
                     accept=".pdf,.doc,.docx"
+                    onChange={(e) => setCvFile(e.target.files?.[0] ?? null)}
                     className="border border-black/15 rounded-lg px-4 py-2.5 text-sm bg-brand-white focus:outline-none focus:border-brand-gold transition-colors file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brand-gold/15 file:text-brand-gold-dark hover:file:bg-brand-gold/25 cursor-pointer"
                   />
                   <p className="text-xs text-black/35">PDF, DOC, or DOCX - Max 5MB</p>

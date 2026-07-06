@@ -1,6 +1,9 @@
 import Link from 'next/link'
 import { Calendar, Users, Clock, MapPin } from 'lucide-react'
 import { DownloadProgram } from '@/components/coaching/DownloadProgram'
+import { getSettings } from '@/lib/settings'
+
+export const revalidate = 60
 
 const DAY1 = [
   'Opening keynote - Alketa Vejsiu',
@@ -21,7 +24,8 @@ const DAY2 = [
   'Closing ceremony and awards',
 ]
 
-export default function CoachingPage() {
+export default async function CoachingPage() {
+  const s = await getSettings()
   return (
     <div className="pt-16 lg:pt-24 min-h-screen bg-brand-cream">
       {/* Header */}
@@ -56,11 +60,11 @@ export default function CoachingPage() {
               <div className="flex flex-col gap-3 mb-8">
                 <div className="flex items-center gap-3 text-sm text-black/60">
                   <Calendar size={16} className="text-brand-gold shrink-0" />
-                  <span>April 25–26, 2026</span>
+                  <span>{s.conference_dates}</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-black/60">
                   <MapPin size={16} className="text-brand-gold shrink-0" />
-                  <span>Tirana, Albania - venue TBC</span>
+                  <span>{s.conference_location}</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-black/60">
                   <Clock size={16} className="text-brand-gold shrink-0" />
@@ -73,8 +77,8 @@ export default function CoachingPage() {
               </div>
 
               <div className="flex items-center gap-3 mb-8">
-                <span className="font-serif text-4xl font-bold text-brand-black">€150</span>
-                <span className="text-black/40">– €175</span>
+                <span className="font-serif text-4xl font-bold text-brand-black">€{s.conference_price_early}</span>
+                <span className="text-black/40">– €{s.conference_price_standard}</span>
                 <span className="text-black/40 text-sm">per person</span>
               </div>
 

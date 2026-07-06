@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, FileText, Megaphone, Calendar, Film, Users, Mail, ShieldCheck } from 'lucide-react'
+import { LayoutDashboard, FileText, Megaphone, Calendar, Film, Users, Mail, ShieldCheck, Settings, UserCog } from 'lucide-react'
 import { signOut } from '@/lib/actions/auth'
 
 const NAV = [
@@ -13,6 +13,8 @@ const NAV = [
   { label: 'Content', href: '/admin/content', icon: Film },
   { label: 'Members', href: '/admin/members', icon: Users },
   { label: 'Subscribers', href: '/admin/subscribers', icon: Mail },
+  { label: 'Site Settings', href: '/admin/settings', icon: Settings },
+  { label: 'Admins', href: '/admin/admins', icon: UserCog },
 ]
 
 export function AdminSidebar({ email }: { email: string }) {

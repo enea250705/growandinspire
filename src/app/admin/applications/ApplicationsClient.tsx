@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { Check, X, Clock, Mail, ChevronDown } from 'lucide-react'
-import { setDinnerStatus, setApplicationStatus } from '@/lib/actions/admin'
+import { Check, X, Clock, Mail, ChevronDown, Download } from 'lucide-react'
+import { setDinnerStatus, setApplicationStatus, getCvUrl } from '@/lib/actions/admin'
 
 export interface AdminApplication {
   id: string
@@ -43,6 +43,12 @@ export function ApplicationsClient({ items }: { items: AdminApplication[] }) {
         setRows((prev) => prev.map((r) => (r.id === item.id ? { ...r, status } : r)))
       }
     })
+  }
+
+  async function downloadCv(path: string) {
+    const res = await getCvUrl(path)
+    if (res.ok) window.open(res.url, '_blank')
+    else alert('CV nuk u gjet.')
   }
 
   return (
@@ -113,13 +119,23 @@ export function ApplicationsClient({ items }: { items: AdminApplication[] }) {
               {open === item.id && (
                 <div className="px-5 pb-5 pt-1 border-t border-black/6 bg-brand-cream/40">
                   <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-                    {Object.entries(item.details).map(([k, v]) => (
-                      <div key={k}>
-                        <dt className="text-[10px] uppercase tracking-widest text-black/40">{k}</dt>
-                        <dd className="text-sm text-black/70 break-words">{v || '-'}</dd>
-                      </div>
-                    ))}
+                    {Object.entries(item.details)
+                      .filter(([k]) => k !== 'cv_path')
+                      .map(([k, v]) => (
+                        <div key={k}>
+                          <dt className="text-[10px] uppercase tracking-widest text-black/40">{k}</dt>
+                          <dd className="text-sm text-black/70 break-words">{v || '-'}</dd>
+                        </div>
+                      ))}
                   </dl>
+                  {item.details.cv_path && (
+                    <button
+                      onClick={() => downloadCv(item.details.cv_path as string)}
+                      className="mt-4 inline-flex items-center gap-2 bg-brand-black text-brand-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-brand-dark transition-colors"
+                    >
+                      <Download size={13} /> Shkarko CV
+                    </button>
+                  )}
                 </div>
               )}
             </div>

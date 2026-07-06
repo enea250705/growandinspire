@@ -38,6 +38,13 @@ drop policy if exists "public reads settings" on site_settings;
 create policy "public reads settings" on site_settings
   for select using (true);
 
+-- ---- CV uploads: anon may INSERT into the private 'cvs' bucket only --------
+-- No SELECT/LIST for anon (CVs are private). Admin downloads via service role.
+drop policy if exists "anon upload cvs" on storage.objects;
+create policy "anon upload cvs" on storage.objects
+  for insert to anon, authenticated
+  with check (bucket_id = 'cvs');
+
 -- ---- Grant yourself admin (edit the email; you must have signed up) --------
 insert into admins (user_id)
 select id from auth.users where email = 'growandinspire@admin.com'

@@ -5,32 +5,37 @@ import { Check, Users } from 'lucide-react'
 import { Input, Select } from '@/components/ui/FormField'
 import { submitEventRegistration } from '@/lib/actions/forms'
 
-const PRICES = [
-  {
-    name: 'Early Bird',
-    price: '€150',
-    badge: null,
-    features: [
-      'Hyrje në të dyja ditët',
-      'Keynotes dhe panele',
-      'Smart Talks',
-      'Materiale konference',
-    ],
-  },
-  {
-    name: 'Standard',
-    price: '€175',
-    badge: 'Më Popullor',
-    features: [
-      'Hyrje në të dyja ditët',
-      'Keynotes, panele dhe Smart Talks',
-      'Grupet e diskutimit me ekspertë',
-      'Networking me pjesëmarrëset',
-    ],
-  },
-]
+interface ConferenceSectionProps {
+  priceEarly?: string
+  priceStandard?: string
+}
 
-export function ConferenceSection() {
+export function ConferenceSection({ priceEarly = '150', priceStandard = '175' }: ConferenceSectionProps) {
+  const PRICES = [
+    {
+      name: 'Early Bird',
+      price: `€${priceEarly}`,
+      badge: null,
+      features: [
+        'Hyrje në të dyja ditët',
+        'Keynotes dhe panele',
+        'Smart Talks',
+        'Materiale konference',
+      ],
+    },
+    {
+      name: 'Standard',
+      price: `€${priceStandard}`,
+      badge: 'Më Popullor',
+      features: [
+        'Hyrje në të dyja ditët',
+        'Keynotes, panele dhe Smart Talks',
+        'Grupet e diskutimit me ekspertë',
+        'Networking me pjesëmarrëset',
+      ],
+    },
+  ]
+
   const [form, setForm] = useState({ name: '', email: '', phone: '', package: '' })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -130,8 +135,8 @@ export function ConferenceSection() {
                 label="Paketa"
                 required
                 options={[
-                  { label: 'Early Bird - €150', value: 'early-bird' },
-                  { label: 'Standard - €175', value: 'standard' },
+                  { label: `Early Bird - €${priceEarly}`, value: 'early-bird' },
+                  { label: `Standard - €${priceStandard}`, value: 'standard' },
                 ]}
                 value={form.package}
                 onChange={(e) => set('package', e.target.value)}
