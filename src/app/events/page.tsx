@@ -165,6 +165,38 @@ export default function EventsPage() {
             </div>
           ))}
         </div>
+
+        {/* Class Events collaboration */}
+        <div className="mt-16 bg-brand-black rounded-2xl p-10 lg:p-14">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            <div>
+              <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-4">In Collaboration with Class Events</p>
+              <h2 className="font-serif text-3xl lg:text-4xl font-bold text-brand-white mb-4">
+                Event Organization and Decoration
+              </h2>
+              <p className="text-white/60 leading-relaxed">
+                Every Grow and Inspire event is produced together with Class Events - the team behind Albania&apos;s most refined corporate experiences. From full event organization to premium decoration and staging, Class Events also works directly with businesses for their own occasions.
+              </p>
+            </div>
+            <div className="flex flex-col gap-4">
+              {[
+                { title: 'Event Organization', desc: 'Concept, planning, production and coordination for business events of any scale.' },
+                { title: 'Decoration and Staging', desc: 'Premium decoration, floral design and staging tailored to your brand and occasion.' },
+              ].map((s) => (
+                <div key={s.title} className="bg-white/5 border border-white/10 rounded-2xl p-6">
+                  <p className="text-brand-white font-semibold mb-1">{s.title}</p>
+                  <p className="text-white/50 text-sm leading-relaxed">{s.desc}</p>
+                </div>
+              ))}
+              <Link
+                href="/sponsorship"
+                className="inline-flex items-center justify-center gap-2 bg-brand-gold text-brand-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors w-fit"
+              >
+                Contact for Your Event <ArrowRight size={14} />
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
