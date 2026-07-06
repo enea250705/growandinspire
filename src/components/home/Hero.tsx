@@ -61,10 +61,6 @@ export function Hero() {
                   <p className="text-white/60 text-sm mt-3">- Alketa Vejsiu</p>
                 </div>
               </div>
-              {/* Floating badge */}
-              <div className="absolute -top-4 -right-4 bg-brand-gold text-brand-black text-xs font-bold px-4 py-2 rounded-full">
-                Premium Circle
-              </div>
             </div>
           </div>
         </div>
