@@ -2,8 +2,9 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 
 const NAV_LINKS = [
   { label: 'Learning', href: '/watch' },
@@ -16,6 +17,16 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(({ data }) => setLoggedIn(!!data.user))
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+      setLoggedIn(!!session?.user)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-brand-black/95 backdrop-blur-sm border-b border-white/10">
@@ -45,18 +56,28 @@ export function Navbar() {
         </div>
 
         <div className="hidden lg:flex items-center gap-3">
-          <Link href="/login" className="text-sm text-white/70 hover:text-brand-white transition-colors">
-            Log In
-          </Link>
-          <Link
-            href="/membership"
-            className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium hover:bg-brand-gold-light transition-colors"
-          >
-            Join the Circle
-          </Link>
+          {loggedIn ? (
+            <Link
+              href="/dashboard"
+              className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium hover:bg-brand-gold-light transition-colors"
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <>
+              <Link href="/login" className="text-sm text-white/70 hover:text-brand-white transition-colors">
+                Log In
+              </Link>
+              <Link
+                href="/membership"
+                className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium hover:bg-brand-gold-light transition-colors"
+              >
+                Join the Circle
+              </Link>
+            </>
+          )}
         </div>
 
-        {/* Mobile menu toggle */}
         <button
           type="button"
           className="lg:hidden text-brand-white p-2 -m-2"
@@ -81,15 +102,28 @@ export function Navbar() {
             </Link>
           ))}
           <div className="pt-2 flex flex-col gap-2 border-t border-white/10">
-            <Link href="/login" className="text-sm text-white/70 hover:text-brand-white transition-colors py-1">
-              Log In
-            </Link>
-            <Link
-              href="/membership"
-              className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium text-center hover:bg-brand-gold-light transition-colors"
-            >
-              Join the Circle
-            </Link>
+            {loggedIn ? (
+              <Link
+                href="/dashboard"
+                onClick={() => setOpen(false)}
+                className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium text-center hover:bg-brand-gold-light transition-colors"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" onClick={() => setOpen(false)} className="text-sm text-white/70 hover:text-brand-white transition-colors py-1">
+                  Log In
+                </Link>
+                <Link
+                  href="/membership"
+                  onClick={() => setOpen(false)}
+                  className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium text-center hover:bg-brand-gold-light transition-colors"
+                >
+                  Join the Circle
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

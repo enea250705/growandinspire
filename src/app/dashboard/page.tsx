@@ -1,8 +1,14 @@
 import Link from 'next/link'
 import { BookOpen, Calendar, Download, Users, Lock, ChevronRight } from 'lucide-react'
 import { MOCK_CONTENT, CATEGORY_META, slugify } from '@/lib/mock-content'
+import { createClient } from '@/lib/supabase/server'
 
-const MOCK_USER = { name: 'Anisa' }
+export default async function DashboardPage() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  const name = user?.user_metadata?.full_name ?? user?.email?.split('@')[0] ?? 'Member'
+  return <DashboardContent name={name} />
+}
 
 const MOCK_STATS = [
   { label: 'My Membership', value: 'Premium', icon: Users, href: '/dashboard/membership' },
@@ -14,12 +20,12 @@ const MOCK_STATS = [
 const recentContent = MOCK_CONTENT.filter((c) => !c.is_premium).slice(0, 4)
 const exclusiveContent = MOCK_CONTENT.filter((c) => c.is_premium).slice(0, 4)
 
-export default function DashboardPage() {
+function DashboardContent({ name }: { name: string }) {
   return (
     <>
       <div className="mb-8">
         <h1 className="font-serif text-3xl font-bold text-brand-black">
-          Welcome back, {MOCK_USER.name}.
+          Welcome back, {name}.
         </h1>
         <p className="text-black/50 mt-1">Here is what is happening in your circle.</p>
       </div>
