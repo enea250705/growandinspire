@@ -76,7 +76,8 @@ export default async function EpisodePage({ params }: Props) {
           </div>
         ) : item.youtube_id ? (
           <div className="mb-8">
-            <VideoPlayer youtubeId={item.youtube_id} title={item.title} />
+            {/* TODO: replace watermark with the logged-in member's email once auth is wired */}
+            <VideoPlayer youtubeId={item.youtube_id} title={item.title} watermark="Grow and Inspire · Member" />
           </div>
         ) : null}
 
