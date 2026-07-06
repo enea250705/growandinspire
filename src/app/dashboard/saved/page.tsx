@@ -1,8 +1,11 @@
 import Link from 'next/link'
 import { Bookmark, Play } from 'lucide-react'
-import { MOCK_CONTENT, CATEGORY_META, slugify } from '@/lib/mock-content'
+import { CATEGORY_META, slugify } from '@/lib/content-meta'
+import type { ContentItem } from '@/types'
 
-const SAVED = MOCK_CONTENT.slice(0, 4)
+// TODO(post-B6): no saved_content table yet. Add a `saved_items` table
+// (user_id, content_id) + a save button, then read the user's saved rows here.
+const SAVED: ContentItem[] = []
 
 export default function SavedPage() {
   return (

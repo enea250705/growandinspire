@@ -1,7 +1,10 @@
 import Link from 'next/link'
 import { BookOpen, Mic2, Users, Briefcase, Sparkles, Lock } from 'lucide-react'
-import { MOCK_CONTENT, CATEGORY_META, slugify } from '@/lib/mock-content'
+import { CATEGORY_META, slugify } from '@/lib/content-meta'
+import { getFeatured, getFreeContent } from '@/lib/content'
 import { ContentCard } from '@/components/watch/ContentCard'
+
+export const revalidate = 300
 
 const CATEGORIES = [
   { type: 'podcast', icon: Mic2 },
@@ -11,10 +14,8 @@ const CATEGORIES = [
   { type: 'revista', icon: BookOpen },
 ] as const
 
-const featured = MOCK_CONTENT.find((c) => !c.is_premium && c.youtube_id)
-const recent = MOCK_CONTENT.filter((c) => !c.is_premium).slice(0, 6)
-
-export default function WatchPage() {
+export default async function WatchPage() {
+  const [featured, recent] = await Promise.all([getFeatured(), getFreeContent(6)])
   return (
     <div className="pt-16 lg:pt-24 min-h-screen bg-brand-cream">
       {/* Header */}

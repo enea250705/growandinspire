@@ -1,8 +1,10 @@
 import Link from 'next/link'
 import { BookOpen, Calendar, Download, Users, Lock, ChevronRight } from 'lucide-react'
-import { MOCK_CONTENT, CATEGORY_META, slugify } from '@/lib/mock-content'
+import { CATEGORY_META, slugify } from '@/lib/content-meta'
+import { getFreeContent, getPremiumContent } from '@/lib/content'
 import { createClient } from '@/lib/supabase/server'
 import { getMembership, tierLabel } from '@/lib/membership'
+import type { ContentItem } from '@/types'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -10,7 +12,11 @@ export default async function DashboardPage() {
   const name = user?.user_metadata?.full_name ?? user?.email?.split('@')[0] ?? 'Member'
   const email = user?.email ?? ''
 
-  const membership = await getMembership()
+  const [membership, recentContent, exclusiveContent] = await Promise.all([
+    getMembership(),
+    getFreeContent(4),
+    getPremiumContent(4),
+  ])
   const { count: eventCount } = await supabase
     .from('event_registrations')
     .select('id', { count: 'exact', head: true })
@@ -23,11 +29,8 @@ export default async function DashboardPage() {
     { label: 'Upcoming Events', value: `${eventCount ?? 0}`, icon: Calendar, href: '/dashboard/events' },
   ]
 
-  return <DashboardContent name={name} stats={stats} />
+  return <DashboardContent name={name} stats={stats} recentContent={recentContent} exclusiveContent={exclusiveContent} />
 }
-
-const recentContent = MOCK_CONTENT.filter((c) => !c.is_premium).slice(0, 4)
-const exclusiveContent = MOCK_CONTENT.filter((c) => c.is_premium).slice(0, 4)
 
 interface Stat {
   label: string
@@ -36,7 +39,17 @@ interface Stat {
   href: string
 }
 
-function DashboardContent({ name, stats }: { name: string; stats: Stat[] }) {
+function DashboardContent({
+  name,
+  stats,
+  recentContent,
+  exclusiveContent,
+}: {
+  name: string
+  stats: Stat[]
+  recentContent: ContentItem[]
+  exclusiveContent: ContentItem[]
+}) {
   return (
     <>
       <div className="mb-8">

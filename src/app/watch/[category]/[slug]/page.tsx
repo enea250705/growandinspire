@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Lock, Calendar, ArrowLeft } from 'lucide-react'
-import { MOCK_CONTENT, CATEGORY_META, SLUG_TO_TYPE, slugify, formatDate, getContentByType } from '@/lib/mock-content'
+import { CATEGORY_META, SLUG_TO_TYPE, slugify, formatDate } from '@/lib/content-meta'
+import { getAllContent, getContentByType, getContentBySlug } from '@/lib/content'
 import { VideoPlayer } from '@/components/watch/VideoPlayer'
 import { ContentCard } from '@/components/watch/ContentCard'
 import { PremiumBadge } from '@/components/ui/LockBadge'
@@ -13,7 +14,8 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return MOCK_CONTENT.map((item) => ({
+  const all = await getAllContent()
+  return all.map((item) => ({
     category: CATEGORY_META[item.type].slug,
     slug: slugify(item.title),
   }))
@@ -24,7 +26,7 @@ export default async function EpisodePage({ params }: Props) {
   const type = SLUG_TO_TYPE[category]
   if (!type) notFound()
 
-  const item = MOCK_CONTENT.find((c) => c.type === type && slugify(c.title) === slug)
+  const item = await getContentBySlug(type, slug)
   if (!item) notFound()
 
   const meta = CATEGORY_META[type]
@@ -37,7 +39,7 @@ export default async function EpisodePage({ params }: Props) {
   const isLocked = item.is_premium && !isMember
   const watermark = user?.email ?? 'Grow and Inspire · Member'
 
-  const related = getContentByType(type)
+  const related = (await getContentByType(type))
     .filter((c) => c.id !== item.id)
     .slice(0, 3)
 

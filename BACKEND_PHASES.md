@@ -159,7 +159,7 @@ Stripe (B4) deferred to just before deploy.
 | B2 Forms Save | done | 2026-07-06 |
 | B3 Auth | done (needs live login test + disable email-confirm) | 2026-07-06 |
 | B5 Premium Gating | done (member + non-member paths verified) | 2026-07-06 |
-| B6 Content From DB | not started | |
+| B6 Content From DB | done (seeded, watch/dashboard read from DB, ISR) | 2026-07-06 |
 | B7 Admin Panel | not started | |
 | B8 Email | not started | |
 | B4 Stripe | deferred (second to last) | |

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Play, FileText } from 'lucide-react'
 import { LockBadge, PremiumBadge } from '@/components/ui/LockBadge'
-import { formatDate, slugify, CATEGORY_META } from '@/lib/mock-content'
+import { formatDate, slugify, CATEGORY_META } from '@/lib/content-meta'
 import type { ContentItem } from '@/types'
 
 interface ContentCardProps {

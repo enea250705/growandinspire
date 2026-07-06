@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import { BookOpen, ArrowRight } from 'lucide-react'
-import { MOCK_CONTENT, formatDate } from '@/lib/mock-content'
+import { formatDate } from '@/lib/content-meta'
+import { getContentByType } from '@/lib/content'
 
-const ARTICLES = MOCK_CONTENT.filter((c) => c.type === 'revista')
+export const revalidate = 300
 
 const FEATURED_TOPICS = [
   'Lidership femëror',
@@ -15,7 +16,8 @@ const FEATURED_TOPICS = [
   'Teknologji dhe inovacion',
 ]
 
-export default function InsightsPage() {
+export default async function InsightsPage() {
+  const ARTICLES = await getContentByType('revista')
   return (
     <div className="pt-16 lg:pt-24 min-h-screen">
       {/* Hero */}

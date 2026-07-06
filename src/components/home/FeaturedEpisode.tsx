@@ -1,10 +1,12 @@
 import Link from 'next/link'
 import { Play, Lock } from 'lucide-react'
-import { MOCK_CONTENT, CATEGORY_META, slugify } from '@/lib/mock-content'
+import { CATEGORY_META, slugify } from '@/lib/content-meta'
+import { getFeatured } from '@/lib/content'
 
-const featured = MOCK_CONTENT.find((c) => !c.is_premium && c.youtube_id)!
+export async function FeaturedEpisode() {
+  const featured = await getFeatured()
+  if (!featured) return null
 
-export function FeaturedEpisode() {
   const meta = CATEGORY_META[featured.type]
   const href = `/watch/${meta.slug}/${slugify(featured.title)}`
 

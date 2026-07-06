@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation'
 import { Lock } from 'lucide-react'
 import Link from 'next/link'
-import { MOCK_CONTENT, CATEGORY_META, SLUG_TO_TYPE } from '@/lib/mock-content'
+import { CATEGORY_META, SLUG_TO_TYPE } from '@/lib/content-meta'
+import { getContentByType } from '@/lib/content'
 import { ContentCard } from '@/components/watch/ContentCard'
 import { isMember as checkMembership } from '@/lib/membership'
 
@@ -9,7 +10,7 @@ interface Props {
   params: Promise<{ category: string }>
 }
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   return Object.keys(SLUG_TO_TYPE).map((slug) => ({ category: slug }))
 }
 
@@ -20,7 +21,7 @@ export default async function CategoryPage({ params }: Props) {
   if (!type) notFound()
 
   const meta = CATEGORY_META[type]
-  const items = MOCK_CONTENT.filter((c) => c.type === type)
+  const items = await getContentByType(type)
   const isExclusive = type === 'exclusive'
   const member = await checkMembership()
 
