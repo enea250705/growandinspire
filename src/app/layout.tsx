@@ -30,10 +30,8 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${playfair.variable} h-full`}>
       <body className="min-h-full flex flex-col bg-brand-cream text-brand-black antialiased">
         <Navbar />
-        <main className="flex-1 pb-16 lg:pb-0">{children}</main>
-        <div className="pb-16 lg:pb-0">
-          <Footer />
-        </div>
+        <main className="flex-1">{children}</main>
+        <Footer />
         <MobileBottomNav />
       </body>
     </html>

@@ -13,11 +13,15 @@ const TABS = [
 export function MobileBottomNav() {
   const pathname = usePathname()
 
-  // hide on login page - it's a full-screen auth flow
-  if (pathname === '/login') return null
+  // TODO(B3): show for any logged-in member once auth is wired.
+  // Until then only dashboard pages get the app-style bottom nav.
+  if (!pathname.startsWith('/dashboard')) return null
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-brand-white border-t border-black/10 safe-area-pb">
+    <>
+      {/* spacer keeps the footer clear of the fixed bar */}
+      <div className="h-16 lg:hidden" />
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-brand-white border-t border-black/10 safe-area-pb">
       <div className="grid grid-cols-3 h-16">
         {TABS.map(({ label, href, icon: Icon }) => {
           const active = pathname === href || pathname.startsWith(href + '/')
@@ -38,6 +42,7 @@ export function MobileBottomNav() {
           )
         })}
       </div>
-    </nav>
+      </nav>
+    </>
   )
 }
