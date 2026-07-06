@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export function Hero() {
   return (
@@ -40,14 +41,24 @@ export function Hero() {
           {/* Right - visual block */}
           <div className="hidden lg:block">
             <div className="relative">
-              <div className="aspect-[4/5] rounded-2xl bg-gradient-to-br from-brand-dark to-brand-black border border-white/10 overflow-hidden">
+              <div className="relative aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden">
+                <Image
+                  src="/hero-alketa.png"
+                  alt="Alketa Vejsiu"
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 40vw, 100vw"
+                  className="object-cover object-top"
+                />
+                {/* gradient for text legibility */}
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/10 to-transparent" />
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(0,180,166,0.15)_0%,_transparent_70%)]" />
                 <div className="absolute bottom-8 left-8 right-8">
                   <div className="w-12 h-px bg-brand-gold mb-4" />
                   <p className="font-serif text-2xl text-brand-white font-medium leading-snug">
                     &ldquo;Build something that outlasts the moment.&rdquo;
                   </p>
-                  <p className="text-white/40 text-sm mt-3">- Alketa Vejsiu</p>
+                  <p className="text-white/60 text-sm mt-3">- Alketa Vejsiu</p>
                 </div>
               </div>
               {/* Floating badge */}
