@@ -65,12 +65,14 @@ export default async function WatchPage() {
             <Link href={`/watch/${CATEGORY_META[featured.type].slug}/${slugify(featured.title)}`} className="group block">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-brand-white rounded-2xl border border-black/8 overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="relative aspect-video lg:aspect-auto bg-gradient-to-br from-brand-dark to-brand-black flex items-center justify-center min-h-[260px] overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={featured.thumbnail_url ?? `https://img.youtube.com/vi/${featured.youtube_id}/hqdefault.jpg`}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
+                  {featured.thumbnail_url && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={featured.thumbnail_url}
+                      alt=""
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-brand-black/30 group-hover:bg-brand-black/15 transition-colors" />
                   <div className="relative w-16 h-16 rounded-full bg-brand-black/50 border border-white/30 flex items-center justify-center group-hover:bg-brand-gold group-hover:border-brand-gold transition-colors">
                     <svg className="w-6 h-6 text-white ml-1 group-hover:text-brand-black transition-colors" fill="currentColor" viewBox="0 0 24 24">

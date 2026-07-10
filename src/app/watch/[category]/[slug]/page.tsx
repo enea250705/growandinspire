@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Lock, Calendar, ArrowLeft } from 'lucide-react'
 import { CATEGORY_META, SLUG_TO_TYPE, slugify, formatDate } from '@/lib/content-meta'
-import { getAllContent, getContentByType, getContentBySlug } from '@/lib/content'
+import { getAllContent, getContentByType, getContentBySlug, getPlayableYoutubeId } from '@/lib/content'
 import { VideoPlayer } from '@/components/watch/VideoPlayer'
 import { ContentCard } from '@/components/watch/ContentCard'
 import { PremiumBadge } from '@/components/ui/LockBadge'
@@ -32,12 +32,14 @@ export default async function EpisodePage({ params }: Props) {
   const meta = CATEGORY_META[type]
 
   // Server-side membership gate. Never render the player (or leak youtube_id)
-  // to a non-member when the item is premium.
+  // to a non-member when the item is premium. getPlayableYoutubeId re-checks
+  // entitlement itself, so the ID never enters this render for a locked item.
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   const isMember = item.is_premium ? await checkMembership() : false
   const isLocked = item.is_premium && !isMember
   const watermark = user?.email ?? 'Grow and Inspire · Member'
+  const youtubeId = isLocked ? null : await getPlayableYoutubeId(item.id)
 
   const related = (await getContentByType(type))
     .filter((c) => c.id !== item.id)
@@ -83,9 +85,9 @@ export default async function EpisodePage({ params }: Props) {
               Become a Member
             </Link>
           </div>
-        ) : item.youtube_id ? (
+        ) : youtubeId ? (
           <div className="mb-8">
-            <VideoPlayer youtubeId={item.youtube_id} title={item.title} watermark={watermark} />
+            <VideoPlayer youtubeId={youtubeId} title={item.title} watermark={watermark} />
           </div>
         ) : null}
 

@@ -17,15 +17,27 @@ export interface Membership {
   stripe_subscription_id: string | null
 }
 
+/**
+ * Public shape of a content item. `youtube_id` is deliberately absent: anon and
+ * authenticated roles have no column privilege on it (see the
+ * 20260710120000_protect_premium_video_ids migration). Use `has_video` to decide
+ * whether an item is playable, and fetch the ID via getPlayableYoutubeId() only
+ * after the membership gate passes.
+ */
 export interface ContentItem {
   id: string
   type: ContentType
   title: string
   description: string
-  youtube_id: string | null
   thumbnail_url: string | null
   is_premium: boolean
   published_at: string
+  has_video: boolean
+}
+
+/** Admin-only shape. Read with the service role. */
+export interface AdminContentItem extends ContentItem {
+  youtube_id: string | null
 }
 
 export interface Event {

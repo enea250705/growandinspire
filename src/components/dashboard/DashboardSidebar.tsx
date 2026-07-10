@@ -2,14 +2,16 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { BookOpen, Calendar, Download, Users, Settings, LogOut, LayoutDashboard, FileText, ShieldCheck } from 'lucide-react'
+import { BookOpen, Calendar, Users, Settings, LogOut, LayoutDashboard, FileText, ShieldCheck } from 'lucide-react'
 import { signOut } from '@/lib/actions/auth'
 
+// "My Downloads" is hidden until there are real files to serve. The page is a
+// mockup: hardcoded rows, no bucket, no table, and a Shkarko button that does
+// nothing. Restore the nav entry together with the downloads feature.
 const NAV = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, exact: true },
   { label: 'My Membership', href: '/dashboard/membership', icon: Users },
   { label: 'Saved Content', href: '/dashboard/saved', icon: BookOpen },
-  { label: 'My Downloads', href: '/dashboard/downloads', icon: Download },
   { label: 'My Applications', href: '/dashboard/applications', icon: FileText },
   { label: 'Upcoming Events', href: '/dashboard/events', icon: Calendar },
   { label: 'Settings', href: '/dashboard/settings', icon: Settings },

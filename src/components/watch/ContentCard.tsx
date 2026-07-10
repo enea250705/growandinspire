@@ -13,7 +13,7 @@ export function ContentCard({ item, isMember = false }: ContentCardProps) {
   const isLocked = item.is_premium && !isMember
   const categoryMeta = CATEGORY_META[item.type]
   const href = `/watch/${categoryMeta.slug}/${slugify(item.title)}`
-  const hasVideo = !!item.youtube_id
+  const hasVideo = item.has_video
 
   return (
     <div className="group relative bg-brand-white rounded-2xl border border-black/8 overflow-hidden hover:shadow-md transition-shadow">
@@ -21,13 +21,17 @@ export function ContentCard({ item, isMember = false }: ContentCardProps) {
       <div className="relative aspect-video bg-gradient-to-br from-brand-dark to-brand-black flex items-center justify-center overflow-hidden">
         {hasVideo ? (
           <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={item.thumbnail_url ?? `https://img.youtube.com/vi/${item.youtube_id}/hqdefault.jpg`}
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover"
-              loading="lazy"
-            />
+            {/* A YouTube-derived thumbnail would expose the video ID, which is the
+                access control for an unlisted video. Fall back to the gradient. */}
+            {item.thumbnail_url && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={item.thumbnail_url}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover"
+                loading="lazy"
+              />
+            )}
             <div className="absolute inset-0 bg-brand-black/30 group-hover:bg-brand-black/15 transition-colors" />
             <div className="relative w-12 h-12 rounded-full bg-brand-black/50 border border-white/30 flex items-center justify-center group-hover:bg-brand-gold group-hover:border-brand-gold transition-colors">
               <Play size={20} className="text-brand-white ml-0.5 group-hover:text-brand-black transition-colors" fill="currentColor" />

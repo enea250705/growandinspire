@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react'
 import { Plus, Pencil, Trash2, Lock, X } from 'lucide-react'
 import { Input, Textarea, Select } from '@/components/ui/FormField'
 import { createContent, updateContent, deleteContent, type ContentInput } from '@/lib/actions/admin'
-import type { ContentItem } from '@/types'
+import type { AdminContentItem } from '@/types'
 
 const TYPE_OPTIONS = [
   { label: 'Inspire Podcast', value: 'podcast' },
@@ -19,7 +19,7 @@ const EMPTY: ContentInput = {
   type: 'podcast', title: '', description: '', youtube_id: '', is_premium: false, published_at: '',
 }
 
-function toInput(item: ContentItem): ContentInput {
+function toInput(item: AdminContentItem): ContentInput {
   return {
     type: item.type,
     title: item.title,
@@ -30,7 +30,7 @@ function toInput(item: ContentItem): ContentInput {
   }
 }
 
-export function ContentClient({ items }: { items: ContentItem[] }) {
+export function ContentClient({ items }: { items: AdminContentItem[] }) {
   const [rows, setRows] = useState(items)
   const [editing, setEditing] = useState<string | 'new' | null>(null)
   const [form, setForm] = useState<ContentInput>(EMPTY)
@@ -43,7 +43,7 @@ export function ContentClient({ items }: { items: ContentItem[] }) {
     setError('')
   }
 
-  function openEdit(item: ContentItem) {
+  function openEdit(item: AdminContentItem) {
     setForm(toInput(item))
     setEditing(item.id)
     setError('')
@@ -62,9 +62,9 @@ export function ContentClient({ items }: { items: ContentItem[] }) {
         setEditing(null)
         // optimistic refresh: reload from server on next navigation; here we mutate local
         if (editing === 'new') {
-          setRows((prev) => [{ id: crypto.randomUUID(), thumbnail_url: null, ...payload } as ContentItem, ...prev])
+          setRows((prev) => [{ id: crypto.randomUUID(), thumbnail_url: null, ...payload } as AdminContentItem, ...prev])
         } else {
-          setRows((prev) => prev.map((r) => (r.id === editing ? { ...r, ...payload } as ContentItem : r)))
+          setRows((prev) => prev.map((r) => (r.id === editing ? { ...r, ...payload } as AdminContentItem : r)))
         }
       } else {
         setError(res.error)

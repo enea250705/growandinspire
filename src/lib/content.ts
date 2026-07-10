@@ -1,6 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 import type { ContentItem, ContentType } from '@/types'
 import { slugify } from '@/lib/content-meta'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { isMember } from '@/lib/membership'
 
 // Cookieless anon client for reading public content. content_items has a
 // "public read" RLS policy, so no session is needed. Staying cookieless keeps
@@ -11,7 +13,10 @@ const supabase = createClient(
   { auth: { persistSession: false } }
 )
 
-const SELECT = 'id, type, title, description, youtube_id, thumbnail_url, is_premium, published_at'
+// youtube_id is omitted on purpose — anon/authenticated have no privilege on that
+// column. Selecting it here would error, and requesting it from the browser was
+// how the premium library leaked. Reach for getPlayableYoutubeId() instead.
+const SELECT = 'id, type, title, description, thumbnail_url, is_premium, published_at, has_video'
 
 export async function getAllContent(): Promise<ContentItem[]> {
   const { data } = await supabase
@@ -62,9 +67,32 @@ export async function getFeatured(): Promise<ContentItem | null> {
     .from('content_items')
     .select(SELECT)
     .eq('is_premium', false)
-    .not('youtube_id', 'is', null)
+    .eq('has_video', true)
     .order('published_at', { ascending: false })
     .limit(1)
     .maybeSingle()
   return (data as ContentItem) ?? null
+}
+
+/**
+ * The YouTube ID for an item the caller is allowed to watch, or null.
+ *
+ * Re-checks entitlement against the database rather than trusting the caller:
+ * a free item is playable by anyone, a premium item only by an active member.
+ * Uses the service role because anon/authenticated cannot read the column.
+ *
+ * This is the only path from a content item to its video ID. Keep it that way —
+ * the videos are unlisted on YouTube, so the ID is the access control.
+ */
+export async function getPlayableYoutubeId(id: string): Promise<string | null> {
+  const admin = createAdminClient()
+  const { data } = await admin
+    .from('content_items')
+    .select('youtube_id, is_premium')
+    .eq('id', id)
+    .maybeSingle()
+
+  if (!data?.youtube_id) return null
+  if (data.is_premium && !(await isMember())) return null
+  return data.youtube_id as string
 }

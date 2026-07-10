@@ -84,10 +84,10 @@ function DashboardContent({
               className="group bg-brand-white rounded-xl border border-black/8 overflow-hidden hover:shadow-md transition-shadow"
             >
               <div className="relative aspect-video bg-gradient-to-br from-brand-dark to-brand-black flex items-center justify-center overflow-hidden">
-                {item.youtube_id && (
+                {item.thumbnail_url && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={item.thumbnail_url ?? `https://img.youtube.com/vi/${item.youtube_id}/hqdefault.jpg`}
+                    src={item.thumbnail_url}
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover"
                     loading="lazy"
@@ -125,10 +125,10 @@ function DashboardContent({
           {exclusiveContent.map((item) => (
             <div key={item.id} className="bg-brand-white rounded-xl border border-black/8 overflow-hidden">
               <div className="relative aspect-video bg-gradient-to-br from-brand-dark to-brand-black flex items-center justify-center overflow-hidden">
-                {item.youtube_id && (
+                {item.thumbnail_url && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={item.thumbnail_url ?? `https://img.youtube.com/vi/${item.youtube_id}/hqdefault.jpg`}
+                    src={item.thumbnail_url}
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover"
                     loading="lazy"
