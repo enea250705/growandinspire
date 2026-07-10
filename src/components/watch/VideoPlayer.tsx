@@ -36,7 +36,8 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
       if (!el) return
 
       plyrInstance = new Plyr(el as HTMLElement, {
-        controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+        controls: ['play-large', 'rewind', 'play', 'fast-forward', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+        seekTime: 10,
         youtube: { noCookie: true, rel: 0 },
       })
 
