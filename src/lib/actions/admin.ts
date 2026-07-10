@@ -543,6 +543,51 @@ export async function deletePlan(id: string): Promise<Result> {
   return { ok: true }
 }
 
+// ---- Comparison features ("What's Included" table on /membership) ----------
+
+export interface ComparisonFeatureInput {
+  feature: string
+  included_plan_ids: string[]   // membership_plans.id values that get a check
+  sort_order: number
+}
+
+export async function createFeature(input: ComparisonFeatureInput): Promise<Result> {
+  await requireAdmin()
+  if (!input.feature.trim()) return { ok: false, error: 'Emri i veçorisë është i detyrueshëm.' }
+  const supabase = createAdminClient()
+  const { error } = await supabase.from('comparison_features').insert({
+    feature: input.feature.trim(),
+    included_plan_ids: input.included_plan_ids,
+    sort_order: input.sort_order,
+  })
+  if (error) return { ok: false, error: error.message }
+  revalidatePlans()
+  return { ok: true }
+}
+
+export async function updateFeature(id: string, input: ComparisonFeatureInput): Promise<Result> {
+  await requireAdmin()
+  if (!input.feature.trim()) return { ok: false, error: 'Emri i veçorisë është i detyrueshëm.' }
+  const supabase = createAdminClient()
+  const { error } = await supabase.from('comparison_features').update({
+    feature: input.feature.trim(),
+    included_plan_ids: input.included_plan_ids,
+    sort_order: input.sort_order,
+  }).eq('id', id)
+  if (error) return { ok: false, error: error.message }
+  revalidatePlans()
+  return { ok: true }
+}
+
+export async function deleteFeature(id: string): Promise<Result> {
+  await requireAdmin()
+  const supabase = createAdminClient()
+  const { error } = await supabase.from('comparison_features').delete().eq('id', id)
+  if (error) return { ok: false, error: error.message }
+  revalidatePlans()
+  return { ok: true }
+}
+
 // ---- CV signed download ----------------------------------------------------
 
 export async function getCvUrl(path: string): Promise<{ ok: true; url: string } | { ok: false; error: string }> {

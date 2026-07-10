@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import type { MembershipPlan } from '@/types'
+import type { MembershipPlan, ComparisonFeature } from '@/types'
 
 // Cookieless anon client — membership_plans has public-read RLS on published
 // rows, so /membership stays ISR (mirrors lib/settings.ts).
@@ -59,6 +59,21 @@ export const FALLBACK_PLANS: MembershipPlan[] = [
   },
 ]
 
+// "What's Included" fallback, keyed to the FALLBACK_PLANS string ids above, so
+// it stays consistent when the tables are missing/empty.
+export const FALLBACK_COMPARISON: ComparisonFeature[] = [
+  { feature: 'Learning Hub', ids: ['individual', 'professional', 'corporate'] },
+  { feature: 'Grow Exclusive library', ids: ['individual', 'professional', 'corporate'] },
+  { feature: 'Live Q&A sessions', ids: ['individual', 'professional', 'corporate'] },
+  { feature: '4 business events / year', ids: ['individual', 'professional', 'corporate'] },
+  { feature: 'Coaching group access', ids: ['professional', 'corporate'] },
+  { feature: 'Dinner with Alketa priority', ids: ['professional', 'corporate'] },
+  { feature: 'Team seats (up to 5)', ids: ['corporate'] },
+  { feature: 'Sponsorship options', ids: ['corporate'] },
+].map((r, i) => ({
+  id: `fallback-${i}`, feature: r.feature, included_plan_ids: r.ids, sort_order: i, created_at: '',
+}))
+
 /** Published plans for the public /membership page. Falls back to FALLBACK_PLANS. */
 export async function getPublishedPlans(): Promise<MembershipPlan[]> {
   const { data, error } = await supabase
@@ -70,6 +85,37 @@ export async function getPublishedPlans(): Promise<MembershipPlan[]> {
 
   if (error || !data || data.length === 0) return FALLBACK_PLANS
   return data as MembershipPlan[]
+}
+
+/**
+ * Plans + comparison for /membership, resolved together so their plan ids stay
+ * aligned. When the DB has no plans (e.g. before migration), both fall back.
+ */
+export async function getMembershipPricing(): Promise<{
+  plans: MembershipPlan[]
+  comparison: ComparisonFeature[]
+}> {
+  const { data: planData, error: planErr } = await supabase
+    .from('membership_plans')
+    .select('*')
+    .eq('is_published', true)
+    .order('sort_order', { ascending: true })
+    .order('created_at', { ascending: true })
+
+  if (planErr || !planData || planData.length === 0) {
+    return { plans: FALLBACK_PLANS, comparison: FALLBACK_COMPARISON }
+  }
+
+  const { data: compData } = await supabase
+    .from('comparison_features')
+    .select('*')
+    .order('sort_order', { ascending: true })
+    .order('created_at', { ascending: true })
+
+  return {
+    plans: planData as MembershipPlan[],
+    comparison: (compData ?? []) as ComparisonFeature[],
+  }
 }
 
 /** Split a stored features blob (one per line) into a clean list. */

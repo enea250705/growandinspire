@@ -103,6 +103,15 @@ export interface MembershipPlan {
   created_at: string
 }
 
+export interface ComparisonFeature {
+  id: string
+  feature: string
+  /** membership_plans.id values that get a check on this row. */
+  included_plan_ids: string[]
+  sort_order: number
+  created_at: string
+}
+
 export interface Event {
   id: string
   title: string

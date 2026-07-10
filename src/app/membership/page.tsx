@@ -1,21 +1,12 @@
 import { Check } from 'lucide-react'
 import Link from 'next/link'
 import { MembershipForm } from '@/components/forms/MembershipForm'
-import { getPublishedPlans, planFeatures } from '@/lib/plans'
-
-const COMPARISON = [
-  { feature: 'Learning Hub', individual: true, professional: true, corporate: true },
-  { feature: 'Grow Exclusive library', individual: true, professional: true, corporate: true },
-  { feature: 'Live Q&A sessions', individual: true, professional: true, corporate: true },
-  { feature: '4 business events / year', individual: true, professional: true, corporate: true },
-  { feature: 'Coaching group access', individual: false, professional: true, corporate: true },
-  { feature: 'Dinner with Alketa priority', individual: false, professional: true, corporate: true },
-  { feature: 'Team seats (up to 5)', individual: false, professional: false, corporate: true },
-  { feature: 'Sponsorship options', individual: false, professional: false, corporate: true },
-]
+import { getMembershipPricing, planFeatures } from '@/lib/plans'
 
 export default async function MembershipPage() {
-  const plans = await getPublishedPlans()
+  const { plans, comparison } = await getMembershipPricing()
+  // Comparison columns follow the plans; cap at what fits the layout nicely.
+  const cols = `minmax(0,1.5fr) repeat(${plans.length}, minmax(0,1fr))`
   return (
     <div className="pt-16 lg:pt-24 min-h-screen bg-brand-cream">
       {/* Header */}
@@ -107,28 +98,27 @@ export default async function MembershipPage() {
           <h2 className="font-serif text-3xl font-bold text-brand-black text-center mb-10">
             What&apos;s Included
           </h2>
-          <div className="bg-brand-white rounded-2xl border border-black/8 overflow-hidden">
-            <div className="grid grid-cols-4 bg-brand-black text-brand-white text-xs font-semibold uppercase tracking-widest">
+          <div className="bg-brand-white rounded-2xl border border-black/8 overflow-x-auto">
+            <div style={{ gridTemplateColumns: cols }} className="grid min-w-[520px] bg-brand-black text-brand-white text-xs font-semibold uppercase tracking-widest">
               <div className="p-4">Feature</div>
-              <div className="p-4 text-center">Individual</div>
-              <div className="p-4 text-center text-brand-gold">Professional</div>
-              <div className="p-4 text-center">Corporate</div>
+              {plans.map((p) => (
+                <div key={p.id} className={`p-4 text-center ${p.highlight ? 'text-brand-gold' : ''}`}>{p.label}</div>
+              ))}
             </div>
-            {COMPARISON.map((row, i) => (
+            {comparison.map((row, i) => (
               <div
-                key={row.feature}
-                className={`grid grid-cols-4 text-sm border-t border-black/6 ${i % 2 === 0 ? 'bg-white' : 'bg-brand-cream/40'}`}
+                key={row.id}
+                style={{ gridTemplateColumns: cols }}
+                className={`grid min-w-[520px] text-sm border-t border-black/6 ${i % 2 === 0 ? 'bg-white' : 'bg-brand-cream/40'}`}
               >
                 <div className="p-4 text-black/70 font-medium">{row.feature}</div>
-                <div className="p-4 flex justify-center">
-                  {row.individual ? <Check size={16} className="text-brand-gold" strokeWidth={2.5} /> : <span className="text-black/20">-</span>}
-                </div>
-                <div className="p-4 flex justify-center">
-                  {row.professional ? <Check size={16} className="text-brand-gold" strokeWidth={2.5} /> : <span className="text-black/20">-</span>}
-                </div>
-                <div className="p-4 flex justify-center">
-                  {row.corporate ? <Check size={16} className="text-brand-gold" strokeWidth={2.5} /> : <span className="text-black/20">-</span>}
-                </div>
+                {plans.map((p) => (
+                  <div key={p.id} className="p-4 flex justify-center">
+                    {row.included_plan_ids.includes(p.id)
+                      ? <Check size={16} className="text-brand-gold" strokeWidth={2.5} />
+                      : <span className="text-black/20">-</span>}
+                  </div>
+                ))}
               </div>
             ))}
           </div>
