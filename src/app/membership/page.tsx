@@ -1,61 +1,7 @@
 import { Check } from 'lucide-react'
 import Link from 'next/link'
 import { MembershipForm } from '@/components/forms/MembershipForm'
-
-const PLANS = [
-  {
-    id: 'individual',
-    label: 'Individual',
-    price: '29',
-    period: '/ month',
-    description: 'For individuals ready to grow personally and professionally.',
-    cta: 'Get Started',
-    features: [
-      'Full Learning Hub access',
-      'Grow Exclusive content library',
-      'Monthly live Q&A with Alketa',
-      '4 business events per year',
-      'Community network access',
-      'Downloadable guides and templates',
-    ],
-  },
-  {
-    id: 'professional',
-    label: 'Professional',
-    price: '79',
-    period: '/ month',
-    description: 'For professionals and small business owners scaling up.',
-    cta: 'Get Started',
-    highlight: true,
-    badge: 'Most Popular',
-    features: [
-      'Everything in Individual',
-      'Priority event registration',
-      'Coaching group access (quarterly)',
-      'Business Growth Plan template',
-      'Direct community introductions',
-      'Early access to new content',
-      'Dinner with Alketa - application priority',
-    ],
-  },
-  {
-    id: 'corporate',
-    label: 'Corporate',
-    price: '199',
-    period: '/ month',
-    description: 'For companies investing in team leadership and brand presence.',
-    cta: 'Contact Us',
-    features: [
-      'Everything in Professional',
-      'Up to 5 team members',
-      'Sponsorship partnership options',
-      'Speaking slot consideration (conference)',
-      'Co-branding opportunities',
-      'Dedicated onboarding call',
-      'Quarterly business review with Alketa',
-    ],
-  },
-]
+import { getPublishedPlans, planFeatures } from '@/lib/plans'
 
 const COMPARISON = [
   { feature: 'Learning Hub', individual: true, professional: true, corporate: true },
@@ -68,7 +14,8 @@ const COMPARISON = [
   { feature: 'Sponsorship options', individual: false, professional: false, corporate: true },
 ]
 
-export default function MembershipPage() {
+export default async function MembershipPage() {
+  const plans = await getPublishedPlans()
   return (
     <div className="pt-16 lg:pt-24 min-h-screen bg-brand-cream">
       {/* Header */}
@@ -88,7 +35,7 @@ export default function MembershipPage() {
       <section className="py-20 lg:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {PLANS.map((plan) => (
+            {plans.map((plan) => (
               <div
                 key={plan.id}
                 className={`relative rounded-2xl border p-8 flex flex-col ${
@@ -123,7 +70,7 @@ export default function MembershipPage() {
                 </div>
 
                 <ul className="flex flex-col gap-3 mb-8 flex-1">
-                  {plan.features.map((f) => (
+                  {planFeatures(plan.features).map((f) => (
                     <li key={f} className="flex items-start gap-2.5">
                       <Check size={15} className="text-brand-gold shrink-0 mt-0.5" strokeWidth={2.5} />
                       <span className={`text-sm ${plan.highlight ? 'text-white/80' : 'text-black/70'}`}>{f}</span>
@@ -132,7 +79,7 @@ export default function MembershipPage() {
                 </ul>
 
                 <Link
-                  href={plan.id === 'corporate' ? '/sponsorship' : '/login'}
+                  href={plan.cta_href || '/login'}
                   className={`w-full text-center py-3.5 rounded-full text-sm font-semibold transition-colors ${
                     plan.highlight
                       ? 'bg-brand-gold text-brand-black hover:bg-brand-gold-light'

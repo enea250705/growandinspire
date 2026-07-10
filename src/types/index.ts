@@ -85,6 +85,24 @@ export interface JobPosition {
   created_at: string
 }
 
+export interface MembershipPlan {
+  id: string
+  label: string
+  /** Shown verbatim after the € sign; kept as text (e.g. '29'). */
+  price: string
+  period: string
+  description: string | null
+  /** One feature per line. */
+  features: string | null
+  cta: string
+  cta_href: string
+  badge: string | null
+  highlight: boolean
+  is_published: boolean
+  sort_order: number
+  created_at: string
+}
+
 export interface Event {
   id: string
   title: string

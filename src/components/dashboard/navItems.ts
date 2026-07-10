@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
-import { BookOpen, Calendar, Download, FileText, LayoutDashboard, Settings, Users } from 'lucide-react'
+import { BookOpen, Calendar, Download, FileText, GraduationCap, LayoutDashboard, Settings, Users } from 'lucide-react'
 
 export interface DashboardNavItem {
   label: string
@@ -10,6 +10,7 @@ export interface DashboardNavItem {
 
 export const DASHBOARD_NAV: DashboardNavItem[] = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, exact: true },
+  { label: 'Learning Hub', href: '/watch', icon: GraduationCap },
   { label: 'My Membership', href: '/dashboard/membership', icon: Users },
   { label: 'Saved Content', href: '/dashboard/saved', icon: BookOpen },
   { label: 'My Downloads', href: '/dashboard/downloads', icon: Download },

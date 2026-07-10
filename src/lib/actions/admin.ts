@@ -464,6 +464,85 @@ export async function resumeMembership(membershipId: string): Promise<Result> {
   return { ok: true }
 }
 
+// ---- Membership plans (pricing cards on /membership) -----------------------
+//
+// Scope: these edit only the pricing CARDS. The comparison table and the
+// entitlement tier system (MembershipTier) are separate and untouched.
+
+export interface MembershipPlanInput {
+  label: string
+  price: string
+  period: string
+  description: string
+  features: string          // one per line
+  cta: string
+  cta_href: string
+  badge: string             // '' = no badge
+  highlight: boolean
+  is_published: boolean
+  sort_order: number
+}
+
+function planRow(input: MembershipPlanInput) {
+  return {
+    label: input.label.trim(),
+    price: input.price.trim() || '0',
+    period: input.period.trim() || '/ month',
+    description: input.description.trim() || null,
+    features: input.features.trim() || null,
+    cta: input.cta.trim() || 'Get Started',
+    cta_href: input.cta_href.trim() || '/login',
+    badge: input.badge.trim() || null,
+    highlight: input.highlight,
+    is_published: input.is_published,
+    sort_order: input.sort_order,
+  }
+}
+
+function revalidatePlans() {
+  revalidatePath('/admin/plans')
+  revalidatePath('/membership')
+  revalidatePath('/')
+}
+
+export async function createPlan(input: MembershipPlanInput): Promise<Result> {
+  await requireAdmin()
+  if (!input.label.trim()) return { ok: false, error: 'Emri i planit është i detyrueshëm.' }
+  const supabase = createAdminClient()
+  const { error } = await supabase.from('membership_plans').insert(planRow(input))
+  if (error) return { ok: false, error: error.message }
+  revalidatePlans()
+  return { ok: true }
+}
+
+export async function updatePlan(id: string, input: MembershipPlanInput): Promise<Result> {
+  await requireAdmin()
+  if (!input.label.trim()) return { ok: false, error: 'Emri i planit është i detyrueshëm.' }
+  const supabase = createAdminClient()
+  const { error } = await supabase.from('membership_plans').update(planRow(input)).eq('id', id)
+  if (error) return { ok: false, error: error.message }
+  revalidatePlans()
+  return { ok: true }
+}
+
+export async function setPlanPublished(id: string, isPublished: boolean): Promise<Result> {
+  await requireAdmin()
+  const supabase = createAdminClient()
+  const { error } = await supabase.from('membership_plans').update({ is_published: isPublished }).eq('id', id)
+  if (error) return { ok: false, error: error.message }
+  revalidatePlans()
+  return { ok: true }
+}
+
+export async function deletePlan(id: string): Promise<Result> {
+  await requireAdmin()
+  const supabase = createAdminClient()
+  const { error } = await supabase.from('membership_plans').delete().eq('id', id)
+  if (error) return { ok: false, error: error.message }
+  revalidatePlans()
+  return { ok: true }
+}
+
 // ---- CV signed download ----------------------------------------------------
 
 export async function getCvUrl(path: string): Promise<{ ok: true; url: string } | { ok: false; error: string }> {
