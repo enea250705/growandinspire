@@ -55,7 +55,7 @@ Conference/retreat forms collect interest but take no money.
 - **Config changes required for prod:**
   - `NEXT_PUBLIC_APP_URL` localhost -> real domain (password-reset links break otherwise)
   - Supabase -> Auth -> URL config: set Site URL + redirect allowlist to the domain
-  - Change admin password (currently temporary `GrowAdmin2026!`)
+  - Change admin password (currently temporary `<see password manager>`)
 
 ---
 
@@ -72,7 +72,7 @@ Conference/retreat forms collect interest but take no money.
 ## SUPABASE / ACCESS NOTES
 - Project: `https://lcbrucousywmxkfgyctl.supabase.co`
 - Keys in `app/.env.local` (NOT in git - correct)
-- Admin login: `growandinspire@admin.com` / `GrowAdmin2026!` (temp - change)
+- Admin login: `growandinspire@admin.com` / `<see password manager>` (temp - change)
 - Repo: https://github.com/enea250705/growandinspire.git (master)
 
 ---

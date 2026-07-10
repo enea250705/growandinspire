@@ -50,7 +50,7 @@ Needed only if launch must charge cards. Includes:
 ## ⚠️ MANUAL / HOUSEKEEPING (do before any launch)
 - [ ] **RUN THE NEW MIGRATION** `supabase/migrations/20260710000000_forms_expansion.sql` in Supabase SQL Editor — adds the expanded form columns + new tables (`podcast_applications`, `idea_tables_applications`, `coaching_applications`, `membership_signups`) + `pitch-decks` storage bucket. **The 6 updated forms will error on submit until this runs.**
 - [ ] Supabase Auth: disable "Confirm email" **OR** ship B8 (else real users can't verify signup)
-- [ ] Change temp admin password `GrowAdmin2026!` (`growandinspire@admin.com`)
+- [ ] Change temp admin password `<see password manager>` (`growandinspire@admin.com`)
 - [ ] Replace placeholder YouTube IDs with real Alketa videos (admin → Content Manager)
 - [ ] Set real prices/dates (admin → Site Settings)
 

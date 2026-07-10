@@ -150,7 +150,7 @@ running — that file is out of date; ignore that line.)
 - **Login page is in English**, while the rest of the site is Albanian — and it mixes both
   ("Log In", "Create Account", but the loading state says "Duke u lidhur..."). Visible on the
   first screen the client sees if they test signup.
-- **Temp admin password `GrowAdmin2026!` is still active** on `growandinspire@admin.com`. Change
+- **Temp admin password `<see password manager>` is still active** on `growandinspire@admin.com`. Change
   it before anyone outside gets a URL.
 
 ## ⚪ Known and expected — not defects
