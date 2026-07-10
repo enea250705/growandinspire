@@ -11,24 +11,6 @@ const FREE_CONTENT = {
   description: 'Zbulo platformën dhe vizionin pas lëvizjes Grow and Inspire.',
 }
 
-const EXCLUSIVE_PROGRAMS = [
-  {
-    title: 'Leadership Intensive',
-    episodes: 8,
-    description: 'Program 8-javësh për liderë në rritje. Hap pas hapi drejt impaktit.',
-  },
-  {
-    title: 'Business Foundations',
-    episodes: 12,
-    description: 'Bazat e ndërtimit të biznesit - nga ideja deri te produkti i parë.',
-  },
-  {
-    title: 'Personal Branding Masterclass',
-    episodes: 6,
-    description: 'Si të ndërtosh markën tënde personale dhe të tërheqësh mundësi.',
-  },
-]
-
 const EXCLUSIVE_VIDEOS = [
   { title: 'Alketa Vejsiu - Historia ime', category: 'Meet the Founder' },
   { title: 'Si ta transformosh idenë në produkt', category: 'Class Business' },
@@ -112,7 +94,7 @@ export async function ELearningSection() {
         </div>
 
         {/* Series / Programs — DB-managed from /admin/series */}
-        {seriesList.length > 0 ? (
+        {seriesList.length > 0 && (
           <div className="mb-16">
             <div className="flex items-center justify-between gap-3 mb-6">
               <p className="text-white/40 text-xs uppercase tracking-widest">Seri dhe Programe</p>
@@ -140,35 +122,6 @@ export async function ELearningSection() {
                     {s.description && <p className="text-white/40 text-sm leading-relaxed mb-4 line-clamp-2">{s.description}</p>}
                     <span className="text-brand-gold text-sm font-medium group-hover:underline">Shiko serinë →</span>
                   </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="mb-16">
-            <div className="flex items-center gap-3 mb-6">
-              <p className="text-white/40 text-xs uppercase tracking-widest">Programe Ekskluzive</p>
-              <PremiumBadge />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {EXCLUSIVE_PROGRAMS.map((program) => (
-                <Link
-                  key={program.title}
-                  href="/membership"
-                  className="group relative rounded-2xl border border-white/10 p-6 bg-brand-dark hover:border-brand-gold/40 transition-colors"
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-white/30 text-xs">{program.episodes} episode</span>
-                    <span className="flex items-center gap-1.5 text-brand-gold text-xs font-semibold">
-                      <Lock size={11} strokeWidth={2} />
-                      Members only
-                    </span>
-                  </div>
-                  <h3 className="font-serif text-xl text-brand-white font-medium mb-2">{program.title}</h3>
-                  <p className="text-white/40 text-sm leading-relaxed mb-4">{program.description}</p>
-                  <span className="text-brand-gold text-sm font-medium group-hover:underline">
-                    Zhblloko me membership →
-                  </span>
                 </Link>
               ))}
             </div>
