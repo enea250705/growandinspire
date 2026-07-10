@@ -164,3 +164,11 @@ Stripe (B4) deferred to just before deploy.
 | B8 Email | not started | |
 | B4 Stripe | deferred (second to last) | |
 | B9 Deploy | not started | |
+
+### Forms expansion (client update 2026-07-10)
+All 6 public forms rebuilt to the client's full field specs (see spec §3bis).
+New/extended tables via `supabase/migrations/20260710000000_forms_expansion.sql`
+(dinner + event_registrations extended; podcast_applications, idea_tables_applications,
+coaching_applications, membership_signups new; `pitch-decks` storage bucket). Admin
+panel shows all new fields + a Membership Signups page. **Migration must be run in
+Supabase before the forms work in the live DB.**
