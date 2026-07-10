@@ -68,10 +68,14 @@ export interface ContentInput {
   title: string
   description: string
   youtube_id: string
+  thumbnail_url: string
   is_premium: boolean
   published_at: string
 }
 
+// Public pages can no longer build a thumbnail from the video ID (that leaked the
+// ID of every unlisted premium video), so an item without thumbnail_url renders
+// as a plain gradient. This field is how it gets a real image.
 export async function createContent(input: ContentInput): Promise<Result> {
   await requireAdmin()
   const supabase = createAdminClient()
@@ -80,12 +84,14 @@ export async function createContent(input: ContentInput): Promise<Result> {
     title: input.title,
     description: input.description || null,
     youtube_id: input.youtube_id || null,
+    thumbnail_url: input.thumbnail_url || null,
     is_premium: input.is_premium,
     published_at: input.published_at || new Date().toISOString(),
   })
   if (error) return { ok: false, error: error.message }
   revalidatePath('/admin/content')
   revalidatePath('/watch')
+  revalidatePath('/')
   return { ok: true }
 }
 
@@ -97,12 +103,14 @@ export async function updateContent(id: string, input: ContentInput): Promise<Re
     title: input.title,
     description: input.description || null,
     youtube_id: input.youtube_id || null,
+    thumbnail_url: input.thumbnail_url || null,
     is_premium: input.is_premium,
     published_at: input.published_at,
   }).eq('id', id)
   if (error) return { ok: false, error: error.message }
   revalidatePath('/admin/content')
   revalidatePath('/watch')
+  revalidatePath('/')
   return { ok: true }
 }
 
@@ -196,6 +204,96 @@ export async function removeAdmin(userId: string): Promise<Result> {
   const { error } = await supabase.from('admins').delete().eq('user_id', userId)
   if (error) return { ok: false, error: error.message }
   revalidatePath('/admin/admins')
+  return { ok: true }
+}
+
+// ---- User management -------------------------------------------------------
+//
+// These run with the service role and can reset any password or destroy any
+// account, so every one re-checks requireAdmin() and refuses the two moves that
+// would lock everybody out of /admin: deleting yourself, and removing the last
+// admin.
+
+async function isLastAdmin(userId: string): Promise<boolean> {
+  const supabase = createAdminClient()
+  const { data } = await supabase.from('admins').select('user_id')
+  const admins = data ?? []
+  return admins.length <= 1 && admins.some((a) => a.user_id === userId)
+}
+
+export async function setUserPassword(userId: string, newPassword: string): Promise<Result> {
+  await requireAdmin()
+  if (newPassword.length < 6) {
+    return { ok: false, error: 'Fjalëkalimi duhet të ketë të paktën 6 karaktere.' }
+  }
+  const supabase = createAdminClient()
+  const { error } = await supabase.auth.admin.updateUserById(userId, { password: newPassword })
+  if (error) return { ok: false, error: error.message }
+  revalidatePath('/admin/users')
+  return { ok: true }
+}
+
+/** Irreversible. Cascades the user's memberships and admins rows via the FK. */
+export async function deleteUser(userId: string): Promise<Result> {
+  const actor = await requireAdmin()
+
+  if (actor.id === userId) {
+    return { ok: false, error: 'Nuk mund të fshish llogarinë tënde.' }
+  }
+  if (await isLastAdmin(userId)) {
+    return { ok: false, error: 'Nuk mund të fshish adminin e fundit.' }
+  }
+
+  const supabase = createAdminClient()
+  const { error } = await supabase.auth.admin.deleteUser(userId)
+  if (error) return { ok: false, error: error.message }
+  revalidatePath('/admin/users')
+  revalidatePath('/admin/members')
+  revalidatePath('/admin/admins')
+  return { ok: true }
+}
+
+/** Confirm an email by hand, for a user stuck without a working confirmation link. */
+export async function confirmUserEmail(userId: string): Promise<Result> {
+  await requireAdmin()
+  const supabase = createAdminClient()
+  const { error } = await supabase.auth.admin.updateUserById(userId, { email_confirm: true })
+  if (error) return { ok: false, error: error.message }
+  revalidatePath('/admin/users')
+  return { ok: true }
+}
+
+// ---- Membership suspend / resume -------------------------------------------
+//
+// isMember() counts only status = 'active', so suspending gates content on the
+// next request. 'suspended' is distinct from 'cancelled' on purpose: the member
+// did not quit, and the suspension is meant to be lifted.
+//
+// TODO(Paddle): a local suspend stops access but not billing. When B4 lands,
+// pause the Paddle subscription here too, or the two will desync — she stops
+// their access while Paddle keeps charging the card.
+
+export async function suspendMembership(membershipId: string): Promise<Result> {
+  await requireAdmin()
+  const supabase = createAdminClient()
+  const { error } = await supabase
+    .from('memberships')
+    .update({ status: 'suspended', suspended_at: new Date().toISOString() })
+    .eq('id', membershipId)
+  if (error) return { ok: false, error: error.message }
+  revalidatePath('/admin/members')
+  return { ok: true }
+}
+
+export async function resumeMembership(membershipId: string): Promise<Result> {
+  await requireAdmin()
+  const supabase = createAdminClient()
+  const { error } = await supabase
+    .from('memberships')
+    .update({ status: 'active', suspended_at: null })
+    .eq('id', membershipId)
+  if (error) return { ok: false, error: error.message }
+  revalidatePath('/admin/members')
   return { ok: true }
 }
 

@@ -16,7 +16,8 @@ const TYPE_OPTIONS = [
 ]
 
 const EMPTY: ContentInput = {
-  type: 'podcast', title: '', description: '', youtube_id: '', is_premium: false, published_at: '',
+  type: 'podcast', title: '', description: '', youtube_id: '', thumbnail_url: '',
+  is_premium: false, published_at: '',
 }
 
 function toInput(item: AdminContentItem): ContentInput {
@@ -25,6 +26,7 @@ function toInput(item: AdminContentItem): ContentInput {
     title: item.title,
     description: item.description ?? '',
     youtube_id: item.youtube_id ?? '',
+    thumbnail_url: item.thumbnail_url ?? '',
     is_premium: item.is_premium,
     published_at: item.published_at.slice(0, 10),
   }
@@ -62,7 +64,10 @@ export function ContentClient({ items }: { items: AdminContentItem[] }) {
         setEditing(null)
         // optimistic refresh: reload from server on next navigation; here we mutate local
         if (editing === 'new') {
-          setRows((prev) => [{ id: crypto.randomUUID(), thumbnail_url: null, ...payload } as AdminContentItem, ...prev])
+          setRows((prev) => [
+            { id: crypto.randomUUID(), ...payload, has_video: !!payload.youtube_id } as AdminContentItem,
+            ...prev,
+          ])
         } else {
           setRows((prev) => prev.map((r) => (r.id === editing ? { ...r, ...payload } as AdminContentItem : r)))
         }
@@ -101,6 +106,14 @@ export function ContentClient({ items }: { items: AdminContentItem[] }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Select label="Kategoria" options={TYPE_OPTIONS} value={form.type} onChange={(e) => set('type', e.target.value)} />
             <Input label="YouTube ID" placeholder="dQw4w9WgXcQ" value={form.youtube_id} onChange={(e) => set('youtube_id', e.target.value)} />
+            <div className="sm:col-span-2">
+              <Input
+                label="Thumbnail URL"
+                placeholder="https://... (pa këtë, karta shfaqet me gradient)"
+                value={form.thumbnail_url}
+                onChange={(e) => set('thumbnail_url', e.target.value)}
+              />
+            </div>
             <div className="sm:col-span-2">
               <Input label="Titulli" required value={form.title} onChange={(e) => set('title', e.target.value)} />
             </div>

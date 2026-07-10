@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react'
 import { UserPlus, Mail } from 'lucide-react'
 import { Input, Select } from '@/components/ui/FormField'
-import { grantMembership, revokeMembership } from '@/lib/actions/admin'
+import { grantMembership, revokeMembership, suspendMembership, resumeMembership } from '@/lib/actions/admin'
 
 export interface AdminMembership {
   id: string
@@ -44,15 +44,31 @@ export function MembersClient({ rows }: { rows: AdminMembership[] }) {
   }
 
   function revoke(id: string) {
-    if (!confirm('Hiq këtë anëtarësi?')) return
+    if (!confirm('Hiq këtë anëtarësi? Nuk kthehet mbrapsht.')) return
     startTransition(async () => {
       await revokeMembership(id)
       setMessage({ ok: true, text: 'Anëtarësia u hoq. Rifresko faqen.' })
     })
   }
 
+  function suspend(id: string) {
+    if (!confirm('Pezullo këtë anëtarësi? Aksesi bllokohet menjëherë, por mund ta rikthesh.')) return
+    startTransition(async () => {
+      await suspendMembership(id)
+      setMessage({ ok: true, text: 'Anëtarësia u pezullua. Rifresko faqen.' })
+    })
+  }
+
+  function resume(id: string) {
+    startTransition(async () => {
+      await resumeMembership(id)
+      setMessage({ ok: true, text: 'Anëtarësia u rikthye. Rifresko faqen.' })
+    })
+  }
+
   const active = rows.filter((r) => r.status === 'active')
-  const inactive = rows.filter((r) => r.status !== 'active')
+  const suspended = rows.filter((r) => r.status === 'suspended')
+  const inactive = rows.filter((r) => r.status !== 'active' && r.status !== 'suspended')
 
   return (
     <>
@@ -96,16 +112,53 @@ export function MembersClient({ rows }: { rows: AdminMembership[] }) {
                   <span className="text-brand-gold font-semibold uppercase">{m.tier}</span> · që nga {fmt(m.started_at)}
                 </p>
               </div>
-              <button
-                onClick={() => revoke(m.id)}
-                disabled={pending}
-                className="text-xs text-red-500 border border-red-200 px-3 py-1.5 rounded-full hover:bg-red-50 transition-colors disabled:opacity-50"
-              >
-                Hiq
-              </button>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={() => suspend(m.id)}
+                  disabled={pending}
+                  className="text-xs text-black/60 border border-black/15 px-3 py-1.5 rounded-full hover:border-brand-gold hover:text-brand-gold transition-colors disabled:opacity-50"
+                >
+                  Pezullo
+                </button>
+                <button
+                  onClick={() => revoke(m.id)}
+                  disabled={pending}
+                  className="text-xs text-red-500 border border-red-200 px-3 py-1.5 rounded-full hover:bg-red-50 transition-colors disabled:opacity-50"
+                >
+                  Hiq
+                </button>
+              </div>
             </div>
           ))}
         </div>
+      )}
+
+      {/* Suspended — access blocked, restorable */}
+      {suspended.length > 0 && (
+        <>
+          <p className="text-xs text-black/40 uppercase tracking-widest mb-3">Të pezulluara ({suspended.length})</p>
+          <div className="space-y-2 mb-8">
+            {suspended.map((m) => (
+              <div key={m.id} className="bg-brand-white rounded-xl border border-brand-gold/30 p-4 flex items-center justify-between gap-4">
+                <div>
+                  <p className="font-semibold text-brand-black text-sm flex items-center gap-2">
+                    <Mail size={12} className="text-black/30" /> {m.email}
+                  </p>
+                  <p className="text-xs text-black/40 mt-0.5">
+                    {m.tier} · e pezulluar — nuk ka akses te përmbajtja premium
+                  </p>
+                </div>
+                <button
+                  onClick={() => resume(m.id)}
+                  disabled={pending}
+                  className="text-xs font-semibold text-brand-black bg-brand-gold/15 border border-brand-gold/40 px-3 py-1.5 rounded-full hover:bg-brand-gold/25 transition-colors disabled:opacity-50 shrink-0"
+                >
+                  Rikthe
+                </button>
+              </div>
+            ))}
+          </div>
+        </>
       )}
 
       {/* Past memberships */}

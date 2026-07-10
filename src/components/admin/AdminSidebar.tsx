@@ -13,9 +13,10 @@ const NAV = [
   { label: 'Membership Signups', href: '/admin/signups', icon: UserPlus },
   { label: 'Content', href: '/admin/content', icon: Film },
   { label: 'Members', href: '/admin/members', icon: Users },
+  { label: 'Users', href: '/admin/users', icon: UserCog },
   { label: 'Subscribers', href: '/admin/subscribers', icon: Mail },
   { label: 'Site Settings', href: '/admin/settings', icon: Settings },
-  { label: 'Admins', href: '/admin/admins', icon: UserCog },
+  { label: 'Admins', href: '/admin/admins', icon: ShieldCheck },
 ]
 
 export function AdminSidebar({ email }: { email: string }) {

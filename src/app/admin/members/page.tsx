@@ -24,7 +24,10 @@ export default async function AdminMembersPage() {
     <>
       <div className="mb-8">
         <h1 className="font-serif text-3xl font-bold text-brand-black mb-1">Members</h1>
-        <p className="text-black/50">Jep ose hiq anëtarësi manualisht. (Deri sa Stripe të lidhet.)</p>
+        <p className="text-black/50">
+          Jep, pezullo ose hiq anëtarësi manualisht. Pezullimi bllokon aksesin menjëherë dhe mund
+          të rikthehet.
+        </p>
       </div>
       <MembersClient rows={rows} />
     </>
