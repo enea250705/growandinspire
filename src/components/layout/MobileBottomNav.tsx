@@ -5,18 +5,16 @@ import { usePathname } from 'next/navigation'
 import { BookOpen, Calendar, LayoutDashboard } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { useT } from '@/lib/i18n/provider'
+
+const TABS = [
+  { label: 'Learning Hub', href: '/watch', icon: BookOpen },
+  { label: 'Events', href: '/events', icon: Calendar },
+  { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+]
 
 export function MobileBottomNav() {
-  const t = useT()
   const pathname = usePathname()
   const [loggedIn, setLoggedIn] = useState(false)
-
-  const TABS = [
-    { label: t.mobileNav.learningHub, href: '/watch', icon: BookOpen },
-    { label: t.mobileNav.events, href: '/events', icon: Calendar },
-    { label: t.mobileNav.dashboard, href: '/dashboard', icon: LayoutDashboard },
-  ]
 
   useEffect(() => {
     const supabase = createClient()

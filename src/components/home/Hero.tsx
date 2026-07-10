@@ -1,9 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { getDictionary } from '@/lib/i18n/server'
 
-export async function Hero() {
-  const t = await getDictionary()
+export function Hero() {
   return (
     <section className="relative min-h-screen bg-brand-black flex items-center pt-16 lg:pt-24">
       {/* Subtle texture overlay */}
@@ -14,7 +12,7 @@ export async function Hero() {
           {/* Left - text */}
           <div>
             <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-6">
-              {t.hero.eyebrow}
+              A Premium Platform
             </p>
             <h1 className="font-serif text-6xl sm:text-7xl lg:text-8xl font-bold text-brand-white leading-[1.05] mb-8">
               Grow.<br />
@@ -22,20 +20,20 @@ export async function Hero() {
               Lead.
             </h1>
             <p className="text-white/60 text-lg leading-relaxed max-w-md mb-10">
-              {t.hero.subtitle}
+              A premium platform for personal growth, business leadership, meaningful connections, and curated experiences.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/watch"
                 className="inline-flex items-center justify-center bg-brand-gold text-brand-black px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"
               >
-                {t.hero.watchFree}
+                Watch Free
               </Link>
               <Link
                 href="/membership"
                 className="inline-flex items-center justify-center border border-white/20 text-brand-white px-7 py-3.5 rounded-full text-sm font-medium hover:border-white/50 hover:bg-white/5 transition-colors"
               >
-                {t.hero.becomeMember}
+                Become a Member
               </Link>
             </div>
           </div>
@@ -58,9 +56,9 @@ export async function Hero() {
                 <div className="absolute bottom-8 left-8 right-8">
                   <div className="w-12 h-px bg-brand-gold mb-4" />
                   <p className="font-serif text-2xl text-brand-white font-medium leading-snug">
-                    &ldquo;{t.hero.quote}&rdquo;
+                    &ldquo;Build something that outlasts the moment.&rdquo;
                   </p>
-                  <p className="text-white/60 text-sm mt-3">{t.hero.quoteAuthor}</p>
+                  <p className="text-white/60 text-sm mt-3">- Alketa Vejsiu</p>
                 </div>
               </div>
             </div>
