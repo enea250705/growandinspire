@@ -56,7 +56,6 @@ export async function ELearningSection() {
 
         {/* Free: Video Trailer - plays the free featured episode inline */}
         <div className="mb-16">
-          <p className="text-white/40 text-xs uppercase tracking-widest mb-6">Falas</p>
           {trailerId ? (
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
               <div className="lg:col-span-3">
