@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 interface VideoPlayerProps {
   youtubeId: string
@@ -30,6 +31,9 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
   const playerRef = useRef<PlyrLike | null>(null)
   const [posIndex, setPosIndex] = useState(0)
   const [skipHint, setSkipHint] = useState<null | 'back' | 'forward'>(null)
+  // The `.plyr` element Plyr builds; it's what actually goes fullscreen, so we
+  // portal our seek overlay into it to keep double-tap working in fullscreen.
+  const [plyrRoot, setPlyrRoot] = useState<HTMLElement | null>(null)
   const lastTapRef = useRef<{ side: 'left' | 'right'; time: number } | null>(null)
   const singleTapTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -89,11 +93,13 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
       }) as unknown as PlyrLike
 
       playerRef.current = plyrInstance
+      setPlyrRoot(containerRef.current?.querySelector('.plyr') as HTMLElement | null)
     }
 
     initPlayer()
 
     return () => {
+      setPlyrRoot(null)
       plyrInstance?.destroy?.()
     }
   }, [youtubeId])
@@ -107,21 +113,10 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
     return () => clearInterval(id)
   }, [watermark])
 
-  return (
-    <div
-      ref={containerRef}
-      className="relative w-full aspect-video rounded-2xl overflow-hidden bg-brand-black select-none
-        [&_.plyr]:absolute [&_.plyr]:inset-0 [&_.plyr]:h-full [&_.plyr]:w-full
-        [&_.plyr__video-wrapper]:h-full [&_.plyr__video-embed]:h-full [&_iframe]:absolute [&_iframe]:inset-0"
-      onContextMenu={(e) => e.preventDefault()}
-    >
-      <div
-        className="plyr-video"
-        data-plyr-provider="youtube"
-        data-plyr-embed-id={youtubeId}
-        aria-label={title}
-      />
-
+  // Seek overlay + watermark, rendered inside the `.plyr` element so they stay
+  // on screen (and tappable) when the player is fullscreen.
+  const overlay = (
+    <>
       {/* Double-tap seek zones: left rewinds, right fast-forwards 10s.
           The center column and bottom control bar stay clear for Plyr. */}
       <button
@@ -138,14 +133,13 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
       />
       {skipHint && (
         <div
-          className={`pointer-events-none absolute top-1/2 -translate-y-1/2 z-30 flex items-center gap-1.5 rounded-full bg-black/60 px-4 py-2 text-white text-sm font-semibold backdrop-blur-sm transition-opacity ${
+          className={`pointer-events-none absolute top-1/2 -translate-y-1/2 z-30 flex items-center gap-1.5 rounded-full bg-black/60 px-4 py-2 text-white text-sm font-semibold backdrop-blur-sm ${
             skipHint === 'back' ? 'left-[8%]' : 'right-[8%]'
           }`}
         >
           {skipHint === 'back' ? '« 10s' : '10s »'}
         </div>
       )}
-
       {watermark && (
         <div
           className={`pointer-events-none absolute z-10 ${WATERMARK_POSITIONS[posIndex]} text-white/25 text-xs font-medium tracking-wide transition-all duration-1000`}
@@ -153,6 +147,24 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
           {watermark}
         </div>
       )}
+    </>
+  )
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative w-full aspect-video rounded-2xl overflow-hidden bg-brand-black select-none
+        [&_.plyr]:absolute [&_.plyr]:inset-0 [&_.plyr]:h-full [&_.plyr]:w-full
+        [&_.plyr__video-wrapper]:h-full [&_.plyr__video-embed]:h-full [&_iframe]:absolute [&_iframe]:inset-0"
+      onContextMenu={(e) => e.preventDefault()}
+    >
+      <div
+        className="plyr-video"
+        data-plyr-provider="youtube"
+        data-plyr-embed-id={youtubeId}
+        aria-label={title}
+      />
+      {plyrRoot && createPortal(overlay, plyrRoot)}
     </div>
   )
 }
