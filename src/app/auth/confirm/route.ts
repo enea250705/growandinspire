@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
 // Email links (signup confirm, password recovery) land here. Supabase's email
-// templates must point at /auth/confirm?token_hash=...&type=... — the default
+// templates must point at /auth/confirm?token_hash=...&type=... - the default
 // {{ .ConfirmationURL }} produces a ?code= link that only /auth/callback handles,
 // and that flow needs the PKCE verifier cookie from the originating browser.
 export async function GET(request: NextRequest) {

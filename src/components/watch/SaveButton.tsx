@@ -5,7 +5,7 @@ import { Bookmark } from 'lucide-react'
 import { toggleSaved } from '@/lib/actions/saved'
 
 /**
- * Bookmark toggle for a content item. Only rendered for logged-in members —
+ * Bookmark toggle for a content item. Only rendered for logged-in members -
  * the server gates on session, and a logged-out click would hit a silent RLS
  * failure. `initialSaved` comes from the server so first paint is correct.
  */

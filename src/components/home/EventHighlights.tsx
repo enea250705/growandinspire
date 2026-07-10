@@ -21,11 +21,11 @@ export function EventHighlights() {
               <div className="flex flex-col gap-2 mb-8">
                 <div className="flex items-center gap-2 text-white/40 text-sm">
                   <Calendar size={13} className="text-brand-gold" />
-                  2 ditë · Prill 25–26, 2026
+                  2 ditë · Prill 25-26, 2026
                 </div>
                 <div className="flex items-center gap-2 text-white/40 text-sm">
                   <span className="text-brand-gold font-bold text-base">€</span>
-                  150 – 175€ për person
+                  150 - 175€ për person
                 </div>
               </div>
               <Link
@@ -52,7 +52,7 @@ export function EventHighlights() {
               <div className="flex flex-col gap-2 mb-8">
                 <div className="flex items-center gap-2 text-black/40 text-sm">
                   <Users size={13} className="text-brand-gold-dark" />
-                  8–12 persona · Me ftesë
+                  8-12 persona · Me ftesë
                 </div>
               </div>
               <Link

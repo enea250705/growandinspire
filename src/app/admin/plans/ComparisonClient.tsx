@@ -19,7 +19,7 @@ export function ComparisonClient({ rows, plans }: { rows: ComparisonFeature[]; p
   const [error, setError] = useState('')
   const [pending, startTransition] = useTransition()
 
-  const planLabel = (id: string) => plans.find((p) => p.id === id)?.label ?? '—'
+  const planLabel = (id: string) => plans.find((p) => p.id === id)?.label ?? '-'
 
   function openNew() {
     setFeature(''); setSortOrder(rows.length); setIds([]); setEditing('new'); setError('')

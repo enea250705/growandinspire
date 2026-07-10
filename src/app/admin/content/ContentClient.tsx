@@ -35,7 +35,7 @@ function toInput(item: AdminContentItem): ContentInput {
 }
 
 export function ContentClient({ items, series }: { items: AdminContentItem[]; series: Series[] }) {
-  const seriesOptions = [{ label: '— Pa seri —', value: '' }, ...series.map((s) => ({ label: s.title, value: s.id }))]
+  const seriesOptions = [{ label: '- Pa seri -', value: '' }, ...series.map((s) => ({ label: s.title, value: s.id }))]
   const seriesName = (id: string | null) => series.find((s) => s.id === id)?.title
   const [rows, setRows] = useState(items)
   const [editing, setEditing] = useState<string | 'new' | null>(null)

@@ -160,8 +160,8 @@ export default function SponsorshipPage() {
                 label="Indicative Budget"
                 options={[
                   { label: '< €1,000', value: '<1000' },
-                  { label: '€1,000 – €5,000', value: '1000-5000' },
-                  { label: '€5,000 – €15,000', value: '5000-15000' },
+                  { label: '€1,000 - €5,000', value: '1000-5000' },
+                  { label: '€5,000 - €15,000', value: '5000-15000' },
                   { label: '€15,000+', value: '15000+' },
                   { label: 'Prefer to discuss', value: 'discuss' },
                 ]}

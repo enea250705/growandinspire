@@ -15,7 +15,7 @@ export default async function SeriesIndexPage() {
           <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-4">Seri dhe Programe</p>
           <h1 className="font-serif text-5xl lg:text-6xl font-bold text-brand-white mb-4">Seritë</h1>
           <p className="text-white/50 text-lg max-w-xl">
-            Koleksione video të organizuara në episode — ndiqi nga fillimi deri në fund.
+            Koleksione video të organizuara në episode - ndiqi nga fillimi deri në fund.
           </p>
         </div>
       </section>

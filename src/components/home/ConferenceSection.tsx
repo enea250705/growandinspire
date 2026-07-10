@@ -157,7 +157,7 @@ export function ConferenceSection({ priceEarly = '150', priceStandard = '175' }:
 
               <CheckboxGroup label="Interests" options={CONF_INTERESTS} value={interests} onChange={setInterests} />
 
-              <Textarea label="Networking Goals — Çfarë kërkoni të arrini në konferencë?" rows={3} value={form.networkingGoals} onChange={(e) => set('networkingGoals', e.target.value)} />
+              <Textarea label="Networking Goals - Çfarë kërkoni të arrini në konferencë?" rows={3} value={form.networkingGoals} onChange={(e) => set('networkingGoals', e.target.value)} />
 
               <CheckboxGroup label="A dëshironi të merrni pjesë në:" options={CONF_PARTICIPATION} value={participation} onChange={setParticipation} />
 

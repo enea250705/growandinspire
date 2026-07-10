@@ -2,7 +2,7 @@ import { Users, Star, MessageCircle, Utensils, Network, Check } from 'lucide-rea
 import { DinnerForm } from '@/components/forms/DinnerForm'
 
 const PERKS = [
-  { icon: Users, label: '8–12 people', desc: 'Select group, carefully curated' },
+  { icon: Users, label: '8-12 people', desc: 'Select group, carefully curated' },
   { icon: Star, label: 'Invitation only', desc: 'Every seat is earned, not bought' },
   { icon: MessageCircle, label: 'Real conversation', desc: 'No pitches. No panels. Pure dialogue.' },
 ]
@@ -110,7 +110,7 @@ export default function DinnerPage() {
           <div className="text-center mb-12">
             <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">Apply</p>
             <h2 className="font-serif text-4xl font-bold text-brand-black mb-3">Request Your Seat</h2>
-            <p className="text-black/50">Applications are reviewed personally. We will respond within 5–7 days.</p>
+            <p className="text-black/50">Applications are reviewed personally. We will respond within 5-7 days.</p>
           </div>
           <DinnerForm />
         </div>

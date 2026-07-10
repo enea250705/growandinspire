@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 
-// Cookieless anon client — site_settings has public-read RLS, keeps pages ISR.
+// Cookieless anon client - site_settings has public-read RLS, keeps pages ISR.
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,

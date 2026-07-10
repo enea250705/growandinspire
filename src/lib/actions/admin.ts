@@ -85,7 +85,7 @@ export interface SeriesInput {
   is_published: boolean
 }
 
-// She pastes whatever YouTube gives her — a full watch URL, a youtu.be share
+// She pastes whatever YouTube gives her - a full watch URL, a youtu.be share
 // link, a Shorts/embed URL, or (rarely) the bare 11-char ID. Normalise to the
 // ID we store, so she never has to hand-extract it. Unrecognised input is
 // returned trimmed as-is rather than dropped, so a typo stays visible/fixable.
@@ -437,7 +437,7 @@ export async function confirmUserEmail(userId: string): Promise<Result> {
 // did not quit, and the suspension is meant to be lifted.
 //
 // TODO(Paddle): a local suspend stops access but not billing. When B4 lands,
-// pause the Paddle subscription here too, or the two will desync — she stops
+// pause the Paddle subscription here too, or the two will desync - she stops
 // their access while Paddle keeps charging the card.
 
 export async function suspendMembership(membershipId: string): Promise<Result> {

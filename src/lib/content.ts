@@ -14,7 +14,7 @@ const supabase = createClient(
   { auth: { persistSession: false } }
 )
 
-// youtube_id is omitted on purpose — anon/authenticated have no privilege on that
+// youtube_id is omitted on purpose - anon/authenticated have no privilege on that
 // column. Selecting it here would error, and requesting it from the browser was
 // how the premium library leaked. Reach for getPlayableYoutubeId() instead.
 const SELECT = 'id, type, title, description, thumbnail_url, is_premium, published_at, has_video, series_id, episode_number'
@@ -82,7 +82,7 @@ export async function getFeatured(): Promise<ContentItem | null> {
  * a free item is playable by anyone, a premium item only by an active member.
  * Uses the service role because anon/authenticated cannot read the column.
  *
- * This is the only path from a content item to its video ID. Keep it that way —
+ * This is the only path from a content item to its video ID. Keep it that way -
  * the videos are unlisted on YouTube, so the ID is the access control.
  */
 export async function getPlayableYoutubeId(id: string): Promise<string | null> {
@@ -103,7 +103,7 @@ export async function getPlayableYoutubeId(id: string): Promise<string | null> {
 /**
  * The logged-in user's bookmarked content, newest first. Reads through the
  * user's own session (RLS: "users read own saved"), so it returns [] when
- * logged out. The join pulls the public content columns only — never youtube_id.
+ * logged out. The join pulls the public content columns only - never youtube_id.
  */
 export async function getSavedContent(): Promise<ContentItem[]> {
   const server = await createServerClient()
@@ -123,7 +123,7 @@ export async function getSavedContent(): Promise<ContentItem[]> {
     .flatMap((r) => (Array.isArray(r.content_items) ? r.content_items : r.content_items ? [r.content_items] : []))
 }
 
-/** Set of content_ids the user has saved — for initial SaveButton state. */
+/** Set of content_ids the user has saved - for initial SaveButton state. */
 export async function getSavedIds(): Promise<Set<string>> {
   const server = await createServerClient()
   const { data: { user } } = await server.auth.getUser()
@@ -149,7 +149,7 @@ const DOWNLOAD_SELECT = 'id, title, description, file_url, is_premium, sort_orde
 /**
  * Member resource files. Free files are readable by the public client (RLS:
  * "public reads free downloads"). Premium files are exposed only to active
- * members, fetched with the service role after the gate — the same philosophy
+ * members, fetched with the service role after the gate - the same philosophy
  * that protects premium youtube_id.
  */
 export async function getDownloads(): Promise<Download[]> {

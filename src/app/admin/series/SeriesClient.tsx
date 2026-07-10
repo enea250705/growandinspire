@@ -64,7 +64,7 @@ export function SeriesClient({ series }: { series: Series[] }) {
   }
 
   function remove(id: string) {
-    if (!confirm('Fshi këtë seri? Videot brenda saj nuk fshihen — vetëm shkëputen nga seria.')) return
+    if (!confirm('Fshi këtë seri? Videot brenda saj nuk fshihen - vetëm shkëputen nga seria.')) return
     startTransition(async () => {
       const res = await deleteSeries(id)
       if (res.ok) setRows((prev) => prev.filter((r) => r.id !== id))

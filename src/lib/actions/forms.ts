@@ -59,7 +59,7 @@ export async function submitDinnerApplication(data: {
   return { ok: true }
 }
 
-// ---- Apply: Work with Class (job) — unchanged shape ------------------------
+// ---- Apply: Work with Class (job) - unchanged shape ------------------------
 export async function submitApplication(data: {
   type: 'job' | 'guest' | 'investment'
   name: string
@@ -277,7 +277,7 @@ export async function submitMembershipSignup(data: {
   return { ok: true }
 }
 
-// ---- Sponsorship contact lead — unchanged ----------------------------------
+// ---- Sponsorship contact lead - unchanged ----------------------------------
 export async function submitSponsorshipLead(data: {
   company_name: string
   contact_name: string
@@ -311,7 +311,7 @@ export async function submitCoachingProgramRequest(email: string): Promise<Actio
   return { ok: true }
 }
 
-// ---- Newsletter — unchanged ------------------------------------------------
+// ---- Newsletter - unchanged ------------------------------------------------
 export async function submitNewsletterSignup(email: string): Promise<ActionResult> {
   const supabase = await createClient()
   const { error } = await supabase.from('subscribers').insert({ email })

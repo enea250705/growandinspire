@@ -54,7 +54,7 @@ export async function ELearningSection() {
           </p>
         </div>
 
-        {/* Free: Video Trailer — plays the free featured episode inline */}
+        {/* Free: Video Trailer - plays the free featured episode inline */}
         <div className="mb-16">
           <p className="text-white/40 text-xs uppercase tracking-widest mb-6">Falas</p>
           {trailerId ? (
@@ -85,7 +85,7 @@ export async function ELearningSection() {
           )}
         </div>
 
-        {/* Series / Programs — DB-managed from /admin/series */}
+        {/* Series / Programs - DB-managed from /admin/series */}
         {seriesList.length > 0 && (
           <div className="mb-16">
             <div className="flex items-center justify-between gap-3 mb-6">

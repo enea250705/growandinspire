@@ -79,7 +79,7 @@ export default async function CoachingPage() {
 
               <div className="flex items-center gap-3 mb-8">
                 <span className="font-serif text-4xl font-bold text-brand-black">€{s.conference_price_early}</span>
-                <span className="text-black/40">– €{s.conference_price_standard}</span>
+                <span className="text-black/40">- €{s.conference_price_standard}</span>
                 <span className="text-black/40 text-sm">per person</span>
               </div>
 

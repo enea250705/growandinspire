@@ -179,7 +179,7 @@ function Section({
               <div className="min-w-0">
                 <p className="font-semibold text-brand-black text-sm">{p.title}</p>
                 <p className="text-xs text-black/40 mt-0.5">
-                  {[p.department, p.location, p.employment_type].filter(Boolean).join(' · ') || '—'}
+                  {[p.department, p.location, p.employment_type].filter(Boolean).join(' · ') || '-'}
                 </p>
               </div>
               <div className="flex items-center gap-1.5 shrink-0">

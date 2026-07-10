@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 import type { MembershipPlan, ComparisonFeature } from '@/types'
 
-// Cookieless anon client — membership_plans has public-read RLS on published
+// Cookieless anon client - membership_plans has public-read RLS on published
 // rows, so /membership stays ISR (mirrors lib/settings.ts).
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -10,7 +10,7 @@ const supabase = createClient(
 )
 
 // The three current plans, used as a fallback when the table is missing, empty,
-// or the query errors — so /membership never renders zero plans (e.g. before the
+// or the query errors - so /membership never renders zero plans (e.g. before the
 // migration is run). Kept in sync with the migration seed.
 export const FALLBACK_PLANS: MembershipPlan[] = [
   {

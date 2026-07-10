@@ -6,9 +6,9 @@ const EVENTS = [
     id: '1',
     title: 'Grow and Inspire Business Conference',
     type: 'Conference',
-    date: 'April 25–26, 2026',
+    date: 'April 25-26, 2026',
     location: 'Tirana, Albania',
-    price: '€150 – €175',
+    price: '€150 - €175',
     capacity: 'Limited seats',
     description: 'Two days of keynotes, expert panels, Smart Talks, and networking. The flagship annual event for Albanian business leaders.',
     cta: { label: 'Register Interest', href: '/coaching#conference-register' },
@@ -21,7 +21,7 @@ const EVENTS = [
     date: 'May 15, 2026',
     location: 'Tirana, Albania',
     price: 'By application',
-    capacity: '8–12 people',
+    capacity: '8-12 people',
     description: 'An exclusive executive dinner - curated conversations with purposeful leaders.',
     cta: { label: 'Apply to Join', href: '/dinner-with-alketa' },
     featured: false,
@@ -136,7 +136,7 @@ export default function EventsPage() {
               <div className="aspect-video lg:aspect-auto bg-gradient-to-br from-brand-dark to-brand-black min-h-[200px] flex items-center justify-center border-l border-white/10">
                 <div className="text-center">
                   <p className="font-serif text-6xl font-bold text-white/10">2026</p>
-                  <p className="text-white/30 text-sm mt-2">April 25–26</p>
+                  <p className="text-white/30 text-sm mt-2">April 25-26</p>
                 </div>
               </div>
             </div>

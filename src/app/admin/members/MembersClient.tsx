@@ -133,7 +133,7 @@ export function MembersClient({ rows }: { rows: AdminMembership[] }) {
         </div>
       )}
 
-      {/* Suspended — access blocked, restorable */}
+      {/* Suspended - access blocked, restorable */}
       {suspended.length > 0 && (
         <>
           <p className="text-xs text-black/40 uppercase tracking-widest mb-3">Të pezulluara ({suspended.length})</p>
@@ -145,7 +145,7 @@ export function MembersClient({ rows }: { rows: AdminMembership[] }) {
                     <Mail size={12} className="text-black/30" /> {m.email}
                   </p>
                   <p className="text-xs text-black/40 mt-0.5">
-                    {m.tier} · e pezulluar — nuk ka akses te përmbajtja premium
+                    {m.tier} · e pezulluar - nuk ka akses te përmbajtja premium
                   </p>
                 </div>
                 <button

@@ -23,7 +23,7 @@ export interface AdminUser {
 }
 
 function fmt(iso: string | null) {
-  if (!iso) return '—'
+  if (!iso) return '-'
   return new Date(iso).toLocaleDateString('sq-AL', { day: 'numeric', month: 'short', year: 'numeric' })
 }
 
