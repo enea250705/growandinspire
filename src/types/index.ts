@@ -40,6 +40,20 @@ export interface AdminContentItem extends ContentItem {
   youtube_id: string | null
 }
 
+export interface JobPosition {
+  id: string
+  title: string
+  department: string | null
+  location: string | null
+  employment_type: string | null
+  description: string | null
+  /** One requirement per line. */
+  requirements: string | null
+  is_open: boolean
+  sort_order: number
+  created_at: string
+}
+
 export interface Event {
   id: string
   title: string

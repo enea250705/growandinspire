@@ -1,12 +1,16 @@
 'use client'
 
 import { useState } from 'react'
-import { Input, Textarea, CheckboxGroup, RadioGroup } from '@/components/ui/FormField'
+import { Input, Textarea, CheckboxGroup, RadioGroup, Select } from '@/components/ui/FormField'
 import { Check, Briefcase, Mic2, Lightbulb } from 'lucide-react'
 import { submitApplication, submitPodcastApplication, submitIdeaTableApplication } from '@/lib/actions/forms'
 import { createClient } from '@/lib/supabase/client'
+import type { JobPosition } from '@/types'
 
 type TabType = 'job' | 'guest' | 'investment'
+
+/** Always offered, so a good CV is never lost just because nothing is posted. */
+const SPONTANEOUS = 'Aplikim spontan'
 
 const TABS: { id: TabType; label: string; icon: React.ElementType; desc: string }[] = [
   { id: 'job', label: 'Work with Class', icon: Briefcase, desc: 'Join the Class Media team' },
@@ -26,14 +30,31 @@ const IDEA_STAGES = [
 
 type SubmittedState = Partial<Record<TabType, boolean>>
 
-export function ApplyForm() {
-  const [active, setActive] = useState<TabType>('job')
+export function ApplyForm({
+  positions = [],
+  initialTab = 'job',
+  initialRole = '',
+}: {
+  positions?: JobPosition[]
+  initialTab?: TabType
+  initialRole?: string
+}) {
+  const [active, setActive] = useState<TabType>(initialTab)
   const [submitted, setSubmitted] = useState<SubmittedState>({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  // Job
-  const [job, setJob] = useState({ name: '', email: '', role: '', message: '' })
+  // Job. `role` holds either an open position's title or SPONTANEOUS, in which
+  // case roleOther carries what the applicant typed.
+  const openTitles = positions.map((p) => p.title)
+  const preselected = openTitles.includes(initialRole) ? initialRole : ''
+  const [job, setJob] = useState({
+    name: '',
+    email: '',
+    role: preselected || (openTitles.length ? '' : SPONTANEOUS),
+    roleOther: preselected ? '' : initialRole,
+    message: '',
+  })
   const [cvFile, setCvFile] = useState<File | null>(null)
 
   // Podcast guest
@@ -77,7 +98,11 @@ export function ApplyForm() {
         type: 'job',
         name: job.name,
         email: job.email,
-        payload: { role: job.role, message: job.message, cv_path: cvPath },
+        payload: {
+          role: job.role === SPONTANEOUS ? `${SPONTANEOUS}: ${job.roleOther}` : job.role,
+          message: job.message,
+          cv_path: cvPath,
+        },
       })
     } else if (active === 'guest') {
       result = await submitPodcastApplication({
@@ -188,7 +213,25 @@ export function ApplyForm() {
                   <Input label="Full Name" required value={job.name} onChange={(e) => setJob({ ...job, name: e.target.value })} placeholder="Your name" />
                   <Input label="Email" required type="email" value={job.email} onChange={(e) => setJob({ ...job, email: e.target.value })} placeholder="you@example.com" />
                 </div>
-                <Input label="Role you are applying for" required value={job.role} onChange={(e) => setJob({ ...job, role: e.target.value })} placeholder="Video editor, Social media manager..." />
+                <Select
+                  label="Role you are applying for"
+                  required
+                  value={job.role}
+                  onChange={(e) => setJob({ ...job, role: e.target.value })}
+                  options={[
+                    ...positions.map((p) => ({ label: p.title, value: p.title })),
+                    { label: `${SPONTANEOUS} (pozicion tjetër)`, value: SPONTANEOUS },
+                  ]}
+                />
+                {job.role === SPONTANEOUS && (
+                  <Input
+                    label="Cili pozicion të intereson?"
+                    required
+                    value={job.roleOther}
+                    onChange={(e) => setJob({ ...job, roleOther: e.target.value })}
+                    placeholder="Video editor, Social media manager..."
+                  />
+                )}
                 <Textarea label="Cover message" required rows={5} value={job.message} onChange={(e) => setJob({ ...job, message: e.target.value })} placeholder="Tell us about yourself and why you want to work with Class..." />
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-medium text-brand-black">

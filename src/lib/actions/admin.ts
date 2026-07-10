@@ -207,6 +207,80 @@ export async function removeAdmin(userId: string): Promise<Result> {
   return { ok: true }
 }
 
+// ---- Job positions ---------------------------------------------------------
+//
+// Closed positions stay invisible to the public (RLS: only is_open = true is
+// readable), so a role can be drafted before it is published.
+
+export interface JobPositionInput {
+  title: string
+  department: string
+  location: string
+  employment_type: string
+  description: string
+  requirements: string
+  is_open: boolean
+  sort_order: number
+}
+
+function jobRow(input: JobPositionInput) {
+  return {
+    title: input.title,
+    department: input.department || null,
+    location: input.location || null,
+    employment_type: input.employment_type || null,
+    description: input.description || null,
+    requirements: input.requirements || null,
+    is_open: input.is_open,
+    sort_order: input.sort_order,
+  }
+}
+
+function revalidateJobs() {
+  revalidatePath('/admin/jobs')
+  revalidatePath('/careers')
+  revalidatePath('/apply')
+}
+
+export async function createPosition(input: JobPositionInput): Promise<Result> {
+  await requireAdmin()
+  if (!input.title.trim()) return { ok: false, error: 'Titulli është i detyrueshëm.' }
+  const supabase = createAdminClient()
+  const { error } = await supabase.from('job_positions').insert(jobRow(input))
+  if (error) return { ok: false, error: error.message }
+  revalidateJobs()
+  return { ok: true }
+}
+
+export async function updatePosition(id: string, input: JobPositionInput): Promise<Result> {
+  await requireAdmin()
+  if (!input.title.trim()) return { ok: false, error: 'Titulli është i detyrueshëm.' }
+  const supabase = createAdminClient()
+  const { error } = await supabase.from('job_positions').update(jobRow(input)).eq('id', id)
+  if (error) return { ok: false, error: error.message }
+  revalidateJobs()
+  return { ok: true }
+}
+
+/** Close a role instead of deleting it, so past applications keep their context. */
+export async function setPositionOpen(id: string, isOpen: boolean): Promise<Result> {
+  await requireAdmin()
+  const supabase = createAdminClient()
+  const { error } = await supabase.from('job_positions').update({ is_open: isOpen }).eq('id', id)
+  if (error) return { ok: false, error: error.message }
+  revalidateJobs()
+  return { ok: true }
+}
+
+export async function deletePosition(id: string): Promise<Result> {
+  await requireAdmin()
+  const supabase = createAdminClient()
+  const { error } = await supabase.from('job_positions').delete().eq('id', id)
+  if (error) return { ok: false, error: error.message }
+  revalidateJobs()
+  return { ok: true }
+}
+
 // ---- User management -------------------------------------------------------
 //
 // These run with the service role and can reset any password or destroy any

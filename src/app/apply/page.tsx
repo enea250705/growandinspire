@@ -1,6 +1,20 @@
 import { ApplyForm } from '@/components/forms/ApplyForm'
+import { getOpenPositions } from '@/lib/jobs'
 
-export default function ApplyPage() {
+type TabType = 'job' | 'guest' | 'investment'
+const TABS: TabType[] = ['job', 'guest', 'investment']
+
+// searchParams are read here rather than with useSearchParams inside ApplyForm,
+// which would require a Suspense boundary.
+export default async function ApplyPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tab?: string; role?: string }>
+}) {
+  const { tab, role } = await searchParams
+  const positions = await getOpenPositions()
+  const initialTab = TABS.includes(tab as TabType) ? (tab as TabType) : 'job'
+
   return (
     <div className="pt-16 lg:pt-24 min-h-screen bg-brand-cream">
       <section className="bg-brand-black py-20 lg:py-28">
@@ -17,7 +31,7 @@ export default function ApplyPage() {
 
       <section className="py-20 lg:py-28">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ApplyForm />
+          <ApplyForm positions={positions} initialTab={initialTab} initialRole={role ?? ''} />
         </div>
       </section>
     </div>

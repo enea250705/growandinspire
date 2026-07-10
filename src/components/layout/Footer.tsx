@@ -15,7 +15,7 @@ const FOOTER_LINKS = {
   Apply: [
     { label: 'Apliko Tani', href: '/apply' },
     { label: 'Dinner with Alketa', href: '/dinner-with-alketa' },
-    { label: 'Work with Class', href: '/apply' },
+    { label: 'Work with Class', href: '/careers' },
     { label: 'Become a Guest', href: '/apply' },
   ],
   Company: [
