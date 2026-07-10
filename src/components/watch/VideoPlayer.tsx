@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
 import { createPortal } from 'react-dom'
 
 interface VideoPlayerProps {
@@ -23,6 +23,8 @@ interface PlyrLike {
   rewind: (seekTime?: number) => void
   forward: (seekTime?: number) => void
   togglePlay: () => void
+  on?: (event: string, cb: () => void) => void
+  elements?: { container?: HTMLElement | null }
   fullscreen?: { active: boolean; exit: () => void }
   destroy?: () => void
 }
@@ -40,7 +42,9 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
   const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Double-tap a side to seek 10s (like YouTube); a lone tap toggles play.
-  function handleZoneTap(side: 'left' | 'right') {
+  function handleZoneTap(e: ReactMouseEvent, side: 'left' | 'right') {
+    // Keep the tap from also reaching Plyr's click-to-play surface underneath.
+    e.stopPropagation()
     const player = playerRef.current
     const now = Date.now()
     const last = lastTapRef.current
@@ -94,7 +98,18 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
       }) as unknown as PlyrLike
 
       playerRef.current = plyrInstance
-      setPlyrRoot(containerRef.current?.querySelector('.plyr') as HTMLElement | null)
+
+      // For a YouTube embed the `.plyr` wrapper is built asynchronously, so grab
+      // it on `ready` (and eagerly, in case it already exists) — the seek zones
+      // and swipe handler are portaled into it and can't mount until it exists.
+      const captureRoot = () => {
+        const root =
+          (plyrInstance?.elements?.container as HTMLElement | null) ??
+          (containerRef.current?.querySelector('.plyr') as HTMLElement | null)
+        if (root) setPlyrRoot(root)
+      }
+      plyrInstance.on?.('ready', captureRoot)
+      captureRoot()
     }
 
     initPlayer()
@@ -165,13 +180,13 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
         type="button"
         aria-label="Rewind 10 seconds"
         className="absolute left-0 top-0 bottom-16 w-[35%] z-20 touch-none select-none bg-transparent"
-        onClick={() => handleZoneTap('left')}
+        onClick={(e) => handleZoneTap(e, 'left')}
       />
       <button
         type="button"
         aria-label="Forward 10 seconds"
         className="absolute right-0 top-0 bottom-16 w-[35%] z-20 touch-none select-none bg-transparent"
-        onClick={() => handleZoneTap('right')}
+        onClick={(e) => handleZoneTap(e, 'right')}
       />
       {skipHint && (
         <div
