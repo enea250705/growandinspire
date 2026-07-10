@@ -23,6 +23,7 @@ interface PlyrLike {
   rewind: (seekTime?: number) => void
   forward: (seekTime?: number) => void
   togglePlay: () => void
+  fullscreen?: { active: boolean; exit: () => void }
   destroy?: () => void
 }
 
@@ -103,6 +104,47 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
       plyrInstance?.destroy?.()
     }
   }, [youtubeId])
+
+  // Swipe the video down to leave fullscreen, the way native video apps behave.
+  useEffect(() => {
+    const root = plyrRoot
+    if (!root) return
+
+    let startX = 0
+    let startY = 0
+    let tracking = false
+
+    const onStart = (e: TouchEvent) => {
+      if (e.touches.length !== 1) {
+        tracking = false
+        return
+      }
+      startX = e.touches[0].clientX
+      startY = e.touches[0].clientY
+      tracking = true
+    }
+
+    const onEnd = (e: TouchEvent) => {
+      if (!tracking) return
+      tracking = false
+      const t = e.changedTouches[0]
+      if (!t) return
+      const dx = t.clientX - startX
+      const dy = t.clientY - startY
+      const fullscreen = playerRef.current?.fullscreen
+      // A clear downward drag (mostly vertical) dismisses fullscreen.
+      if (fullscreen?.active && dy > 90 && Math.abs(dy) > Math.abs(dx) * 1.5) {
+        fullscreen.exit()
+      }
+    }
+
+    root.addEventListener('touchstart', onStart, { passive: true })
+    root.addEventListener('touchend', onEnd, { passive: true })
+    return () => {
+      root.removeEventListener('touchstart', onStart)
+      root.removeEventListener('touchend', onEnd)
+    }
+  }, [plyrRoot])
 
   // move the watermark every 8s so it can't be cropped or masked out
   useEffect(() => {
