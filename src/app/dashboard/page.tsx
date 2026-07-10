@@ -12,10 +12,11 @@ export default async function DashboardPage() {
   const name = user?.user_metadata?.full_name ?? user?.email?.split('@')[0] ?? 'Member'
   const email = user?.email ?? ''
 
-  const [membership, recentContent, exclusiveContent, series, saved, downloads] = await Promise.all([
+  const [membership, recentContent, exclusiveContent, featuredContent, series, saved, downloads] = await Promise.all([
     getMembership(),
     getFreeContent(4),
     getPremiumContent(4),
+    getFreeContent(8),
     getSeriesListWithCounts(),
     getSavedContent(),
     getDownloads(),
@@ -33,7 +34,7 @@ export default async function DashboardPage() {
     { label: 'Upcoming Events', value: `${eventCount ?? 0}`, icon: Calendar, href: '/dashboard/events' },
   ]
 
-  return <DashboardContent name={name} stats={stats} recentContent={recentContent} exclusiveContent={exclusiveContent} series={series} />
+  return <DashboardContent name={name} stats={stats} recentContent={recentContent} exclusiveContent={exclusiveContent} featuredContent={featuredContent} series={series} />
 }
 
 interface Stat {
@@ -48,12 +49,14 @@ function DashboardContent({
   stats,
   recentContent,
   exclusiveContent,
+  featuredContent,
   series,
 }: {
   name: string
   stats: Stat[]
   recentContent: ContentItem[]
   exclusiveContent: ContentItem[]
+  featuredContent: ContentItem[]
   series: (Series & { videoCount: number })[]
 }) {
   return (
@@ -84,6 +87,51 @@ function DashboardContent({
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {recentContent.map((item) => (
+            <Link
+              key={item.id}
+              href={`/watch/${CATEGORY_META[item.type].slug}/${slugify(item.title)}`}
+              className="group bg-brand-white rounded-xl border border-black/8 overflow-hidden hover:shadow-md transition-shadow"
+            >
+              <div className="relative aspect-video bg-gradient-to-br from-brand-dark to-brand-black flex items-center justify-center overflow-hidden">
+                {item.thumbnail_url && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={item.thumbnail_url}
+                    alt=""
+                    className="absolute inset-0 w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                )}
+                <div className="absolute inset-0 bg-brand-black/30 group-hover:bg-brand-black/15 transition-colors" />
+                <div className="relative w-8 h-8 rounded-full bg-brand-black/50 border border-white/30 flex items-center justify-center group-hover:bg-brand-gold transition-colors">
+                  <svg className="w-3 h-3 text-white ml-0.5 group-hover:text-brand-black transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+              <div className="p-3">
+                <p className="text-xs text-brand-gold font-semibold uppercase tracking-widest mb-1">
+                  {CATEGORY_META[item.type].label}
+                </p>
+                <p className="text-xs font-semibold text-brand-black line-clamp-2">{item.title}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-10">
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center gap-2">
+            <PlayCircle size={15} className="text-brand-gold" />
+            <p className="font-semibold text-brand-black">Learning Hub</p>
+          </div>
+          <Link href="/watch" className="text-brand-gold text-sm font-medium hover:underline flex items-center gap-1">
+            View all <ChevronRight size={13} />
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {featuredContent.slice(0, 4).map((item) => (
             <Link
               key={item.id}
               href={`/watch/${CATEGORY_META[item.type].slug}/${slugify(item.title)}`}
