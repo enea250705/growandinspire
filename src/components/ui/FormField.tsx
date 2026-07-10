@@ -1,6 +1,8 @@
+'use client'
+
 import { cn } from '@/lib/utils'
-import { Check } from 'lucide-react'
-import { type InputHTMLAttributes, type TextareaHTMLAttributes } from 'react'
+import { Check, Eye, EyeOff } from 'lucide-react'
+import { useState, type InputHTMLAttributes, type TextareaHTMLAttributes } from 'react'
 
 interface FieldWrapperProps {
   label: string
@@ -29,20 +31,42 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   dark?: boolean
 }
 
-export function Input({ label, required, error, dark, className, ...props }: InputProps) {
+export function Input({ label, required, error, dark, className, type, ...props }: InputProps) {
+  const [show, setShow] = useState(false)
+  const isPassword = type === 'password'
+  const inputType = isPassword && show ? 'text' : type
+
   return (
     <FieldWrapper label={label} required={required} error={error} dark={dark}>
-      <input
-        className={cn(
-          'border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-gold transition-colors',
-          dark
-            ? 'bg-brand-black border-white/15 text-brand-white placeholder:text-white/25'
-            : 'bg-brand-white border-black/15 text-brand-black placeholder:text-black/30',
-          error && 'border-red-400',
-          className
+      <div className="relative">
+        <input
+          type={inputType}
+          className={cn(
+            'w-full border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-gold transition-colors',
+            isPassword && 'pr-11',
+            dark
+              ? 'bg-brand-black border-white/15 text-brand-white placeholder:text-white/25'
+              : 'bg-brand-white border-black/15 text-brand-black placeholder:text-black/30',
+            error && 'border-red-400',
+            className
+          )}
+          {...props}
+        />
+        {isPassword && (
+          <button
+            type="button"
+            onClick={() => setShow((s) => !s)}
+            tabIndex={-1}
+            aria-label={show ? 'Fshih fjalëkalimin' : 'Shfaq fjalëkalimin'}
+            className={cn(
+              'absolute right-3 top-1/2 -translate-y-1/2 transition-colors',
+              dark ? 'text-white/40 hover:text-white/80' : 'text-black/40 hover:text-black/70'
+            )}
+          >
+            {show ? <EyeOff size={16} /> : <Eye size={16} />}
+          </button>
         )}
-        {...props}
-      />
+      </div>
     </FieldWrapper>
   )
 }
