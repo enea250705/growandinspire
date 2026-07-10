@@ -27,9 +27,6 @@ export async function ELearningSection() {
     getPremiumContent(4),
   ])
   const trailerId = featured ? await getPlayableYoutubeId(featured.id) : null
-  const trailerHref = featured
-    ? `/watch/${CATEGORY_META[featured.type].slug}/${slugify(featured.title)}`
-    : null
 
   // Real premium videos the admin has added; fall back to the static teaser list
   // only when none exist yet. Each links to its own watch page, which gates
@@ -69,11 +66,6 @@ export async function ELearningSection() {
                 <span className="text-brand-gold text-xs font-semibold uppercase tracking-widest block mb-2">Video Trailer</span>
                 <h3 className="font-serif text-2xl lg:text-3xl text-brand-white font-medium mb-3">{featured?.title}</h3>
                 <p className="text-white/50 text-sm leading-relaxed mb-5">{featured?.description}</p>
-                {trailerHref && (
-                  <Link href={trailerHref} className="inline-flex items-center gap-2 text-brand-gold text-sm font-medium hover:underline">
-                    <Play size={13} fill="currentColor" /> Shiko në faqen e plotë
-                  </Link>
-                )}
               </div>
             </div>
           ) : (
