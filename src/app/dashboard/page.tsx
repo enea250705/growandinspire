@@ -29,7 +29,6 @@ export default async function DashboardPage() {
   const stats = [
     { label: 'My Membership', value: membership ? tierLabel(membership.tier) : 'Free', icon: Users, href: '/dashboard/membership' },
     { label: 'Saved Content', value: `${saved.length}`, icon: BookOpen, href: '/dashboard/saved' },
-    { label: 'Learning Hub', value: 'Watch & learn', icon: PlayCircle, href: '/watch' },
     { label: 'My Downloads', value: `${downloads.length}`, icon: Download, href: '/dashboard/downloads' },
     { label: 'Upcoming Events', value: `${eventCount ?? 0}`, icon: Calendar, href: '/dashboard/events' },
   ]
