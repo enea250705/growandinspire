@@ -62,7 +62,9 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
   return (
     <div
       ref={containerRef}
-      className="relative w-full aspect-video rounded-2xl overflow-hidden bg-brand-black select-none"
+      className="relative w-full aspect-video rounded-2xl overflow-hidden bg-brand-black select-none
+        [&_.plyr]:absolute [&_.plyr]:inset-0 [&_.plyr]:h-full [&_.plyr]:w-full
+        [&_.plyr__video-wrapper]:h-full [&_.plyr__video-embed]:h-full [&_iframe]:absolute [&_iframe]:inset-0"
       onContextMenu={(e) => e.preventDefault()}
     >
       <div
