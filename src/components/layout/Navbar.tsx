@@ -5,19 +5,22 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-
-const NAV_LINKS = [
-  { label: 'Learning', href: '/watch' },
-  { label: 'Coaching', href: '/coaching' },
-  { label: 'Events', href: '/events' },
-  { label: 'Community', href: '/community' },
-  { label: 'Careers', href: '/careers' },
-  { label: 'About', href: '/about' },
-]
+import { useT } from '@/lib/i18n/provider'
+import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher'
 
 export function Navbar() {
+  const t = useT()
   const [open, setOpen] = useState(false)
   const [loggedIn, setLoggedIn] = useState(false)
+
+  const NAV_LINKS = [
+    { label: t.nav.learning, href: '/watch' },
+    { label: t.nav.coaching, href: '/coaching' },
+    { label: t.nav.events, href: '/events' },
+    { label: t.nav.community, href: '/community' },
+    { label: t.nav.careers, href: '/careers' },
+    { label: t.nav.about, href: '/about' },
+  ]
 
   useEffect(() => {
     const supabase = createClient()
@@ -56,23 +59,24 @@ export function Navbar() {
         </div>
 
         <div className="hidden lg:flex items-center gap-3">
+          <LanguageSwitcher variant="dark" />
           {loggedIn ? (
             <Link
               href="/dashboard"
               className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium hover:bg-brand-gold-light transition-colors"
             >
-              Dashboard
+              {t.nav.dashboard}
             </Link>
           ) : (
             <>
               <Link href="/login" className="text-sm text-white/70 hover:text-brand-white transition-colors">
-                Log In
+                {t.nav.logIn}
               </Link>
               <Link
                 href="/membership"
                 className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium hover:bg-brand-gold-light transition-colors"
               >
-                Join the Circle
+                {t.nav.joinCircle}
               </Link>
             </>
           )}
@@ -102,25 +106,28 @@ export function Navbar() {
             </Link>
           ))}
           <div className="pt-2 flex flex-col gap-2 border-t border-white/10">
+            <div className="py-1">
+              <LanguageSwitcher variant="dark" />
+            </div>
             {loggedIn ? (
               <Link
                 href="/dashboard"
                 onClick={() => setOpen(false)}
                 className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium text-center hover:bg-brand-gold-light transition-colors"
               >
-                Dashboard
+                {t.nav.dashboard}
               </Link>
             ) : (
               <>
                 <Link href="/login" onClick={() => setOpen(false)} className="text-sm text-white/70 hover:text-brand-white transition-colors py-1">
-                  Log In
+                  {t.nav.logIn}
                 </Link>
                 <Link
                   href="/membership"
                   onClick={() => setOpen(false)}
                   className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium text-center hover:bg-brand-gold-light transition-colors"
                 >
-                  Join the Circle
+                  {t.nav.joinCircle}
                 </Link>
               </>
             )}

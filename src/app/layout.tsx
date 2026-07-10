@@ -4,6 +4,8 @@ import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { MobileBottomNav } from '@/components/layout/MobileBottomNav'
+import { I18nProvider } from '@/lib/i18n/provider'
+import { getLocale, getDictionary } from '@/lib/i18n/server'
 
 const inter = Inter({
   variable: '--font-inter',
@@ -21,18 +23,21 @@ export const metadata: Metadata = {
   description: 'A premium platform for personal growth, business leadership, meaningful connections, and curated experiences.',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const [locale, dict] = await Promise.all([getLocale(), getDictionary()])
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable} h-full`}>
+    <html lang={locale} className={`${inter.variable} ${playfair.variable} h-full`}>
       <body className="min-h-full flex flex-col bg-brand-cream text-brand-black antialiased">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <MobileBottomNav />
+        <I18nProvider locale={locale} dict={dict}>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <MobileBottomNav />
+        </I18nProvider>
       </body>
     </html>
   )
