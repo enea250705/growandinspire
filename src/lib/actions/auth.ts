@@ -14,7 +14,10 @@ export async function signUp(data: {
   const { error } = await supabase.auth.signUp({
     email: data.email,
     password: data.password,
-    options: { data: { full_name: data.name } },
+    options: {
+      data: { full_name: data.name },
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
+    },
   })
   if (error) return { ok: false, error: error.message }
   return { ok: true }
@@ -42,7 +45,7 @@ export async function signOut() {
 export async function sendPasswordReset(email: string): Promise<AuthResult> {
   const supabase = await createClient()
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback?next=/dashboard/settings`,
+    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings`,
   })
   if (error) return { ok: false, error: error.message }
   return { ok: true }
