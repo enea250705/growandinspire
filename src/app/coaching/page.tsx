@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Calendar, Users, Clock, MapPin } from 'lucide-react'
 import { DownloadProgram } from '@/components/coaching/DownloadProgram'
+import { CoachingForm } from '@/components/forms/CoachingForm'
 import { getSettings } from '@/lib/settings'
 
 export const revalidate = 60
@@ -191,6 +192,11 @@ export default async function CoachingPage() {
               </p>
               <DownloadProgram />
             </div>
+          </div>
+
+          {/* Coaching application */}
+          <div id="coaching-apply" className="mt-20 max-w-2xl mx-auto scroll-mt-24">
+            <CoachingForm />
           </div>
         </div>
       </section>

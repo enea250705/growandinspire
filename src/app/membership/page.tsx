@@ -1,5 +1,6 @@
 import { Check } from 'lucide-react'
 import Link from 'next/link'
+import { MembershipForm } from '@/components/forms/MembershipForm'
 
 const PLANS = [
   {
@@ -146,6 +147,13 @@ export default function MembershipPage() {
         </div>
       </section>
 
+      {/* Join the Circle signup form */}
+      <section id="join" className="pb-20 lg:pb-28 scroll-mt-24">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+          <MembershipForm />
+        </div>
+      </section>
+
       {/* Comparison table */}
       <section className="pb-20 lg:pb-28">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -186,7 +194,7 @@ export default function MembershipPage() {
           <h2 className="font-serif text-3xl font-bold text-brand-white mb-4">Not sure which plan?</h2>
           <p className="text-white/50 mb-8">Start free - upgrade when you&apos;re ready.</p>
           <Link
-            href="/login"
+            href="#join"
             className="inline-flex items-center justify-center bg-brand-gold text-brand-black px-8 py-4 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"
           >
             Join Free

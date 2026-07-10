@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, FileText, Megaphone, Calendar, Film, Users, Mail, ShieldCheck, Settings, UserCog } from 'lucide-react'
+import { LayoutDashboard, FileText, Megaphone, Calendar, Film, Users, Mail, ShieldCheck, Settings, UserCog, UserPlus } from 'lucide-react'
 import { signOut } from '@/lib/actions/auth'
 
 const NAV = [
@@ -10,6 +10,7 @@ const NAV = [
   { label: 'Applications', href: '/admin/applications', icon: FileText },
   { label: 'Sponsorship Leads', href: '/admin/leads', icon: Megaphone },
   { label: 'Registrations', href: '/admin/registrations', icon: Calendar },
+  { label: 'Membership Signups', href: '/admin/signups', icon: UserPlus },
   { label: 'Content', href: '/admin/content', icon: Film },
   { label: 'Members', href: '/admin/members', icon: Users },
   { label: 'Subscribers', href: '/admin/subscribers', icon: Mail },

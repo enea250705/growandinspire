@@ -32,22 +32,35 @@ export default async function ApplicationsPage() {
   const { data: { user } } = await supabase.auth.getUser()
   const email = user?.email ?? ''
 
-  const [dinner, apps, regs] = await Promise.all([
+  const [dinner, apps, regs, podcast, ideas, coaching] = await Promise.all([
     supabase.from('dinner_applications').select('status, created_at').eq('email', email),
     supabase.from('applications').select('type, status, created_at').eq('email', email),
     supabase.from('event_registrations').select('status, created_at').eq('email', email),
+    supabase.from('podcast_applications').select('status, created_at').eq('email', email),
+    supabase.from('idea_tables_applications').select('status, created_at').eq('email', email),
+    supabase.from('coaching_applications').select('status, created_at').eq('email', email),
   ])
 
   const rows: Row[] = []
+  const REVIEW = 'Aplikimi u mor. Ekipi po shqyrton.'
 
   for (const d of dinner.data ?? []) {
-    rows.push({ label: 'Dinner with Alketa', date: d.created_at, status: d.status, note: 'Aplikimi u mor. Ekipi po shqyrton.' })
+    rows.push({ label: 'Dinner with Alketa', date: d.created_at, status: d.status, note: REVIEW })
   }
   for (const a of apps.data ?? []) {
-    rows.push({ label: APP_TYPE_LABEL[a.type] ?? a.type, date: a.created_at, status: a.status, note: 'Aplikimi u mor. Ekipi po shqyrton.' })
+    rows.push({ label: APP_TYPE_LABEL[a.type] ?? a.type, date: a.created_at, status: a.status, note: REVIEW })
   }
   for (const r of regs.data ?? []) {
     rows.push({ label: 'Regjistrim Eventi', date: r.created_at, status: r.status, note: 'Regjistrimi u mor.' })
+  }
+  for (const p of podcast.data ?? []) {
+    rows.push({ label: 'Podcast Guest', date: p.created_at, status: p.status, note: REVIEW })
+  }
+  for (const i of ideas.data ?? []) {
+    rows.push({ label: 'Idea Tables', date: i.created_at, status: i.status, note: REVIEW })
+  }
+  for (const c of coaching.data ?? []) {
+    rows.push({ label: 'Coaching', date: c.created_at, status: c.status, note: REVIEW })
   }
 
   rows.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())

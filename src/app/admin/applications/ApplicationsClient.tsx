@@ -2,11 +2,19 @@
 
 import { useState, useTransition } from 'react'
 import { Check, X, Clock, Mail, ChevronDown, Download } from 'lucide-react'
-import { setDinnerStatus, setApplicationStatus, getCvUrl } from '@/lib/actions/admin'
+import {
+  setDinnerStatus,
+  setApplicationStatus,
+  setPodcastStatus,
+  setIdeaTableStatus,
+  setCoachingStatus,
+  getCvUrl,
+  getPitchDeckUrl,
+} from '@/lib/actions/admin'
 
 export interface AdminApplication {
   id: string
-  source: 'dinner' | 'application'
+  source: 'dinner' | 'application' | 'podcast' | 'idea' | 'coaching'
   kind: string
   name: string
   email: string
@@ -15,7 +23,15 @@ export interface AdminApplication {
   details: Record<string, string | null>
 }
 
-const FILTERS = ['all', 'Dinner with Alketa', 'Work with Class', 'Become a Guest', 'Idea / Investment'] as const
+const STATUS_FN: Record<AdminApplication['source'], (id: string, status: 'approved' | 'rejected' | 'pending') => Promise<{ ok: boolean }>> = {
+  dinner: setDinnerStatus,
+  application: setApplicationStatus,
+  podcast: setPodcastStatus,
+  idea: setIdeaTableStatus,
+  coaching: setCoachingStatus,
+}
+
+const FILTERS = ['all', 'Dinner with Alketa', 'Work with Class', 'Podcast Guest', 'Idea Tables', 'Coaching', 'Become a Guest', 'Idea / Investment'] as const
 
 function fmt(iso: string) {
   return new Date(iso).toLocaleDateString('sq-AL', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -37,8 +53,7 @@ export function ApplicationsClient({ items }: { items: AdminApplication[] }) {
 
   function update(item: AdminApplication, status: 'approved' | 'rejected' | 'pending') {
     startTransition(async () => {
-      const fn = item.source === 'dinner' ? setDinnerStatus : setApplicationStatus
-      const res = await fn(item.id, status)
+      const res = await STATUS_FN[item.source](item.id, status)
       if (res.ok) {
         setRows((prev) => prev.map((r) => (r.id === item.id ? { ...r, status } : r)))
       }
@@ -49,6 +64,12 @@ export function ApplicationsClient({ items }: { items: AdminApplication[] }) {
     const res = await getCvUrl(path)
     if (res.ok) window.open(res.url, '_blank')
     else alert('CV nuk u gjet.')
+  }
+
+  async function downloadDeck(path: string) {
+    const res = await getPitchDeckUrl(path)
+    if (res.ok) window.open(res.url, '_blank')
+    else alert('Pitch deck nuk u gjet.')
   }
 
   return (
@@ -120,7 +141,7 @@ export function ApplicationsClient({ items }: { items: AdminApplication[] }) {
                 <div className="px-5 pb-5 pt-1 border-t border-black/6 bg-brand-cream/40">
                   <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
                     {Object.entries(item.details)
-                      .filter(([k]) => k !== 'cv_path')
+                      .filter(([k]) => k !== 'cv_path' && k !== 'pitch_deck_path')
                       .map(([k, v]) => (
                         <div key={k}>
                           <dt className="text-[10px] uppercase tracking-widest text-black/40">{k}</dt>
@@ -134,6 +155,14 @@ export function ApplicationsClient({ items }: { items: AdminApplication[] }) {
                       className="mt-4 inline-flex items-center gap-2 bg-brand-black text-brand-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-brand-dark transition-colors"
                     >
                       <Download size={13} /> Shkarko CV
+                    </button>
+                  )}
+                  {item.details.pitch_deck_path && (
+                    <button
+                      onClick={() => downloadDeck(item.details.pitch_deck_path as string)}
+                      className="mt-4 inline-flex items-center gap-2 bg-brand-black text-brand-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-brand-dark transition-colors"
+                    >
+                      <Download size={13} /> Shkarko Pitch Deck
                     </button>
                   )}
                 </div>

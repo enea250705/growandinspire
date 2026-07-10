@@ -11,6 +11,7 @@ export interface AdminRegistration {
   phone: string | null
   status: string
   created_at: string
+  details?: Record<string, string | null>
 }
 
 const STATUSES = ['pending', 'confirmed', 'paid', 'cancelled'] as const
@@ -67,6 +68,18 @@ export function RegistrationsClient({ items }: { items: AdminRegistration[] }) {
               )}
             </div>
             <p className="text-xs text-black/30 mt-1">Regjistruar {fmt(r.created_at)}</p>
+            {r.details && Object.values(r.details).some(Boolean) && (
+              <dl className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5 max-w-lg">
+                {Object.entries(r.details)
+                  .filter(([, v]) => v)
+                  .map(([k, v]) => (
+                    <div key={k}>
+                      <dt className="text-[10px] uppercase tracking-widest text-black/40">{k}</dt>
+                      <dd className="text-sm text-black/70 break-words">{v}</dd>
+                    </div>
+                  ))}
+              </dl>
+            )}
           </div>
 
           <select

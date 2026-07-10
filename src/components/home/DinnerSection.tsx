@@ -20,11 +20,11 @@ export function DinnerSection() {
     setLoading(true)
     setError('')
     const result = await submitDinnerApplication({
-      name: form.name,
+      first_name: form.name,
       email: form.email,
       phone: form.phone,
-      profession: form.profession,
-      reason: form.reason,
+      position: form.profession,
+      why_join: form.reason,
     })
     setLoading(false)
     if (result.ok) setSubmitted(true)

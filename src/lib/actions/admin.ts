@@ -26,6 +26,27 @@ export async function setApplicationStatus(id: string, status: 'approved' | 'rej
   return { ok: true }
 }
 
+async function setStatusOn(table: string, id: string, status: 'approved' | 'rejected' | 'pending'): Promise<Result> {
+  await requireAdmin()
+  const supabase = createAdminClient()
+  const { error } = await supabase.from(table).update({ status }).eq('id', id)
+  if (error) return { ok: false, error: error.message }
+  revalidatePath('/admin/applications')
+  return { ok: true }
+}
+
+export async function setPodcastStatus(id: string, status: 'approved' | 'rejected' | 'pending') {
+  return setStatusOn('podcast_applications', id, status)
+}
+
+export async function setIdeaTableStatus(id: string, status: 'approved' | 'rejected' | 'pending') {
+  return setStatusOn('idea_tables_applications', id, status)
+}
+
+export async function setCoachingStatus(id: string, status: 'approved' | 'rejected' | 'pending') {
+  return setStatusOn('coaching_applications', id, status)
+}
+
 // ---- Event registrations ---------------------------------------------------
 
 export async function setRegistrationStatus(
@@ -184,6 +205,14 @@ export async function getCvUrl(path: string): Promise<{ ok: true; url: string } 
   await requireAdmin()
   const supabase = createAdminClient()
   const { data, error } = await supabase.storage.from('cvs').createSignedUrl(path, 120)
+  if (error || !data) return { ok: false, error: error?.message ?? 'Gabim' }
+  return { ok: true, url: data.signedUrl }
+}
+
+export async function getPitchDeckUrl(path: string): Promise<{ ok: true; url: string } | { ok: false; error: string }> {
+  await requireAdmin()
+  const supabase = createAdminClient()
+  const { data, error } = await supabase.storage.from('pitch-decks').createSignedUrl(path, 120)
   if (error || !data) return { ok: false, error: error?.message ?? 'Gabim' }
   return { ok: true, url: data.signedUrl }
 }

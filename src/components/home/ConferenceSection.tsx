@@ -2,8 +2,11 @@
 
 import { useState } from 'react'
 import { Check, Users } from 'lucide-react'
-import { Input, Select } from '@/components/ui/FormField'
+import { Input, Select, CheckboxGroup, Textarea } from '@/components/ui/FormField'
 import { submitEventRegistration } from '@/lib/actions/forms'
+
+const CONF_INTERESTS = ['Leadership', 'AI', 'Marketing', 'Finance', 'HR', 'Branding', 'Innovation', 'Entrepreneurship']
+const CONF_PARTICIPATION = ['VIP Dinner', 'Workshops', 'Discussion Groups', 'Networking Sessions']
 
 interface ConferenceSectionProps {
   priceEarly?: string
@@ -36,7 +39,12 @@ export function ConferenceSection({ priceEarly = '150', priceStandard = '175' }:
     },
   ]
 
-  const [form, setForm] = useState({ name: '', email: '', phone: '', package: '' })
+  const [form, setForm] = useState({
+    firstName: '', lastName: '', email: '', phone: '',
+    company: '', position: '', industry: '', city: '', networkingGoals: '', package: '',
+  })
+  const [interests, setInterests] = useState<string[]>([])
+  const [participation, setParticipation] = useState<string[]>([])
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -50,10 +58,18 @@ export function ConferenceSection({ priceEarly = '150', priceStandard = '175' }:
     setLoading(true)
     setError('')
     const result = await submitEventRegistration({
-      name: form.name,
+      first_name: form.firstName,
+      last_name: form.lastName,
       email: form.email,
       phone: form.phone,
-      notes: form.package,
+      company: form.company,
+      position: form.position,
+      industry: form.industry,
+      city: form.city,
+      interests,
+      networking_goals: form.networkingGoals,
+      participation,
+      package: form.package,
     })
     setLoading(false)
     if (result.ok) setSubmitted(true)
@@ -117,8 +133,8 @@ export function ConferenceSection({ priceEarly = '150', priceStandard = '175' }:
         </div>
 
         {/* Registration Form */}
-        <div className="max-w-xl mx-auto bg-brand-white rounded-3xl border border-black/8 p-8 shadow-sm">
-          <h3 className="font-serif text-2xl font-bold text-brand-black mb-6 text-center">Regjistrohu</h3>
+        <div className="max-w-2xl mx-auto bg-brand-white rounded-3xl border border-black/8 p-8 shadow-sm">
+          <h3 className="font-serif text-2xl font-bold text-brand-black mb-6 text-center">Register</h3>
 
           {submitted ? (
             <div className="text-center py-8">
@@ -127,10 +143,24 @@ export function ConferenceSection({ priceEarly = '150', priceStandard = '175' }:
               <p className="text-black/50 text-sm">Konfirmimi dhe detajet e pagesës do të vijnë me email.</p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Input label="Emri dhe Mbiemri" required placeholder="Emri juaj i plotë" value={form.name} onChange={(e) => set('name', e.target.value)} />
-              <Input label="Email" type="email" required placeholder="email@juaj.com" value={form.email} onChange={(e) => set('email', e.target.value)} />
-              <Input label="Numri i Telefonit" type="tel" placeholder="+355 6X XXX XXXX" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Input label="Emër" required value={form.firstName} onChange={(e) => set('firstName', e.target.value)} />
+                <Input label="Mbiemër" required value={form.lastName} onChange={(e) => set('lastName', e.target.value)} />
+                <Input label="Email" type="email" required placeholder="email@juaj.com" value={form.email} onChange={(e) => set('email', e.target.value)} />
+                <Input label="Telefon" type="tel" placeholder="+355 6X XXX XXXX" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
+                <Input label="Kompania" value={form.company} onChange={(e) => set('company', e.target.value)} />
+                <Input label="Pozicioni" value={form.position} onChange={(e) => set('position', e.target.value)} />
+                <Input label="Industria" value={form.industry} onChange={(e) => set('industry', e.target.value)} />
+                <Input label="Qyteti" value={form.city} onChange={(e) => set('city', e.target.value)} />
+              </div>
+
+              <CheckboxGroup label="Interests" options={CONF_INTERESTS} value={interests} onChange={setInterests} />
+
+              <Textarea label="Networking Goals — Çfarë kërkoni të arrini në konferencë?" rows={3} value={form.networkingGoals} onChange={(e) => set('networkingGoals', e.target.value)} />
+
+              <CheckboxGroup label="A dëshironi të merrni pjesë në:" options={CONF_PARTICIPATION} value={participation} onChange={setParticipation} />
+
               <Select
                 label="Paketa"
                 required

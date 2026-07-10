@@ -35,10 +35,10 @@ export function RetreatSection() {
     setLoading(true)
     setError('')
     const result = await submitEventRegistration({
-      name: form.name,
+      first_name: form.name,
       email: form.email,
       phone: form.phone,
-      notes: `format:${form.format} theme:${form.theme} message:${form.message}`,
+      networking_goals: `format:${form.format} theme:${form.theme} message:${form.message}`,
     })
     setLoading(false)
     if (result.ok) setSubmitted(true)
