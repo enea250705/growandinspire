@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 interface VideoPlayerProps {
@@ -34,47 +34,14 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
   const playerRef = useRef<PlyrLike | null>(null)
   const [posIndex, setPosIndex] = useState(0)
   const [skipHint, setSkipHint] = useState<null | 'back' | 'forward'>(null)
-  // The `.plyr` element Plyr builds; it's what actually goes fullscreen, so we
-  // portal our seek overlay into it to keep double-tap working in fullscreen.
+  // The `.plyr` element Plyr builds; it's what actually goes fullscreen. All
+  // gestures are bound to it and the hint is portaled into it, so both keep
+  // working in fullscreen.
   const [plyrRoot, setPlyrRoot] = useState<HTMLElement | null>(null)
-  const lastTapRef = useRef<{ side: 'left' | 'right'; time: number } | null>(null)
-  const singleTapTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const hintTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  // Double-tap a side to seek 10s (like YouTube); a lone tap toggles play.
-  function handleZoneTap(e: ReactMouseEvent, side: 'left' | 'right') {
-    // Keep the tap from also reaching Plyr's click-to-play surface underneath.
-    e.stopPropagation()
-    const player = playerRef.current
-    const now = Date.now()
-    const last = lastTapRef.current
-
-    if (last && last.side === side && now - last.time < 300) {
-      if (singleTapTimer.current) {
-        clearTimeout(singleTapTimer.current)
-        singleTapTimer.current = null
-      }
-      lastTapRef.current = null
-      if (side === 'left') player?.rewind(10)
-      else player?.forward(10)
-      setSkipHint(side === 'left' ? 'back' : 'forward')
-      if (hintTimer.current) clearTimeout(hintTimer.current)
-      hintTimer.current = setTimeout(() => setSkipHint(null), 550)
-      return
-    }
-
-    lastTapRef.current = { side, time: now }
-    if (singleTapTimer.current) clearTimeout(singleTapTimer.current)
-    singleTapTimer.current = setTimeout(() => {
-      player?.togglePlay()
-      singleTapTimer.current = null
-      lastTapRef.current = null
-    }, 300)
-  }
 
   useEffect(() => {
     return () => {
-      if (singleTapTimer.current) clearTimeout(singleTapTimer.current)
       if (hintTimer.current) clearTimeout(hintTimer.current)
     }
   }, [])
@@ -100,8 +67,7 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
       playerRef.current = plyrInstance
 
       // For a YouTube embed the `.plyr` wrapper is built asynchronously, so grab
-      // it on `ready` (and eagerly, in case it already exists) — the seek zones
-      // and swipe handler are portaled into it and can't mount until it exists.
+      // it on `ready` (and eagerly, in case it already exists).
       const captureRoot = () => {
         const root =
           (plyrInstance?.elements?.container as HTMLElement | null) ??
@@ -120,7 +86,10 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
     }
   }, [youtubeId])
 
-  // Swipe the video down to leave fullscreen, the way native video apps behave.
+  // Touch gestures on the player: double-tap a side to seek 10s (like YouTube),
+  // single tap toggles play, and a downward swipe leaves fullscreen. All of it
+  // rides the container's own touch events, which fire reliably even though the
+  // YouTube surface sits above our overlay.
   useEffect(() => {
     const root = plyrRoot
     if (!root) return
@@ -128,9 +97,19 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
     let startX = 0
     let startY = 0
     let tracking = false
+    let lastTap: { side: 'left' | 'right'; time: number } | null = null
+    let singleTimer: ReturnType<typeof setTimeout> | null = null
+
+    const showHint = (side: 'left' | 'right') => {
+      setSkipHint(side === 'left' ? 'back' : 'forward')
+      if (hintTimer.current) clearTimeout(hintTimer.current)
+      hintTimer.current = setTimeout(() => setSkipHint(null), 550)
+    }
 
     const onStart = (e: TouchEvent) => {
-      if (e.touches.length !== 1) {
+      const target = e.target as HTMLElement
+      // Leave Plyr's own controls (progress bar, buttons) to Plyr.
+      if (e.touches.length !== 1 || target.closest('.plyr__controls') || target.closest('.plyr__control')) {
         tracking = false
         return
       }
@@ -146,16 +125,50 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
       if (!t) return
       const dx = t.clientX - startX
       const dy = t.clientY - startY
-      const fullscreen = playerRef.current?.fullscreen
+      const player = playerRef.current
+      const fullscreen = player?.fullscreen
+
       // A clear downward drag (mostly vertical) dismisses fullscreen.
       if (fullscreen?.active && dy > 90 && Math.abs(dy) > Math.abs(dx) * 1.5) {
+        e.preventDefault()
         fullscreen.exit()
+        return
       }
+
+      // Otherwise, treat a near-stationary touch as a tap.
+      if (Math.hypot(dx, dy) >= 12) return
+      // Stop Plyr's click-to-play firing too; we drive play/seek ourselves.
+      e.preventDefault()
+
+      const rect = root.getBoundingClientRect()
+      const side: 'left' | 'right' = t.clientX - rect.left < rect.width / 2 ? 'left' : 'right'
+      const now = Date.now()
+
+      if (lastTap && lastTap.side === side && now - lastTap.time < 300) {
+        if (singleTimer) {
+          clearTimeout(singleTimer)
+          singleTimer = null
+        }
+        lastTap = null
+        if (side === 'left') player?.rewind(10)
+        else player?.forward(10)
+        showHint(side)
+        return
+      }
+
+      lastTap = { side, time: now }
+      if (singleTimer) clearTimeout(singleTimer)
+      singleTimer = setTimeout(() => {
+        player?.togglePlay()
+        singleTimer = null
+        lastTap = null
+      }, 300)
     }
 
     root.addEventListener('touchstart', onStart, { passive: true })
-    root.addEventListener('touchend', onEnd, { passive: true })
+    root.addEventListener('touchend', onEnd, { passive: false })
     return () => {
+      if (singleTimer) clearTimeout(singleTimer)
       root.removeEventListener('touchstart', onStart)
       root.removeEventListener('touchend', onEnd)
     }
@@ -170,24 +183,10 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
     return () => clearInterval(id)
   }, [watermark])
 
-  // Seek overlay + watermark, rendered inside the `.plyr` element so they stay
-  // on screen (and tappable) when the player is fullscreen.
+  // Seek indicator + watermark, rendered inside the `.plyr` element so they stay
+  // visible when the player is fullscreen. Both are non-interactive.
   const overlay = (
     <>
-      {/* Double-tap seek zones: left rewinds, right fast-forwards 10s.
-          The center column and bottom control bar stay clear for Plyr. */}
-      <button
-        type="button"
-        aria-label="Rewind 10 seconds"
-        className="absolute left-0 top-0 bottom-16 w-[35%] z-20 touch-none select-none bg-transparent"
-        onClick={(e) => handleZoneTap(e, 'left')}
-      />
-      <button
-        type="button"
-        aria-label="Forward 10 seconds"
-        className="absolute right-0 top-0 bottom-16 w-[35%] z-20 touch-none select-none bg-transparent"
-        onClick={(e) => handleZoneTap(e, 'right')}
-      />
       {skipHint && (
         <div
           className={`pointer-events-none absolute top-1/2 -translate-y-1/2 z-30 flex items-center gap-1.5 rounded-full bg-black/60 px-4 py-2 text-white text-sm font-semibold backdrop-blur-sm ${
