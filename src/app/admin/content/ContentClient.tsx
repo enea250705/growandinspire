@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react'
 import { Plus, Pencil, Trash2, Lock, X } from 'lucide-react'
 import { Input, Textarea, Select } from '@/components/ui/FormField'
 import { createContent, updateContent, deleteContent, type ContentInput } from '@/lib/actions/admin'
-import type { AdminContentItem } from '@/types'
+import type { AdminContentItem, Series } from '@/types'
 
 const TYPE_OPTIONS = [
   { label: 'Inspire Podcast', value: 'podcast' },
@@ -17,7 +17,7 @@ const TYPE_OPTIONS = [
 
 const EMPTY: ContentInput = {
   type: 'podcast', title: '', description: '', youtube_id: '', thumbnail_url: '',
-  is_premium: false, published_at: '',
+  is_premium: false, published_at: '', series_id: '', episode_number: '',
 }
 
 function toInput(item: AdminContentItem): ContentInput {
@@ -29,10 +29,14 @@ function toInput(item: AdminContentItem): ContentInput {
     thumbnail_url: item.thumbnail_url ?? '',
     is_premium: item.is_premium,
     published_at: item.published_at.slice(0, 10),
+    series_id: item.series_id ?? '',
+    episode_number: item.episode_number != null ? String(item.episode_number) : '',
   }
 }
 
-export function ContentClient({ items }: { items: AdminContentItem[] }) {
+export function ContentClient({ items, series }: { items: AdminContentItem[]; series: Series[] }) {
+  const seriesOptions = [{ label: '— Pa seri —', value: '' }, ...series.map((s) => ({ label: s.title, value: s.id }))]
+  const seriesName = (id: string | null) => series.find((s) => s.id === id)?.title
   const [rows, setRows] = useState(items)
   const [editing, setEditing] = useState<string | 'new' | null>(null)
   const [form, setForm] = useState<ContentInput>(EMPTY)
@@ -62,14 +66,21 @@ export function ContentClient({ items }: { items: AdminContentItem[] }) {
       const res = editing === 'new' ? await createContent(payload) : await updateContent(editing as string, payload)
       if (res.ok) {
         setEditing(null)
-        // optimistic refresh: reload from server on next navigation; here we mutate local
+        // optimistic refresh: reload from server on next navigation; here we mutate local.
+        // Normalise the ContentInput's string fields back to the AdminContentItem shape.
+        const normalised = {
+          ...payload,
+          has_video: !!payload.youtube_id,
+          series_id: payload.series_id || null,
+          episode_number: payload.episode_number ? Number(payload.episode_number) : null,
+        }
         if (editing === 'new') {
           setRows((prev) => [
-            { id: crypto.randomUUID(), ...payload, has_video: !!payload.youtube_id } as AdminContentItem,
+            { id: crypto.randomUUID(), ...normalised } as AdminContentItem,
             ...prev,
           ])
         } else {
-          setRows((prev) => prev.map((r) => (r.id === editing ? { ...r, ...payload } as AdminContentItem : r)))
+          setRows((prev) => prev.map((r) => (r.id === editing ? { ...r, ...normalised } as AdminContentItem : r)))
         }
       } else {
         setError(res.error)
@@ -121,6 +132,16 @@ export function ContentClient({ items }: { items: AdminContentItem[] }) {
               <Textarea label="Përshkrimi" rows={3} value={form.description} onChange={(e) => set('description', e.target.value)} />
             </div>
             <Input label="Data e publikimit" type="date" value={form.published_at} onChange={(e) => set('published_at', e.target.value)} />
+            <Select label="Seria (opsionale)" options={seriesOptions} value={form.series_id} onChange={(e) => set('series_id', e.target.value)} />
+            {form.series_id && (
+              <Input
+                label="Numri i episodit"
+                type="number"
+                placeholder="1"
+                value={form.episode_number}
+                onChange={(e) => set('episode_number', e.target.value)}
+              />
+            )}
             <label className="flex items-center gap-2 mt-7">
               <input type="checkbox" checked={form.is_premium} onChange={(e) => set('is_premium', e.target.checked)} className="w-4 h-4 accent-brand-gold" />
               <span className="text-sm text-brand-black">Premium (vetëm anëtarë)</span>
@@ -146,6 +167,11 @@ export function ContentClient({ items }: { items: AdminContentItem[] }) {
               <div className="flex items-center gap-2">
                 <span className="text-brand-gold text-[10px] font-semibold uppercase tracking-widest">{item.type}</span>
                 {item.is_premium && <Lock size={10} className="text-brand-gold" />}
+                {item.series_id && (
+                  <span className="text-[10px] text-black/40 bg-black/5 rounded-full px-2 py-0.5">
+                    {seriesName(item.series_id)}{item.episode_number != null ? ` · Ep ${item.episode_number}` : ''}
+                  </span>
+                )}
               </div>
               <p className="font-semibold text-brand-black text-sm truncate">{item.title}</p>
               <p className="text-xs text-black/30">{item.published_at.slice(0, 10)}{item.youtube_id ? ` · ${item.youtube_id}` : ''}</p>

@@ -1,10 +1,10 @@
 import Link from 'next/link'
-import { BookOpen, Calendar, Download, Users, Lock, ChevronRight } from 'lucide-react'
+import { BookOpen, Calendar, Download, Users, Lock, ChevronRight, Layers } from 'lucide-react'
 import { CATEGORY_META, slugify } from '@/lib/content-meta'
-import { getFreeContent, getPremiumContent } from '@/lib/content'
+import { getFreeContent, getPremiumContent, getSeriesListWithCounts, getSavedContent, getDownloads } from '@/lib/content'
 import { createClient } from '@/lib/supabase/server'
 import { getMembership, tierLabel } from '@/lib/membership'
-import type { ContentItem } from '@/types'
+import type { ContentItem, Series } from '@/types'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -12,10 +12,13 @@ export default async function DashboardPage() {
   const name = user?.user_metadata?.full_name ?? user?.email?.split('@')[0] ?? 'Member'
   const email = user?.email ?? ''
 
-  const [membership, recentContent, exclusiveContent] = await Promise.all([
+  const [membership, recentContent, exclusiveContent, series, saved, downloads] = await Promise.all([
     getMembership(),
     getFreeContent(4),
     getPremiumContent(4),
+    getSeriesListWithCounts(),
+    getSavedContent(),
+    getDownloads(),
   ])
   const { count: eventCount } = await supabase
     .from('event_registrations')
@@ -24,12 +27,12 @@ export default async function DashboardPage() {
 
   const stats = [
     { label: 'My Membership', value: membership ? tierLabel(membership.tier) : 'Free', icon: Users, href: '/dashboard/membership' },
-    { label: 'Saved Content', value: '-', icon: BookOpen, href: '/dashboard/saved' },
-    { label: 'My Downloads', value: '-', icon: Download, href: '/dashboard/downloads' },
+    { label: 'Saved Content', value: `${saved.length}`, icon: BookOpen, href: '/dashboard/saved' },
+    { label: 'My Downloads', value: `${downloads.length}`, icon: Download, href: '/dashboard/downloads' },
     { label: 'Upcoming Events', value: `${eventCount ?? 0}`, icon: Calendar, href: '/dashboard/events' },
   ]
 
-  return <DashboardContent name={name} stats={stats} recentContent={recentContent} exclusiveContent={exclusiveContent} />
+  return <DashboardContent name={name} stats={stats} recentContent={recentContent} exclusiveContent={exclusiveContent} series={series} />
 }
 
 interface Stat {
@@ -44,11 +47,13 @@ function DashboardContent({
   stats,
   recentContent,
   exclusiveContent,
+  series,
 }: {
   name: string
   stats: Stat[]
   recentContent: ContentItem[]
   exclusiveContent: ContentItem[]
+  series: (Series & { videoCount: number })[]
 }) {
   return (
     <>
@@ -110,6 +115,43 @@ function DashboardContent({
           ))}
         </div>
       </div>
+
+      {series.length > 0 && (
+        <div className="mb-10">
+          <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center gap-2">
+              <Layers size={15} className="text-brand-gold" />
+              <p className="font-semibold text-brand-black">Seri dhe Programe</p>
+            </div>
+            <Link href="/series" className="text-brand-gold text-sm font-medium hover:underline flex items-center gap-1">
+              View all <ChevronRight size={13} />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {series.slice(0, 4).map((s) => (
+              <Link
+                key={s.id}
+                href={`/series/${slugify(s.title)}`}
+                className="group bg-brand-white rounded-xl border border-black/8 overflow-hidden hover:shadow-md transition-shadow"
+              >
+                <div className="relative aspect-video bg-gradient-to-br from-brand-dark to-brand-black overflow-hidden">
+                  {s.thumbnail_url && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={s.thumbnail_url} alt="" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+                  )}
+                  <div className="absolute inset-0 bg-brand-black/25 group-hover:bg-brand-black/10 transition-colors" />
+                  <span className="absolute bottom-2 left-2 bg-brand-black/60 text-white/85 text-[10px] px-2 py-0.5 rounded-full">
+                    {s.videoCount} video
+                  </span>
+                </div>
+                <div className="p-3">
+                  <p className="text-xs font-semibold text-brand-black line-clamp-2">{s.title}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="mb-10">
         <div className="flex items-center justify-between mb-5">

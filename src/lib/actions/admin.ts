@@ -71,6 +71,18 @@ export interface ContentInput {
   thumbnail_url: string
   is_premium: boolean
   published_at: string
+  /** Series this video belongs to, '' = none. */
+  series_id: string
+  /** Order within the series; '' = unset. */
+  episode_number: string
+}
+
+export interface SeriesInput {
+  title: string
+  description: string
+  thumbnail_url: string
+  sort_order: number
+  is_published: boolean
 }
 
 // She pastes whatever YouTube gives her — a full watch URL, a youtu.be share
@@ -110,10 +122,13 @@ export async function createContent(input: ContentInput): Promise<Result> {
     thumbnail_url: input.thumbnail_url || null,
     is_premium: input.is_premium,
     published_at: input.published_at || new Date().toISOString(),
+    series_id: input.series_id || null,
+    episode_number: input.episode_number ? Number(input.episode_number) : null,
   })
   if (error) return { ok: false, error: error.message }
   revalidatePath('/admin/content')
   revalidatePath('/watch')
+  revalidatePath('/series')
   revalidatePath('/')
   return { ok: true }
 }
@@ -129,10 +144,63 @@ export async function updateContent(id: string, input: ContentInput): Promise<Re
     thumbnail_url: input.thumbnail_url || null,
     is_premium: input.is_premium,
     published_at: input.published_at,
+    series_id: input.series_id || null,
+    episode_number: input.episode_number ? Number(input.episode_number) : null,
   }).eq('id', id)
   if (error) return { ok: false, error: error.message }
   revalidatePath('/admin/content')
   revalidatePath('/watch')
+  revalidatePath('/series')
+  revalidatePath('/')
+  return { ok: true }
+}
+
+// ---- Series ----------------------------------------------------------------
+
+export async function createSeries(input: SeriesInput): Promise<Result> {
+  await requireAdmin()
+  const supabase = createAdminClient()
+  const { error } = await supabase.from('series').insert({
+    title: input.title,
+    description: input.description || null,
+    thumbnail_url: input.thumbnail_url || null,
+    sort_order: input.sort_order,
+    is_published: input.is_published,
+  })
+  if (error) return { ok: false, error: error.message }
+  revalidatePath('/admin/series')
+  revalidatePath('/series')
+  revalidatePath('/')
+  return { ok: true }
+}
+
+export async function updateSeries(id: string, input: SeriesInput): Promise<Result> {
+  await requireAdmin()
+  const supabase = createAdminClient()
+  const { error } = await supabase.from('series').update({
+    title: input.title,
+    description: input.description || null,
+    thumbnail_url: input.thumbnail_url || null,
+    sort_order: input.sort_order,
+    is_published: input.is_published,
+  }).eq('id', id)
+  if (error) return { ok: false, error: error.message }
+  revalidatePath('/admin/series')
+  revalidatePath('/series')
+  revalidatePath('/')
+  return { ok: true }
+}
+
+export async function deleteSeries(id: string): Promise<Result> {
+  await requireAdmin()
+  const supabase = createAdminClient()
+  // Videos in this series keep existing; their series_id is nulled by the FK's
+  // ON DELETE SET NULL. So this only removes the container.
+  const { error } = await supabase.from('series').delete().eq('id', id)
+  if (error) return { ok: false, error: error.message }
+  revalidatePath('/admin/series')
+  revalidatePath('/admin/content')
+  revalidatePath('/series')
   revalidatePath('/')
   return { ok: true }
 }
@@ -144,6 +212,8 @@ export async function deleteContent(id: string): Promise<Result> {
   if (error) return { ok: false, error: error.message }
   revalidatePath('/admin/content')
   revalidatePath('/watch')
+  revalidatePath('/series')
+  revalidatePath('/')
   return { ok: true }
 }
 

@@ -2,9 +2,10 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Lock, Calendar, ArrowLeft } from 'lucide-react'
 import { CATEGORY_META, SLUG_TO_TYPE, slugify, formatDate } from '@/lib/content-meta'
-import { getAllContent, getContentByType, getContentBySlug, getPlayableYoutubeId } from '@/lib/content'
+import { getAllContent, getContentByType, getContentBySlug, getPlayableYoutubeId, isSaved } from '@/lib/content'
 import { VideoPlayer } from '@/components/watch/VideoPlayer'
 import { ContentCard } from '@/components/watch/ContentCard'
+import { SaveButton } from '@/components/watch/SaveButton'
 import { PremiumBadge } from '@/components/ui/LockBadge'
 import { createClient } from '@/lib/supabase/server'
 import { isMember as checkMembership } from '@/lib/membership'
@@ -40,6 +41,7 @@ export default async function EpisodePage({ params }: Props) {
   const isLocked = item.is_premium && !isMember
   const watermark = user?.email ?? 'Grow and Inspire · Member'
   const youtubeId = isLocked ? null : await getPlayableYoutubeId(item.id)
+  const saved = user ? await isSaved(item.id) : false
 
   const related = (await getContentByType(type))
     .filter((c) => c.id !== item.id)
@@ -64,9 +66,12 @@ export default async function EpisodePage({ params }: Props) {
             {item.is_premium && <PremiumBadge />}
           </div>
           <h1 className="font-serif text-3xl lg:text-4xl font-bold text-brand-black mb-3">{item.title}</h1>
-          <div className="flex items-center gap-2 text-black/40 text-sm">
-            <Calendar size={13} />
-            <span>{formatDate(item.published_at)}</span>
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div className="flex items-center gap-2 text-black/40 text-sm">
+              <Calendar size={13} />
+              <span>{formatDate(item.published_at)}</span>
+            </div>
+            {user && <SaveButton contentId={item.id} initialSaved={saved} />}
           </div>
         </div>
 

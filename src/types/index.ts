@@ -33,11 +33,42 @@ export interface ContentItem {
   is_premium: boolean
   published_at: string
   has_video: boolean
+  /** Series this video belongs to, or null if it stands alone. */
+  series_id: string | null
+  /** Order within the series (1-based). Null when not in a series. */
+  episode_number: number | null
 }
 
 /** Admin-only shape. Read with the service role. */
 export interface AdminContentItem extends ContentItem {
   youtube_id: string | null
+}
+
+/** A series / program: an ordered container of content_items. */
+export interface Series {
+  id: string
+  title: string
+  description: string | null
+  thumbnail_url: string | null
+  sort_order: number
+  is_published: boolean
+  created_at: string
+}
+
+/** A series with its videos attached, ordered by episode_number. */
+export interface SeriesWithVideos extends Series {
+  videos: ContentItem[]
+}
+
+/** A downloadable member resource (worksheet, PDF, template). */
+export interface Download {
+  id: string
+  title: string
+  description: string | null
+  file_url: string
+  is_premium: boolean
+  sort_order: number
+  created_at: string
 }
 
 export interface JobPosition {

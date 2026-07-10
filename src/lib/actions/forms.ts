@@ -301,6 +301,16 @@ export async function submitSponsorshipLead(data: {
   return { ok: true }
 }
 
+// ---- Coaching program lead magnet ("Shkarko Programin") --------------------
+// Public lead capture on /coaching. Stores the email so the lead is never lost;
+// admin reads them with the service role (no public SELECT on the table).
+export async function submitCoachingProgramRequest(email: string): Promise<ActionResult> {
+  const supabase = await createClient()
+  const { error } = await supabase.from('coaching_program_requests').insert({ email })
+  if (error) return { ok: false, error: error.message }
+  return { ok: true }
+}
+
 // ---- Newsletter — unchanged ------------------------------------------------
 export async function submitNewsletterSignup(email: string): Promise<ActionResult> {
   const supabase = await createClient()
