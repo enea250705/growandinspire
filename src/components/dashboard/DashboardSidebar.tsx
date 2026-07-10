@@ -2,18 +2,9 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { BookOpen, Calendar, Users, Settings, LogOut, LayoutDashboard, FileText, ShieldCheck, Download } from 'lucide-react'
+import { LogOut, ShieldCheck } from 'lucide-react'
 import { signOut } from '@/lib/actions/auth'
-
-const NAV = [
-  { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard, exact: true },
-  { label: 'My Membership', href: '/dashboard/membership', icon: Users },
-  { label: 'Saved Content', href: '/dashboard/saved', icon: BookOpen },
-  { label: 'My Downloads', href: '/dashboard/downloads', icon: Download },
-  { label: 'My Applications', href: '/dashboard/applications', icon: FileText },
-  { label: 'Upcoming Events', href: '/dashboard/events', icon: Calendar },
-  { label: 'Settings', href: '/dashboard/settings', icon: Settings },
-]
+import { DASHBOARD_NAV } from '@/components/dashboard/navItems'
 
 interface Props {
   name: string
@@ -39,7 +30,7 @@ export function DashboardSidebar({ name, email, tier, isAdmin }: Props) {
         </div>
 
         <nav className="p-2">
-          {NAV.map(({ label, href, icon: Icon, exact }) => {
+          {DASHBOARD_NAV.map(({ label, href, icon: Icon, exact }) => {
             const active = exact ? pathname === href : pathname.startsWith(href)
             return (
               <Link

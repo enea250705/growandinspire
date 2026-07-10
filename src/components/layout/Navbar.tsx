@@ -11,7 +11,7 @@ const NAV_LINKS = [
   { label: 'Coaching', href: '/coaching' },
   { label: 'Events', href: '/events' },
   { label: 'Community', href: '/community' },
-  { label: 'Careers', href: '/careers' },
+  { label: 'Insights', href: '/insights' },
   { label: 'About', href: '/about' },
 ]
 

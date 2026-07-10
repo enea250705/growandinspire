@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { BookOpen, Calendar, Download, Users, Lock, ChevronRight, Layers } from 'lucide-react'
+import { BookOpen, Calendar, Download, Users, Lock, ChevronRight, Layers, PlayCircle } from 'lucide-react'
 import { CATEGORY_META, slugify } from '@/lib/content-meta'
 import { getFreeContent, getPremiumContent, getSeriesListWithCounts, getSavedContent, getDownloads } from '@/lib/content'
 import { createClient } from '@/lib/supabase/server'
@@ -28,6 +28,7 @@ export default async function DashboardPage() {
   const stats = [
     { label: 'My Membership', value: membership ? tierLabel(membership.tier) : 'Free', icon: Users, href: '/dashboard/membership' },
     { label: 'Saved Content', value: `${saved.length}`, icon: BookOpen, href: '/dashboard/saved' },
+    { label: 'Learning Hub', value: 'Watch & learn', icon: PlayCircle, href: '/watch' },
     { label: 'My Downloads', value: `${downloads.length}`, icon: Download, href: '/dashboard/downloads' },
     { label: 'Upcoming Events', value: `${eventCount ?? 0}`, icon: Calendar, href: '/dashboard/events' },
   ]
@@ -64,7 +65,7 @@ function DashboardContent({
         <p className="text-black/50 mt-1">Here is what is happening in your circle.</p>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+      <div className="grid grid-cols-2 xl:grid-cols-5 gap-4 mb-10">
         {stats.map(({ label, value, icon: Icon, href }) => (
           <Link key={label} href={href} className="bg-brand-white rounded-2xl border border-black/8 p-5 hover:border-brand-gold/30 transition-colors">
             <Icon size={16} className="text-brand-gold mb-3" strokeWidth={1.5} />
