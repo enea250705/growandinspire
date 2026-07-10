@@ -73,6 +73,29 @@ export interface ContentInput {
   published_at: string
 }
 
+// She pastes whatever YouTube gives her — a full watch URL, a youtu.be share
+// link, a Shorts/embed URL, or (rarely) the bare 11-char ID. Normalise to the
+// ID we store, so she never has to hand-extract it. Unrecognised input is
+// returned trimmed as-is rather than dropped, so a typo stays visible/fixable.
+function extractYoutubeId(raw: string): string | null {
+  const s = (raw || '').trim()
+  if (!s) return null
+  // Already a bare ID.
+  if (/^[A-Za-z0-9_-]{11}$/.test(s)) return s
+  const patterns = [
+    /[?&]v=([A-Za-z0-9_-]{11})/,        // watch?v=ID
+    /youtu\.be\/([A-Za-z0-9_-]{11})/,   // youtu.be/ID
+    /\/shorts\/([A-Za-z0-9_-]{11})/,    // /shorts/ID
+    /\/embed\/([A-Za-z0-9_-]{11})/,     // /embed/ID
+    /\/live\/([A-Za-z0-9_-]{11})/,      // /live/ID
+  ]
+  for (const re of patterns) {
+    const m = s.match(re)
+    if (m) return m[1]
+  }
+  return s
+}
+
 // Public pages can no longer build a thumbnail from the video ID (that leaked the
 // ID of every unlisted premium video), so an item without thumbnail_url renders
 // as a plain gradient. This field is how it gets a real image.
@@ -83,7 +106,7 @@ export async function createContent(input: ContentInput): Promise<Result> {
     type: input.type,
     title: input.title,
     description: input.description || null,
-    youtube_id: input.youtube_id || null,
+    youtube_id: extractYoutubeId(input.youtube_id),
     thumbnail_url: input.thumbnail_url || null,
     is_premium: input.is_premium,
     published_at: input.published_at || new Date().toISOString(),
@@ -102,7 +125,7 @@ export async function updateContent(id: string, input: ContentInput): Promise<Re
     type: input.type,
     title: input.title,
     description: input.description || null,
-    youtube_id: input.youtube_id || null,
+    youtube_id: extractYoutubeId(input.youtube_id),
     thumbnail_url: input.thumbnail_url || null,
     is_premium: input.is_premium,
     published_at: input.published_at,

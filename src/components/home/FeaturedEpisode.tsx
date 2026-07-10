@@ -21,11 +21,21 @@ export async function FeaturedEpisode() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-brand-cream rounded-3xl overflow-hidden border border-black/6">
           {/* Thumbnail */}
           <Link href={href} className="group relative block">
-            <div className="aspect-video lg:aspect-auto lg:h-full bg-gradient-to-br from-brand-dark to-brand-black flex items-center justify-center min-h-[280px]">
-              <div className="w-20 h-20 rounded-full bg-white/10 border border-white/20 flex items-center justify-center group-hover:bg-brand-gold/30 transition-colors">
+            <div className="relative aspect-video lg:aspect-auto lg:h-full bg-gradient-to-br from-brand-dark to-brand-black flex items-center justify-center min-h-[280px] overflow-hidden">
+              {featured.thumbnail_url && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={featured.thumbnail_url}
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="lazy"
+                />
+              )}
+              <div className="absolute inset-0 bg-brand-black/40 group-hover:bg-brand-black/25 transition-colors" />
+              <div className="relative w-20 h-20 rounded-full bg-white/10 border border-white/20 flex items-center justify-center group-hover:bg-brand-gold/30 transition-colors">
                 <Play size={28} className="text-brand-white ml-1.5" fill="currentColor" />
               </div>
-              <div className="absolute bottom-4 left-4">
+              <div className="absolute bottom-4 left-4 z-10">
                 <span className="bg-brand-gold text-brand-black text-xs font-bold px-3 py-1 rounded-full">
                   {meta.label}
                 </span>

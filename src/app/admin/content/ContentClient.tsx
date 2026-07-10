@@ -105,7 +105,7 @@ export function ContentClient({ items }: { items: AdminContentItem[] }) {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Select label="Kategoria" options={TYPE_OPTIONS} value={form.type} onChange={(e) => set('type', e.target.value)} />
-            <Input label="YouTube ID" placeholder="dQw4w9WgXcQ" value={form.youtube_id} onChange={(e) => set('youtube_id', e.target.value)} />
+            <Input label="Link YouTube (ose ID)" placeholder="https://www.youtube.com/watch?v=..." value={form.youtube_id} onChange={(e) => set('youtube_id', e.target.value)} />
             <div className="sm:col-span-2">
               <Input
                 label="Thumbnail URL"
