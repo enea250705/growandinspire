@@ -68,6 +68,22 @@ export async function updateProfile(data: {
   return { ok: true }
 }
 
+export interface NotificationPrefs {
+  events: boolean
+  content: boolean
+  coaching: boolean
+  newsletter: boolean
+}
+
+export async function updateNotifications(prefs: NotificationPrefs): Promise<AuthResult> {
+  const supabase = await createClient()
+  // Stored on user_metadata alongside profile fields; updateUser merges top-level
+  // keys, so full_name/phone/profession are preserved.
+  const { error } = await supabase.auth.updateUser({ data: { notifications: prefs } })
+  if (error) return { ok: false, error: error.message }
+  return { ok: true }
+}
+
 export async function updatePassword(data: {
   newPassword: string
   confirmPassword: string

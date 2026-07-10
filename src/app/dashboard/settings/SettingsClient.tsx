@@ -3,16 +3,17 @@
 import { useState } from 'react'
 import { Check } from 'lucide-react'
 import { Input } from '@/components/ui/FormField'
-import { updateProfile, updatePassword } from '@/lib/actions/auth'
+import { updateProfile, updatePassword, updateNotifications, type NotificationPrefs } from '@/lib/actions/auth'
 
 interface Props {
   initialName: string
   initialEmail: string
   initialPhone: string
   initialProfession: string
+  initialNotifications: NotificationPrefs
 }
 
-export function SettingsClient({ initialName, initialEmail, initialPhone, initialProfession }: Props) {
+export function SettingsClient({ initialName, initialEmail, initialPhone, initialProfession, initialNotifications }: Props) {
   const [name, setName] = useState(initialName)
   const [phone, setPhone] = useState(initialPhone)
   const [profession, setProfession] = useState(initialProfession)
@@ -26,12 +27,23 @@ export function SettingsClient({ initialName, initialEmail, initialPhone, initia
   const [passwordError, setPasswordError] = useState('')
   const [passwordLoading, setPasswordLoading] = useState(false)
 
-  const [notifications, setNotifications] = useState({
-    events: true,
-    content: true,
-    newsletter: false,
-    coaching: true,
-  })
+  const [notifications, setNotifications] = useState<NotificationPrefs>(initialNotifications)
+  const [notifSaved, setNotifSaved] = useState(false)
+  const [notifError, setNotifError] = useState('')
+  const [notifLoading, setNotifLoading] = useState(false)
+
+  async function handleNotifications() {
+    setNotifLoading(true)
+    setNotifError('')
+    const result = await updateNotifications(notifications)
+    setNotifLoading(false)
+    if (result.ok) {
+      setNotifSaved(true)
+      setTimeout(() => setNotifSaved(false), 3000)
+    } else {
+      setNotifError(result.error)
+    }
+  }
 
   async function handleProfile(e: React.FormEvent) {
     e.preventDefault()
@@ -110,35 +122,45 @@ export function SettingsClient({ initialName, initialEmail, initialPhone, initia
         {/* Notifications */}
         <div className="bg-brand-white rounded-2xl border border-black/8 p-6">
           <h2 className="font-semibold text-brand-black mb-5">Njoftimet</h2>
-          <div className="space-y-4 max-w-md">
+          <div className="max-w-md divide-y divide-black/6">
             {([
-              { key: 'events', label: 'Evente dhe konfirmacie', desc: 'Njoftohu për eventet e reja dhe statusin e aplikimeve.' },
+              { key: 'events', label: 'Evente dhe konfirmime', desc: 'Njoftohu për eventet e reja dhe statusin e aplikimeve.' },
               { key: 'content', label: 'Përmbajtje e re', desc: 'Kur shtohen video ose artikuj të rinj.' },
-              { key: 'coaching', label: 'Coaching dhe sesione', desc: 'Kujtues për sesionte dhe materiale të reja.' },
+              { key: 'coaching', label: 'Coaching dhe sesione', desc: 'Kujtues për sesionet dhe materialet e reja.' },
               { key: 'newsletter', label: 'Newsletter javor', desc: 'Insights javore nga Alketa Vejsiu.' },
             ] as const).map(({ key, label, desc }) => (
-              <label key={key} className="flex items-start justify-between gap-4 cursor-pointer">
+              <label key={key} className="flex items-center justify-between gap-4 cursor-pointer py-3.5 first:pt-0">
                 <div>
                   <p className="text-sm font-medium text-brand-black">{label}</p>
                   <p className="text-xs text-black/40 mt-0.5">{desc}</p>
                 </div>
                 <button
                   type="button"
-                  onClick={() => setNotifications(n => ({ ...n, [key]: !n[key] }))}
-                  className={`relative shrink-0 rounded-full transition-colors mt-0.5 ${
+                  role="switch"
+                  aria-checked={notifications[key]}
+                  onClick={() => setNotifications((n) => ({ ...n, [key]: !n[key] }))}
+                  className={`relative shrink-0 h-6 w-11 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/50 ${
                     notifications[key] ? 'bg-brand-gold' : 'bg-black/15'
                   }`}
-                  style={{ height: '22px', width: '40px' }}
                 >
                   <span
-                    className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform ${
-                      notifications[key] ? 'translate-x-5' : 'translate-x-0.5'
+                    className={`absolute top-0.5 left-0.5 h-5 w-5 bg-white rounded-full shadow-sm transition-transform ${
+                      notifications[key] ? 'translate-x-5' : 'translate-x-0'
                     }`}
                   />
                 </button>
               </label>
             ))}
           </div>
+          {notifError && <p className="text-sm text-red-500 mt-4">{notifError}</p>}
+          <button
+            type="button"
+            onClick={handleNotifications}
+            disabled={notifLoading}
+            className="flex items-center gap-2 bg-brand-black text-brand-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-brand-dark transition-colors disabled:opacity-50 mt-5"
+          >
+            {notifSaved ? <><Check size={14} /> Ruajtur</> : notifLoading ? 'Duke ruajtur...' : 'Ruaj preferencat'}
+          </button>
         </div>
 
         {/* Danger zone */}
