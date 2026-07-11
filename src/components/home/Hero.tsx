@@ -39,7 +39,7 @@ export function Hero() {
           </div>
 
           {/* Right - visual block */}
-          <div className="hidden lg:block">
+          <div className="block">
             <div className="relative">
               <div className="relative aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden">
                 <Image
