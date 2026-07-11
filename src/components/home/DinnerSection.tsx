@@ -1,12 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { UtensilsCrossed } from 'lucide-react'
+import { UtensilsCrossed, ChevronDown } from 'lucide-react'
 import { Input, Textarea } from '@/components/ui/FormField'
 import { submitDinnerApplication } from '@/lib/actions/forms'
 
 export function DinnerSection() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', profession: '', reason: '' })
+  // On phone the form is collapsed behind the "Apliko tani" button; on desktop
+  // it's always shown (lg:block) and this state is ignored.
+  const [formOpen, setFormOpen] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -62,14 +65,26 @@ export function DinnerSection() {
               ))}
             </div>
 
-            <div className="mt-8 inline-flex items-center gap-3 bg-brand-gold/10 border border-brand-gold/20 rounded-2xl px-5 py-4">
+            {/* On phone this toggles the form open/closed; on desktop the form
+                is always visible so the button is inert (lg:pointer-events-none). */}
+            <button
+              type="button"
+              onClick={() => setFormOpen((o) => !o)}
+              aria-expanded={formOpen}
+              className="mt-8 inline-flex items-center gap-3 bg-brand-gold/10 border border-brand-gold/20 rounded-2xl px-5 py-4 lg:pointer-events-none lg:cursor-default"
+            >
               <UtensilsCrossed size={20} className="text-brand-gold" strokeWidth={1.5} />
-              <p className="text-sm text-brand-black font-medium">Vende të kufizuara - apliko tani</p>
-            </div>
+              <span className="text-sm text-brand-black font-medium">Apliko tani</span>
+              <ChevronDown
+                size={18}
+                strokeWidth={1.5}
+                className={`text-brand-gold lg:hidden transition-transform ${formOpen ? 'rotate-180' : ''}`}
+              />
+            </button>
           </div>
 
-          {/* Right - form */}
-          <div className="bg-brand-white rounded-3xl border border-black/8 p-8 shadow-sm">
+          {/* Right - form (collapsed on phone until "Apliko tani" is tapped) */}
+          <div className={`${formOpen ? 'block' : 'hidden'} lg:block bg-brand-white rounded-3xl border border-black/8 p-8 shadow-sm`}>
             <h3 className="font-serif text-2xl font-bold text-brand-black mb-6">Formular Aplikimi</h3>
 
             {submitted ? (
