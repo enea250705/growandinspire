@@ -33,11 +33,11 @@ export function Navbar() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 lg:h-24 flex items-center justify-between">
         <Link href="/" className="flex items-center">
           <Image
-            src="/logo-v2.png"
-            alt="INSPIRE podCLASS by Alketa Vejsiu"
-            width={244}
-            height={122}
-            className="h-8 lg:h-14 w-auto object-contain"
+            src="/logo-final.png"
+            alt="Grow & Inspire by Alketa Vejsiu"
+            width={240}
+            height={240}
+            className="h-12 lg:h-20 w-auto object-contain"
             priority
           />
         </Link>

@@ -138,11 +138,11 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="col-span-1">
             <Image
-              src="/logo-v2.png"
-              alt="INSPIRE podCLASS by Alketa Vejsiu"
-              width={244}
-              height={122}
-              className="h-14 w-auto object-contain mb-3"
+              src="/logo-final.png"
+              alt="Grow & Inspire by Alketa Vejsiu"
+              width={240}
+              height={240}
+              className="h-24 w-auto object-contain mb-3"
             />
             <p className="text-sm leading-relaxed mb-6">
               A premium platform for personal growth, business leadership, and meaningful connections.

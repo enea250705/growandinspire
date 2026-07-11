@@ -30,11 +30,11 @@ export default function ForgotPasswordPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex justify-center">
             <Image
-              src="/logo-v2.png"
-              alt="INSPIRE podCLASS by Alketa Vejsiu"
-              width={244}
-              height={122}
-              className="h-20 w-auto object-contain"
+              src="/logo-final.png"
+              alt="Grow & Inspire by Alketa Vejsiu"
+              width={240}
+              height={240}
+              className="h-28 w-auto object-contain"
               priority
             />
           </Link>
