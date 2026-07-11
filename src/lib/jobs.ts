@@ -1,14 +1,10 @@
-import { createClient } from '@supabase/supabase-js'
 import type { JobPosition } from '@/types'
+import { createAnonClient } from '@/lib/supabase/anon'
 
 // Cookieless anon client, same reasoning as content.ts: job_positions has a
 // public-read policy for open roles, so no session is needed and the careers
 // page stays cacheable.
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  { auth: { persistSession: false } }
-)
+const supabase = createAnonClient()
 
 const SELECT = 'id, title, department, location, employment_type, description, requirements, is_open, sort_order, created_at'
 

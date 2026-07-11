@@ -1,11 +1,7 @@
-import { createClient } from '@supabase/supabase-js'
+import { createAnonClient } from '@/lib/supabase/anon'
 
 // Cookieless anon client - site_settings has public-read RLS, keeps pages ISR.
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  { auth: { persistSession: false } }
-)
+const supabase = createAnonClient()
 
 // Editable display settings. Each has a default used when the row is absent.
 export const SETTING_DEFS = [

@@ -1,13 +1,9 @@
-import { createClient } from '@supabase/supabase-js'
 import type { MembershipPlan, ComparisonFeature } from '@/types'
+import { createAnonClient } from '@/lib/supabase/anon'
 
 // Cookieless anon client - membership_plans has public-read RLS on published
 // rows, so /membership stays ISR (mirrors lib/settings.ts).
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  { auth: { persistSession: false } }
-)
+const supabase = createAnonClient()
 
 // The three current plans, used as a fallback when the table is missing, empty,
 // or the query errors - so /membership never renders zero plans (e.g. before the

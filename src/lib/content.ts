@@ -1,18 +1,14 @@
-import { createClient } from '@supabase/supabase-js'
 import type { ContentItem, ContentType, Download, Series, SeriesWithVideos } from '@/types'
 import { slugify } from '@/lib/content-meta'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient as createServerClient } from '@/lib/supabase/server'
+import { createAnonClient } from '@/lib/supabase/anon'
 import { isMember } from '@/lib/membership'
 
 // Cookieless anon client for reading public content. content_items has a
 // "public read" RLS policy, so no session is needed. Staying cookieless keeps
 // content pages cacheable (ISR) instead of forcing per-request rendering.
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  { auth: { persistSession: false } }
-)
+const supabase = createAnonClient()
 
 // youtube_id is omitted on purpose - anon/authenticated have no privilege on that
 // column. Selecting it here would error, and requesting it from the browser was
