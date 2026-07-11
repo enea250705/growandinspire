@@ -30,8 +30,11 @@ export function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-brand-black/95 backdrop-blur-sm border-b border-white/10">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 lg:h-24 flex items-center justify-between">
-        <Link href="/" className="flex items-center">
+      <nav className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 lg:h-24 flex items-center justify-between">
+        <Link
+          href="/"
+          className="flex items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:static lg:translate-x-0 lg:translate-y-0"
+        >
           <Image
             src="/logo-final.png"
             alt="Grow & Inspire by Alketa Vejsiu"
