@@ -16,7 +16,7 @@ export function Hero() {
             </p>
             <h1 className="font-serif text-6xl sm:text-7xl lg:text-8xl font-bold text-brand-white leading-[1.05] mb-8">
               Grow.<br />
-              Inspire.<br />
+              <span className="text-brand-gold">Inspire.</span><br />
               Lead.
             </h1>
             <p className="text-white/60 text-lg leading-relaxed max-w-md mb-10">
@@ -41,7 +41,7 @@ export function Hero() {
           {/* Right - visual block */}
           <div className="block">
             <div className="relative">
-              <div className="relative aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden">
+              <div className="relative aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden bg-brand-black">
                 <Image
                   src="/hero-alketa.png"
                   alt="Alketa Vejsiu"
