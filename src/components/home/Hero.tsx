@@ -55,7 +55,7 @@ export function Hero() {
                 <div className="absolute bottom-8 left-8 right-8">
                   <div className="w-12 h-px bg-brand-gold mb-4" />
                   <p className="font-serif text-2xl text-brand-white font-medium leading-snug">
-                    &ldquo;Build something that outlasts the moment.&rdquo;
+                    &ldquo;Lead by growing. Inspire by leading.&rdquo;
                   </p>
                   <p className="text-white/60 text-sm mt-3">- Alketa Vejsiu</p>
                 </div>
