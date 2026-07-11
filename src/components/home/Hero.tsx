@@ -52,7 +52,6 @@ export function Hero() {
                 />
                 {/* gradient for text legibility */}
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/10 to-transparent" />
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(0,180,166,0.15)_0%,_transparent_70%)]" />
                 <div className="absolute bottom-8 left-8 right-8">
                   <div className="w-12 h-px bg-brand-gold mb-4" />
                   <p className="font-serif text-2xl text-brand-white font-medium leading-snug">
