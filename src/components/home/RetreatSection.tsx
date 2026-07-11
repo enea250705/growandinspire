@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Mountain, Brain, TrendingUp, Heart, Users, Compass } from 'lucide-react'
+import { Mountain, Brain, TrendingUp, Heart, Users, Compass, ChevronDown } from 'lucide-react'
 import { Input, Textarea, Select } from '@/components/ui/FormField'
 import { submitEventRegistration } from '@/lib/actions/forms'
 
@@ -22,6 +22,8 @@ const FORMATS = [
 
 export function RetreatSection() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', format: '', theme: '', message: '' })
+  // Form is collapsed behind its header on phone; always open on desktop.
+  const [formOpen, setFormOpen] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -156,9 +158,24 @@ export function RetreatSection() {
 
           {/* Form */}
           <div className="bg-brand-dark rounded-3xl border border-white/10 p-8">
-            <h3 className="font-serif text-2xl font-bold text-brand-white mb-2">Regjistrohu për Interest List</h3>
-            <p className="text-white/40 text-sm mb-6">Vende të kufizuara. Njoftohesh i/e pari kur hapim regjistrimin.</p>
+            <button
+              type="button"
+              onClick={() => setFormOpen((o) => !o)}
+              aria-expanded={formOpen}
+              className="w-full flex items-start justify-between gap-4 text-left lg:pointer-events-none lg:cursor-default"
+            >
+              <span>
+                <span className="block font-serif text-2xl font-bold text-brand-white mb-2">Regjistrohu për Interest List</span>
+                <span className="block text-white/40 text-sm">Vende të kufizuara. Njoftohesh i/e pari kur hapim regjistrimin.</span>
+              </span>
+              <ChevronDown
+                size={22}
+                strokeWidth={1.5}
+                className={`text-brand-gold shrink-0 mt-1 lg:hidden transition-transform ${formOpen ? 'rotate-180' : ''}`}
+              />
+            </button>
 
+            <div className={`${formOpen ? 'block' : 'hidden'} lg:block mt-6`}>
             {submitted ? (
               <div className="text-center py-10">
                 <div className="w-12 h-12 bg-brand-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -216,6 +233,7 @@ export function RetreatSection() {
                 </button>
               </form>
             )}
+            </div>
           </div>
         </div>
       </div>

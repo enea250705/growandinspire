@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, Users } from 'lucide-react'
+import { Check, Users, ChevronDown } from 'lucide-react'
 import { Input, Select, CheckboxGroup, Textarea } from '@/components/ui/FormField'
 import { submitEventRegistration } from '@/lib/actions/forms'
 
@@ -45,6 +45,8 @@ export function ConferenceSection({ priceEarly = '150', priceStandard = '175' }:
   })
   const [interests, setInterests] = useState<string[]>([])
   const [participation, setParticipation] = useState<string[]>([])
+  // Form is collapsed behind its header on phone; always open on desktop.
+  const [formOpen, setFormOpen] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -134,8 +136,21 @@ export function ConferenceSection({ priceEarly = '150', priceStandard = '175' }:
 
         {/* Registration Form */}
         <div className="max-w-2xl mx-auto bg-brand-white rounded-3xl border border-black/8 p-8 shadow-sm">
-          <h3 className="font-serif text-2xl font-bold text-brand-black mb-6 text-center">Register</h3>
+          <button
+            type="button"
+            onClick={() => setFormOpen((o) => !o)}
+            aria-expanded={formOpen}
+            className="w-full flex items-center justify-center gap-3 lg:pointer-events-none lg:cursor-default"
+          >
+            <span className="font-serif text-2xl font-bold text-brand-black">Register</span>
+            <ChevronDown
+              size={22}
+              strokeWidth={1.5}
+              className={`text-brand-gold lg:hidden transition-transform ${formOpen ? 'rotate-180' : ''}`}
+            />
+          </button>
 
+          <div className={`${formOpen ? 'block' : 'hidden'} lg:block mt-6`}>
           {submitted ? (
             <div className="text-center py-8">
               <Check size={32} className="text-brand-gold mx-auto mb-4" strokeWidth={1.5} />
@@ -181,6 +196,7 @@ export function ConferenceSection({ priceEarly = '150', priceStandard = '175' }:
               </button>
             </form>
           )}
+          </div>
         </div>
       </div>
     </section>

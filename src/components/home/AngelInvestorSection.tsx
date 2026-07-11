@@ -1,12 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { Lightbulb, TrendingUp } from 'lucide-react'
+import { Lightbulb, TrendingUp, ChevronDown } from 'lucide-react'
 import { Input, Textarea, Select } from '@/components/ui/FormField'
 import { submitApplication } from '@/lib/actions/forms'
 
 export function AngelInvestorSection() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', project: '', phase: '', description: '' })
+  // Form is collapsed behind its header on phone; always open on desktop.
+  const [formOpen, setFormOpen] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -131,8 +133,21 @@ export function AngelInvestorSection() {
 
           {/* Right - form */}
           <div className="bg-brand-white rounded-3xl border border-black/8 p-8 shadow-sm">
-            <h3 className="font-serif text-2xl font-bold text-brand-black mb-6">Dërgo Idenë Tënde</h3>
+            <button
+              type="button"
+              onClick={() => setFormOpen((o) => !o)}
+              aria-expanded={formOpen}
+              className="w-full flex items-center justify-between gap-4 text-left lg:pointer-events-none lg:cursor-default"
+            >
+              <span className="font-serif text-2xl font-bold text-brand-black">Dërgo Idenë Tënde</span>
+              <ChevronDown
+                size={22}
+                strokeWidth={1.5}
+                className={`text-brand-gold shrink-0 lg:hidden transition-transform ${formOpen ? 'rotate-180' : ''}`}
+              />
+            </button>
 
+            <div className={`${formOpen ? 'block' : 'hidden'} lg:block mt-6`}>
             {submitted ? (
               <div className="text-center py-10">
                 <div className="w-12 h-12 bg-brand-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -177,6 +192,7 @@ export function AngelInvestorSection() {
                 </button>
               </form>
             )}
+            </div>
           </div>
         </div>
       </div>
