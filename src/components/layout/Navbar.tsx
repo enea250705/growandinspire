@@ -37,7 +37,7 @@ export function Navbar() {
             alt="Grow & Inspire by Alketa Vejsiu"
             width={240}
             height={240}
-            className="h-10 lg:h-16 w-auto object-contain"
+            className="h-14 lg:h-16 w-auto object-contain"
             priority
           />
         </Link>
