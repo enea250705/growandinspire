@@ -18,7 +18,7 @@ const BRANDS = [
 
 export default function AboutPage() {
   return (
-    <div className="pt-16 lg:pt-24 min-h-screen bg-brand-cream">
+    <div className="pt-20 lg:pt-24 min-h-screen bg-brand-cream">
       {/* Hero */}
       <section className="bg-brand-black py-20 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

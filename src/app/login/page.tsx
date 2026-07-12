@@ -45,7 +45,7 @@ export default function LoginPage() {
 
   if (signupSuccess) {
     return (
-      <div className="pt-16 lg:pt-24 min-h-screen bg-brand-black flex items-center justify-center px-4">
+      <div className="pt-20 lg:pt-24 min-h-screen bg-brand-black flex items-center justify-center px-4">
         <div className="w-full max-w-md text-center">
           <div className="bg-brand-white rounded-2xl p-10">
             <div className="w-14 h-14 rounded-full bg-brand-gold/15 flex items-center justify-center mx-auto mb-4">
@@ -70,7 +70,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="pt-16 lg:pt-24 min-h-screen bg-brand-black flex items-center justify-center px-4">
+    <div className="pt-20 lg:pt-24 min-h-screen bg-brand-black flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex justify-center">

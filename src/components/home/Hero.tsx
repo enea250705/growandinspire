@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen bg-brand-black flex items-center pt-16 lg:pt-24">
+    <section className="relative min-h-screen bg-brand-black flex items-center pt-20 lg:pt-24">
       {/* Subtle texture overlay */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(0,180,166,0.08)_0%,_transparent_60%)]" />
 

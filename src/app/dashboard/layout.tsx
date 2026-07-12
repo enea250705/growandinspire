@@ -15,7 +15,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const tier = membership ? tierLabel(membership.tier) : 'Free'
 
   return (
-    <div className="pt-16 lg:pt-24 min-h-screen bg-brand-cream">
+    <div className="pt-20 lg:pt-24 min-h-screen bg-brand-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="lg:hidden mb-6 overflow-x-auto">
           <nav className="flex gap-2 pb-1">

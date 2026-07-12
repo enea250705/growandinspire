@@ -27,7 +27,7 @@ export default async function SeriesDetailPage({ params }: Props) {
   const isMember = await checkMembership()
 
   return (
-    <div className="pt-16 lg:pt-24 min-h-screen bg-brand-cream">
+    <div className="pt-20 lg:pt-24 min-h-screen bg-brand-cream">
       <section className="bg-brand-black py-20 lg:py-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link href="/series" className="inline-flex items-center gap-2 text-white/50 hover:text-brand-white text-sm mb-6 transition-colors">

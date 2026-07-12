@@ -1,6 +1,6 @@
 export default function TermsPage() {
   return (
-    <div className="pt-16 lg:pt-24 min-h-screen bg-brand-cream">
+    <div className="pt-20 lg:pt-24 min-h-screen bg-brand-cream">
       <section className="bg-brand-black py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-4">Legal</p>
