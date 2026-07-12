@@ -3,18 +3,6 @@ import { Calendar, MapPin, Users, ArrowRight } from 'lucide-react'
 
 const EVENTS = [
   {
-    id: '1',
-    title: 'Grow and Inspire Business Conference',
-    type: 'Conference',
-    date: 'April 25-26, 2026',
-    location: 'Tirana, Albania',
-    price: '€150 - €175',
-    capacity: 'Limited seats',
-    description: 'Two days of keynotes, expert panels, Smart Talks, and networking. The flagship annual event for Albanian business leaders.',
-    cta: { label: 'Register Interest', href: '/coaching#conference-register' },
-    featured: true,
-  },
-  {
     id: '2',
     title: 'Dinner with Alketa',
     type: 'Exclusive Dinner',
@@ -24,55 +12,7 @@ const EVENTS = [
     capacity: '8-12 people',
     description: 'An exclusive executive dinner - curated conversations with purposeful leaders.',
     cta: { label: 'Apply to Join', href: '/dinner-with-alketa' },
-    featured: false,
-  },
-  {
-    id: '3',
-    title: 'Idea Tables with Alketa',
-    type: 'Brainstorming Session',
-    date: 'June 20, 2026',
-    location: 'Tirana, Albania',
-    price: 'By application',
-    capacity: 'Small group',
-    description: 'A curated session where young entrepreneurs present ideas and receive direct feedback from Alketa and selected mentors.',
-    cta: { label: 'Apply Now', href: '/apply' },
-    featured: false,
-  },
-  {
-    id: '4',
-    title: 'Coaching Cohort - Summer 2026',
-    type: 'Group Coaching',
-    date: 'July 15, 2026',
-    location: 'Online',
-    price: 'Members only',
-    capacity: 'Max 10 people',
-    description: 'A structured 8-week coaching group focused on business growth and personal leadership.',
-    cta: { label: 'Learn More', href: '/coaching' },
-    featured: false,
-  },
-  {
-    id: '5',
-    title: 'Business Breakfast - September',
-    type: 'Networking',
-    date: 'September 2026',
-    location: 'Tirana, Albania',
-    price: 'Members priority',
-    capacity: 'Open registration',
-    description: 'A morning of structured networking and peer learning for Grow and Inspire community members.',
-    cta: { label: 'Register Interest', href: '/membership' },
-    featured: false,
-  },
-  {
-    id: '6',
-    title: 'Women Leaders Forum',
-    type: 'Forum',
-    date: 'November 2026',
-    location: 'Tirana, Albania',
-    price: 'TBC',
-    capacity: 'Open',
-    description: 'A dedicated half-day forum celebrating and empowering women driving change in Albanian business and society.',
-    cta: { label: 'Register Interest', href: '/membership' },
-    featured: false,
+    featured: true,
   },
 ]
 
@@ -136,7 +76,7 @@ export default function EventsPage() {
               <div className="aspect-video lg:aspect-auto bg-gradient-to-br from-brand-dark to-brand-black min-h-[200px] flex items-center justify-center border-l border-white/10">
                 <div className="text-center">
                   <p className="font-serif text-6xl font-bold text-white/10">2026</p>
-                  <p className="text-white/30 text-sm mt-2">April 25-26</p>
+                  <p className="text-white/30 text-sm mt-2">{featured.date}</p>
                 </div>
               </div>
             </div>
@@ -144,27 +84,31 @@ export default function EventsPage() {
         </div>
 
         {/* Rest of events grid */}
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/40 mb-6">All Events</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {rest.map((event) => (
-            <div key={event.id} className="bg-brand-white rounded-2xl border border-black/8 p-6 flex flex-col hover:shadow-md transition-shadow">
-              <span className="text-brand-gold text-xs font-semibold uppercase tracking-widest mb-3">{event.type}</span>
-              <h3 className="font-serif text-lg font-bold text-brand-black mb-2 leading-snug">{event.title}</h3>
-              <p className="text-black/50 text-sm leading-relaxed mb-4 flex-1">{event.description}</p>
-              <div className="flex flex-col gap-2 mb-5 text-xs text-black/40">
-                <div className="flex items-center gap-2"><Calendar size={12} className="text-brand-gold" />{event.date}</div>
-                <div className="flex items-center gap-2"><MapPin size={12} className="text-brand-gold" />{event.location}</div>
-                <div className="flex items-center gap-2"><Users size={12} className="text-brand-gold" />{event.capacity}</div>
-              </div>
-              <div className="flex items-center justify-between pt-4 border-t border-black/6">
-                <span className="text-xs text-black/40">{event.price}</span>
-                <Link href={event.cta.href} className="text-brand-gold text-sm font-medium hover:underline flex items-center gap-1">
-                  {event.cta.label} <ArrowRight size={13} />
-                </Link>
-              </div>
+        {rest.length > 0 && (
+          <>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/40 mb-6">All Events</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {rest.map((event) => (
+                <div key={event.id} className="bg-brand-white rounded-2xl border border-black/8 p-6 flex flex-col hover:shadow-md transition-shadow">
+                  <span className="text-brand-gold text-xs font-semibold uppercase tracking-widest mb-3">{event.type}</span>
+                  <h3 className="font-serif text-lg font-bold text-brand-black mb-2 leading-snug">{event.title}</h3>
+                  <p className="text-black/50 text-sm leading-relaxed mb-4 flex-1">{event.description}</p>
+                  <div className="flex flex-col gap-2 mb-5 text-xs text-black/40">
+                    <div className="flex items-center gap-2"><Calendar size={12} className="text-brand-gold" />{event.date}</div>
+                    <div className="flex items-center gap-2"><MapPin size={12} className="text-brand-gold" />{event.location}</div>
+                    <div className="flex items-center gap-2"><Users size={12} className="text-brand-gold" />{event.capacity}</div>
+                  </div>
+                  <div className="flex items-center justify-between pt-4 border-t border-black/6">
+                    <span className="text-xs text-black/40">{event.price}</span>
+                    <Link href={event.cta.href} className="text-brand-gold text-sm font-medium hover:underline flex items-center gap-1">
+                      {event.cta.label} <ArrowRight size={13} />
+                    </Link>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
 
         {/* Class Events collaboration */}
         <div className="mt-16 bg-brand-black rounded-2xl p-10 lg:p-14">
