@@ -52,9 +52,9 @@ export function Hero() {
                 />
                 {/* gradient for text legibility */}
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/10 to-transparent" />
-                <div className="absolute bottom-8 left-8 right-8">
+                <div className="absolute bottom-8 left-6 right-6 lg:left-8 lg:right-8">
                   <div className="w-12 h-px bg-brand-gold mb-4" />
-                  <p className="font-serif text-[3.5vw] lg:text-xl xl:text-2xl text-brand-white font-medium leading-snug whitespace-nowrap">
+                  <p className="font-serif text-[3.9vw] lg:text-xl xl:text-2xl text-brand-white font-medium leading-snug whitespace-nowrap">
                     &ldquo;Lead by growing. Inspire by leading.&rdquo;
                   </p>
                   <p className="text-white/60 text-sm mt-3">- Alketa Vejsiu</p>
