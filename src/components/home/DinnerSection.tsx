@@ -45,7 +45,7 @@ export function DinnerSection() {
               Dinner with Alketa
             </h2>
             <p className="text-black/60 text-lg leading-relaxed mb-8">
-              Një darkë networking ekskluzive me Alketa Vejsiu - ushqim i zgjedhur, ambient premium, dhe biseda që inspirojnë. Vende të kufizuara për gratë lider dhe sipërmarrëse me vizion.
+              Një darkë networking ekskluzive me Alketa&nbsp;Vejsiu - ushqim i zgjedhur, ambient premium, dhe biseda që inspirojnë. Vende të kufizuara për gratë lider dhe sipërmarrëse me vizion.
             </p>
 
             <div className="space-y-4">
