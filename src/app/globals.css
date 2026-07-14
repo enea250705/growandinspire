@@ -4,9 +4,10 @@
   /* Brand palette */
   --color-brand-black: #0d0d0d;
   --color-brand-dark: #1a1a1a;
-  --color-brand-gold: #00b4a6;
-  --color-brand-gold-light: #1ac8ba;
-  --color-brand-gold-dark: #008f83;
+  /* Accent matched to the logo's mint-teal */
+  --color-brand-gold: #0dd9b0;
+  --color-brand-gold-light: #2eedc8;
+  --color-brand-gold-dark: #07a98a;
   --color-brand-cream: #f5f7f7;
   --color-brand-cream-dark: #e8eded;
   --color-brand-white: #ffffff;

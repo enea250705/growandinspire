@@ -112,11 +112,8 @@ export function ConferenceSection({ priceEarly = '150', priceStandard = '175' }:
                   {tier.badge}
                 </span>
               )}
-              <p className={`text-sm font-medium mb-2 ${i === 1 ? 'text-brand-gold' : 'text-black/50'}`}>
+              <p className={`font-serif text-2xl font-bold mb-6 ${i === 1 ? 'text-brand-white' : 'text-brand-black'}`}>
                 {tier.name}
-              </p>
-              <p className={`font-serif text-4xl font-bold mb-6 ${i === 1 ? 'text-brand-white' : 'text-brand-black'}`}>
-                {tier.price}
               </p>
               <ul className="space-y-3">
                 {tier.features.map((f) => (
@@ -180,8 +177,8 @@ export function ConferenceSection({ priceEarly = '150', priceStandard = '175' }:
                 label="Paketa"
                 required
                 options={[
-                  { label: `Early Bird - €${priceEarly}`, value: 'early-bird' },
-                  { label: `Standard - €${priceStandard}`, value: 'standard' },
+                  { label: 'Early Bird', value: 'early-bird' },
+                  { label: 'Standard', value: 'standard' },
                 ]}
                 value={form.package}
                 onChange={(e) => set('package', e.target.value)}

@@ -28,7 +28,7 @@ const FOOTER_LINKS = {
 const SOCIAL = [
   {
     label: 'Instagram',
-    href: 'https://instagram.com',
+    href: 'https://www.instagram.com/grow__inspire_',
     svg: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
         <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
