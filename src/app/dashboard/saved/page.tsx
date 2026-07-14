@@ -3,23 +3,42 @@ import { Bookmark, Play } from 'lucide-react'
 import { CATEGORY_META, slugify } from '@/lib/content-meta'
 import { getSavedContent } from '@/lib/content'
 import { SaveButton } from '@/components/watch/SaveButton'
+import { getLang } from '@/lib/i18n-server'
+import type { Lang } from '@/lib/i18n'
+
+const T: Record<Lang, { title: string; count: (n: number) => string; empty: string; goWatch: string }> = {
+  en: {
+    title: 'Saved Content',
+    count: (n) => `${n} saved items.`,
+    empty: "You haven't saved anything yet.",
+    goWatch: 'Go to Watch →',
+  },
+  sq: {
+    title: 'Përmbajtja e Ruajtur',
+    count: (n) => `${n} items të ruajtura.`,
+    empty: 'Nuk ke ruajtur asgjë ende.',
+    goWatch: 'Shko te Watch →',
+  },
+}
 
 export default async function SavedPage() {
   const saved = await getSavedContent()
+  const lang = await getLang()
+  const t = T[lang]
 
   return (
     <>
       <div className="mb-8">
-        <h1 className="font-serif text-3xl font-bold text-brand-black mb-1">Saved Content</h1>
-        <p className="text-black/50">{saved.length} items të ruajtura.</p>
+        <h1 className="font-serif text-3xl font-bold text-brand-black mb-1">{t.title}</h1>
+        <p className="text-black/50">{t.count(saved.length)}</p>
       </div>
 
       {saved.length === 0 ? (
         <div className="text-center py-20 bg-brand-white rounded-2xl border border-black/8">
           <Bookmark size={32} className="text-black/20 mx-auto mb-3" strokeWidth={1.5} />
-          <p className="text-black/40">Nuk ke ruajtur asgjë ende.</p>
+          <p className="text-black/40">{t.empty}</p>
           <Link href="/watch" className="text-brand-gold text-sm font-medium hover:underline mt-2 inline-block">
-            Shko te Watch →
+            {t.goWatch}
           </Link>
         </div>
       ) : (

@@ -2,24 +2,43 @@ import Link from 'next/link'
 import { Download as DownloadIcon, FileDown, Lock } from 'lucide-react'
 import { getDownloads } from '@/lib/content'
 import { isMember } from '@/lib/membership'
+import { getLang } from '@/lib/i18n-server'
+import type { Lang } from '@/lib/i18n'
+
+const T: Record<Lang, { title: string; count: (n: number) => string; empty: string; becomeMember: string }> = {
+  en: {
+    title: 'My Downloads',
+    count: (n) => `${n} resources available.`,
+    empty: 'No resources to download yet.',
+    becomeMember: 'Become a member for premium resources →',
+  },
+  sq: {
+    title: 'Shkarkimet e Mia',
+    count: (n) => `${n} resurse të disponueshme.`,
+    empty: 'Nuk ka resurse për shkarkim ende.',
+    becomeMember: 'Bëhu anëtar për resurse premium →',
+  },
+}
 
 export default async function DownloadsPage() {
   const [files, member] = await Promise.all([getDownloads(), isMember()])
+  const lang = await getLang()
+  const t = T[lang]
 
   return (
     <>
       <div className="mb-8">
-        <h1 className="font-serif text-3xl font-bold text-brand-black mb-1">My Downloads</h1>
-        <p className="text-black/50">{files.length} resurse të disponueshme.</p>
+        <h1 className="font-serif text-3xl font-bold text-brand-black mb-1">{t.title}</h1>
+        <p className="text-black/50">{t.count(files.length)}</p>
       </div>
 
       {files.length === 0 ? (
         <div className="text-center py-20 bg-brand-white rounded-2xl border border-black/8">
           <DownloadIcon size={32} className="text-black/20 mx-auto mb-3" strokeWidth={1.5} />
-          <p className="text-black/40">Nuk ka resurse për shkarkim ende.</p>
+          <p className="text-black/40">{t.empty}</p>
           {!member && (
             <Link href="/membership" className="text-brand-gold text-sm font-medium hover:underline mt-2 inline-block">
-              Bëhu anëtar për resurse premium →
+              {t.becomeMember}
             </Link>
           )}
         </div>
