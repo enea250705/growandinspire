@@ -5,6 +5,7 @@ import { CATEGORY_META, SLUG_TO_TYPE } from '@/lib/content-meta'
 import { getContentByType } from '@/lib/content'
 import { ContentCard } from '@/components/watch/ContentCard'
 import { isMember as checkMembership } from '@/lib/membership'
+import { CONTENT_LOCKING_ENABLED } from '@/lib/flags'
 
 interface Props {
   params: Promise<{ category: string }>
@@ -22,7 +23,9 @@ export default async function CategoryPage({ params }: Props) {
 
   const meta = CATEGORY_META[type]
   const items = await getContentByType(type)
-  const isExclusive = type === 'exclusive'
+  // While locking is off, even the exclusive category renders as a normal,
+  // fully-open list (no members-only gating).
+  const isExclusive = CONTENT_LOCKING_ENABLED && type === 'exclusive'
   const member = await checkMembership()
 
   return (

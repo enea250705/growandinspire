@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Play, FileText } from 'lucide-react'
 import { LockBadge, PremiumBadge } from '@/components/ui/LockBadge'
 import { formatDate, slugify, CATEGORY_META } from '@/lib/content-meta'
+import { CONTENT_LOCKING_ENABLED } from '@/lib/flags'
 import type { ContentItem } from '@/types'
 
 interface ContentCardProps {
@@ -10,7 +11,8 @@ interface ContentCardProps {
 }
 
 export function ContentCard({ item, isMember = false }: ContentCardProps) {
-  const isLocked = item.is_premium && !isMember
+  const gated = CONTENT_LOCKING_ENABLED && item.is_premium
+  const isLocked = gated && !isMember
   const categoryMeta = CATEGORY_META[item.type]
   const href = `/watch/${categoryMeta.slug}/${slugify(item.title)}`
   const hasVideo = item.has_video
@@ -41,7 +43,7 @@ export function ContentCard({ item, isMember = false }: ContentCardProps) {
           <FileText size={24} className="text-white/40" />
         )}
 
-        {item.is_premium && (
+        {gated && (
           <div className="absolute top-3 left-3">
             <PremiumBadge />
           </div>

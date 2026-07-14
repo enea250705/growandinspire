@@ -44,17 +44,9 @@ export default async function MembershipPage() {
                 )}
 
                 <div className="mb-6">
-                  <p className={`text-xs font-semibold uppercase tracking-widest mb-2 ${plan.highlight ? 'text-brand-gold' : 'text-black/40'}`}>
+                  <p className={`text-xs font-semibold uppercase tracking-widest mb-3 ${plan.highlight ? 'text-brand-gold' : 'text-black/40'}`}>
                     {plan.label}
                   </p>
-                  <div className="flex items-end gap-1 mb-3">
-                    <span className={`font-serif text-5xl font-bold ${plan.highlight ? 'text-brand-white' : 'text-brand-black'}`}>
-                      €{plan.price}
-                    </span>
-                    <span className={`text-sm mb-2 ${plan.highlight ? 'text-white/40' : 'text-black/40'}`}>
-                      {plan.period}
-                    </span>
-                  </div>
                   <p className={`text-sm ${plan.highlight ? 'text-white/60' : 'text-black/50'}`}>
                     {plan.description}
                   </p>

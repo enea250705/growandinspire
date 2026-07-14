@@ -3,6 +3,7 @@ import { BookOpen, Mic2, Users, Briefcase, Sparkles, Lock } from 'lucide-react'
 import { CATEGORY_META, slugify } from '@/lib/content-meta'
 import { getFeatured, getFreeContent } from '@/lib/content'
 import { ContentCard } from '@/components/watch/ContentCard'
+import { CONTENT_LOCKING_ENABLED } from '@/lib/flags'
 
 export const revalidate = 300
 
@@ -50,7 +51,7 @@ export default async function WatchPage() {
               href="/watch/grow-exclusive"
               className="flex items-center gap-2 px-5 py-4 text-sm font-medium text-brand-gold border-b-2 border-transparent hover:border-brand-gold transition-colors whitespace-nowrap"
             >
-              <Lock size={13} />
+              {CONTENT_LOCKING_ENABLED && <Lock size={13} />}
               Grow Exclusive
             </Link>
           </div>
@@ -104,20 +105,22 @@ export default async function WatchPage() {
           </div>
         </div>
 
-        {/* Grow Exclusive teaser */}
-        <div className="bg-brand-black rounded-2xl p-10 text-center">
-          <Lock size={24} className="text-brand-gold mx-auto mb-4" strokeWidth={1.5} />
-          <h3 className="font-serif text-2xl font-bold text-brand-white mb-2">Grow Exclusive</h3>
-          <p className="text-white/50 mb-6 max-w-md mx-auto">
-            Members-only coaching sessions, deep dives, and private recordings from Alketa.
-          </p>
-          <Link
-            href="/membership"
-            className="inline-flex items-center justify-center bg-brand-gold text-brand-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"
-          >
-            Unlock with Membership
-          </Link>
-        </div>
+        {/* Grow Exclusive teaser - only while content locking is enabled */}
+        {CONTENT_LOCKING_ENABLED && (
+          <div className="bg-brand-black rounded-2xl p-10 text-center">
+            <Lock size={24} className="text-brand-gold mx-auto mb-4" strokeWidth={1.5} />
+            <h3 className="font-serif text-2xl font-bold text-brand-white mb-2">Grow Exclusive</h3>
+            <p className="text-white/50 mb-6 max-w-md mx-auto">
+              Members-only coaching sessions, deep dives, and private recordings from Alketa.
+            </p>
+            <Link
+              href="/membership"
+              className="inline-flex items-center justify-center bg-brand-gold text-brand-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"
+            >
+              Unlock with Membership
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   )
