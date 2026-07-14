@@ -4,6 +4,7 @@ import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { I18nProvider } from '@/components/i18n/I18nProvider'
+import { getLang } from '@/lib/i18n-server'
 
 const inter = Inter({
   variable: '--font-inter',
@@ -21,15 +22,16 @@ export const metadata: Metadata = {
   description: 'A premium platform for personal growth, business leadership, meaningful connections, and curated experiences.',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const lang = await getLang()
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable} h-full`}>
+    <html lang={lang} className={`${inter.variable} ${playfair.variable} h-full`}>
       <body className="min-h-full flex flex-col bg-brand-cream text-brand-black antialiased">
-        <I18nProvider>
+        <I18nProvider initialLang={lang}>
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />

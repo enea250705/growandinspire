@@ -1,6 +1,7 @@
 'use client'
 
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { DEFAULT_LANG, LANG_COOKIE, type Lang, translate } from '@/lib/i18n'
 
 interface I18nContextValue {
@@ -11,25 +12,23 @@ interface I18nContextValue {
 
 const I18nContext = createContext<I18nContextValue | null>(null)
 
-export function I18nProvider({ children }: { children: React.ReactNode }) {
-  // Start from the default so server and first client render match (no
-  // hydration mismatch); adopt the saved preference right after mount.
-  const [lang, setLangState] = useState<Lang>(DEFAULT_LANG)
-
-  useEffect(() => {
-    const match = document.cookie.match(/(?:^|;\s*)lang=(en|sq)/)
-    if (match && match[1] !== lang) {
-      setLangState(match[1] as Lang)
-      document.documentElement.lang = match[1]
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+export function I18nProvider({
+  initialLang = DEFAULT_LANG,
+  children,
+}: {
+  initialLang?: Lang
+  children: React.ReactNode
+}) {
+  const router = useRouter()
+  const [lang, setLangState] = useState<Lang>(initialLang)
 
   const setLang = useCallback((next: Lang) => {
     document.cookie = `${LANG_COOKIE}=${next}; path=/; max-age=31536000; samesite=lax`
     document.documentElement.lang = next
     setLangState(next)
-  }, [])
+    // Re-render server components (page bodies) in the new language.
+    router.refresh()
+  }, [router])
 
   const t = useCallback((key: string) => translate(lang, key), [lang])
 

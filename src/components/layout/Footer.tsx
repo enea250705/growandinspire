@@ -4,24 +4,25 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
 import { submitNewsletterSignup } from '@/lib/actions/forms'
+import { useI18n } from '@/components/i18n/I18nProvider'
 
 const FOOTER_LINKS = {
   Platform: [
-    { label: 'Watch', href: '/watch' },
-    { label: 'Coaching', href: '/coaching' },
-    { label: 'Events', href: '/events' },
-    { label: 'Membership', href: '/membership' },
+    { key: 'footer.link.watch', href: '/watch' },
+    { key: 'footer.link.coaching', href: '/coaching' },
+    { key: 'footer.link.events', href: '/events' },
+    { key: 'footer.link.membership', href: '/membership' },
   ],
   Apply: [
-    { label: 'Apliko Tani', href: '/apply' },
-    { label: 'Dinner with Alketa', href: '/dinner-with-alketa' },
-    { label: 'Work with Class', href: '/careers' },
-    { label: 'Become a Guest', href: '/apply' },
+    { key: 'footer.link.applyNow', href: '/apply' },
+    { key: 'footer.link.dinner', href: '/dinner-with-alketa' },
+    { key: 'footer.link.class', href: '/careers' },
+    { key: 'footer.link.guest', href: '/apply' },
   ],
   Company: [
-    { label: 'About', href: '/about' },
-    { label: 'Sponsorship', href: '/sponsorship' },
-    { label: 'Insights', href: '/watch/revista-class' },
+    { key: 'footer.link.about', href: '/about' },
+    { key: 'footer.link.sponsorship', href: '/sponsorship' },
+    { key: 'footer.link.insights', href: '/watch/revista-class' },
   ],
 }
 
@@ -77,6 +78,7 @@ const SOCIAL = [
 ]
 
 export function Footer() {
+  const { t } = useI18n()
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
   const [subError, setSubError] = useState('')
@@ -91,7 +93,7 @@ export function Footer() {
     } else if (!result.ok && result.error === 'already_subscribed') {
       setSubscribed(true)
     } else {
-      setSubError('Problem me regjistrimin. Provo sërish.')
+      setSubError(t('footer.subError'))
     }
   }
 
@@ -104,12 +106,12 @@ export function Footer() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
               <p className="font-serif text-xl font-bold text-brand-white mb-1">
-                Insights that inspire action.
+                {t('footer.newsTitle')}
               </p>
-              <p className="text-sm text-white/50">Get weekly insights delivered to your inbox.</p>
+              <p className="text-sm text-white/50">{t('footer.newsSub')}</p>
             </div>
             {subscribed ? (
-              <p className="text-brand-gold text-sm font-medium">You&apos;re subscribed. Welcome to the circle.</p>
+              <p className="text-brand-gold text-sm font-medium">{t('footer.subscribed')}</p>
             ) : (
               <div>
                 <form onSubmit={subscribe} className="flex gap-3">
@@ -118,14 +120,14 @@ export function Footer() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Your email address"
+                    placeholder={t('footer.emailPlaceholder')}
                     className="flex-1 bg-white/8 border border-white/15 rounded-full px-5 py-3 text-sm text-brand-white placeholder:text-white/30 focus:outline-none focus:border-brand-gold transition-colors"
                   />
                   <button
                     type="submit"
                     className="shrink-0 bg-brand-gold text-brand-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"
                   >
-                    Subscribe
+                    {t('footer.subscribe')}
                   </button>
                 </form>
                 {subError && <p className="mt-2 text-red-400 text-xs">{subError}</p>}
@@ -145,7 +147,7 @@ export function Footer() {
               className="h-24 w-auto object-contain mb-3"
             />
             <p className="text-sm leading-relaxed mb-6">
-              A premium platform for personal growth, business leadership, and meaningful connections.
+              {t('footer.tagline')}
             </p>
             {/* Social icons */}
             <div className="flex items-center gap-3">
@@ -166,12 +168,12 @@ export function Footer() {
 
           {Object.entries(FOOTER_LINKS).map(([category, links]) => (
             <div key={category}>
-              <p className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">{category}</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">{t(`footer.cat.${category}`)}</p>
               <ul className="flex flex-col gap-2">
                 {links.map((link) => (
-                  <li key={link.label}>
+                  <li key={link.key}>
                     <Link href={link.href} className="text-sm hover:text-brand-white transition-colors">
-                      {link.label}
+                      {t(link.key)}
                     </Link>
                   </li>
                 ))}
@@ -182,10 +184,10 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs">© {new Date().getFullYear()} Grow and Inspire / Class Media. All rights reserved.</p>
+          <p className="text-xs">© {new Date().getFullYear()} {t('footer.rights')}</p>
           <div className="flex gap-4">
-            <Link href="/privacy" className="text-xs hover:text-brand-white transition-colors">Privacy</Link>
-            <Link href="/terms" className="text-xs hover:text-brand-white transition-colors">Terms</Link>
+            <Link href="/privacy" className="text-xs hover:text-brand-white transition-colors">{t('footer.privacy')}</Link>
+            <Link href="/terms" className="text-xs hover:text-brand-white transition-colors">{t('footer.terms')}</Link>
           </div>
         </div>
       </div>
