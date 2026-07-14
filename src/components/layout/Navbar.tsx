@@ -5,17 +5,20 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { useI18n } from '@/components/i18n/I18nProvider'
+import { LanguageSwitcher } from '@/components/i18n/LanguageSwitcher'
 
 const NAV_LINKS = [
-  { label: 'Learning', href: '/watch' },
-  { label: 'Coaching', href: '/coaching' },
-  { label: 'Events', href: '/events' },
-  { label: 'Community', href: '/community' },
-  { label: 'Insights', href: '/insights' },
-  { label: 'About', href: '/about' },
+  { key: 'nav.learning', href: '/watch' },
+  { key: 'nav.coaching', href: '/coaching' },
+  { key: 'nav.events', href: '/events' },
+  { key: 'nav.community', href: '/community' },
+  { key: 'nav.insights', href: '/insights' },
+  { key: 'nav.about', href: '/about' },
 ]
 
 export function Navbar() {
+  const { t } = useI18n()
   const [open, setOpen] = useState(false)
   const [loggedIn, setLoggedIn] = useState(false)
 
@@ -50,42 +53,46 @@ export function Navbar() {
               href={link.href}
               className="text-sm text-white/70 hover:text-brand-white transition-colors"
             >
-              {link.label}
+              {t(link.key)}
             </Link>
           ))}
         </div>
 
         <div className="hidden lg:flex items-center gap-3">
+          <LanguageSwitcher />
           {loggedIn ? (
             <Link
               href="/dashboard"
               className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium hover:bg-brand-gold-light transition-colors"
             >
-              Dashboard
+              {t('nav.dashboard')}
             </Link>
           ) : (
             <>
               <Link href="/login" className="text-sm text-white/70 hover:text-brand-white transition-colors">
-                Log In
+                {t('nav.login')}
               </Link>
               <Link
                 href="/membership"
                 className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium hover:bg-brand-gold-light transition-colors"
               >
-                Join the Circle
+                {t('nav.join')}
               </Link>
             </>
           )}
         </div>
 
-        <button
-          type="button"
-          className="lg:hidden text-brand-white p-2 -m-2"
-          onClick={() => setOpen(!open)}
-          aria-label="Toggle menu"
-        >
-          {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        <div className="flex items-center gap-3 lg:hidden">
+          <LanguageSwitcher />
+          <button
+            type="button"
+            className="text-brand-white p-2 -m-2"
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile menu */}
@@ -98,7 +105,7 @@ export function Navbar() {
               onClick={() => setOpen(false)}
               className="text-sm text-white/80 hover:text-brand-white transition-colors py-1"
             >
-              {link.label}
+              {t(link.key)}
             </Link>
           ))}
           <div className="pt-2 flex flex-col gap-2 border-t border-white/10">
@@ -108,19 +115,19 @@ export function Navbar() {
                 onClick={() => setOpen(false)}
                 className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium text-center hover:bg-brand-gold-light transition-colors"
               >
-                Dashboard
+                {t('nav.dashboard')}
               </Link>
             ) : (
               <>
                 <Link href="/login" onClick={() => setOpen(false)} className="text-sm text-white/70 hover:text-brand-white transition-colors py-1">
-                  Log In
+                  {t('nav.login')}
                 </Link>
                 <Link
                   href="/membership"
                   onClick={() => setOpen(false)}
                   className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium text-center hover:bg-brand-gold-light transition-colors"
                 >
-                  Join the Circle
+                  {t('nav.join')}
                 </Link>
               </>
             )}
