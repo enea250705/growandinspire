@@ -9,6 +9,27 @@ import { SaveButton } from '@/components/watch/SaveButton'
 import { PremiumBadge } from '@/components/ui/LockBadge'
 import { createClient } from '@/lib/supabase/server'
 import { isMember as checkMembership } from '@/lib/membership'
+import { getLang } from '@/lib/i18n-server'
+import type { Lang } from '@/lib/i18n'
+
+const T: Record<Lang, { watch: string; membersOnly: string; unlockDesc: string; becomeMember: string; moreFrom: string; viewAll: string }> = {
+  en: {
+    watch: 'Watch',
+    membersOnly: 'This content is for members only',
+    unlockDesc: 'Unlock the full library of premium coaching sessions and exclusive content.',
+    becomeMember: 'Become a Member',
+    moreFrom: 'More from',
+    viewAll: 'View all',
+  },
+  sq: {
+    watch: 'Shiko',
+    membersOnly: 'Kjo përmbajtje është vetëm për anëtarë',
+    unlockDesc: 'Zhblloko bibliotekën e plotë të sesioneve premium të coaching-ut dhe përmbajtjes ekskluzive.',
+    becomeMember: 'Bëhu Anëtar',
+    moreFrom: 'Më shumë nga',
+    viewAll: 'Shiko të gjitha',
+  },
+}
 
 interface Props {
   params: Promise<{ category: string; slug: string }>
@@ -47,12 +68,15 @@ export default async function EpisodePage({ params }: Props) {
     .filter((c) => c.id !== item.id)
     .slice(0, 3)
 
+  const lang = await getLang()
+  const t = T[lang]
+
   return (
     <div className="pt-20 lg:pt-24 min-h-screen bg-brand-cream">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-black/40 mb-8">
-          <Link href="/watch" className="hover:text-brand-black transition-colors">Watch</Link>
+          <Link href="/watch" className="hover:text-brand-black transition-colors">{t.watch}</Link>
           <span>/</span>
           <Link href={`/watch/${meta.slug}`} className="hover:text-brand-black transition-colors">{meta.label}</Link>
           <span>/</span>
@@ -79,15 +103,15 @@ export default async function EpisodePage({ params }: Props) {
         {isLocked ? (
           <div className="aspect-video bg-brand-dark rounded-2xl flex flex-col items-center justify-center gap-4 mb-8">
             <Lock size={32} className="text-brand-gold" strokeWidth={1.5} />
-            <p className="text-brand-white font-semibold text-lg">This content is for members only</p>
+            <p className="text-brand-white font-semibold text-lg">{t.membersOnly}</p>
             <p className="text-white/50 text-sm max-w-sm text-center">
-              Unlock the full library of premium coaching sessions and exclusive content.
+              {t.unlockDesc}
             </p>
             <Link
               href="/membership"
               className="mt-2 bg-brand-gold text-brand-black px-7 py-3 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"
             >
-              Become a Member
+              {t.becomeMember}
             </Link>
           </div>
         ) : youtubeId ? (
@@ -107,9 +131,9 @@ export default async function EpisodePage({ params }: Props) {
         {related.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/40">More from {meta.label}</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/40">{t.moreFrom} {meta.label}</p>
               <Link href={`/watch/${meta.slug}`} className="text-brand-gold text-sm font-medium hover:underline flex items-center gap-1">
-                View all <ArrowLeft size={13} className="rotate-180" />
+                {t.viewAll} <ArrowLeft size={13} className="rotate-180" />
               </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">

@@ -2,20 +2,39 @@ import Link from 'next/link'
 import { Layers } from 'lucide-react'
 import { getSeriesListWithCounts } from '@/lib/content'
 import { slugify } from '@/lib/content-meta'
+import { getLang } from '@/lib/i18n-server'
+import type { Lang } from '@/lib/i18n'
 
 export const revalidate = 300
 
+const T: Record<Lang, { badge: string; title: string; subtitle: string; empty: string }> = {
+  en: {
+    badge: 'Series and Programs',
+    title: 'Series',
+    subtitle: 'Video collections organized into episodes - follow them from start to finish.',
+    empty: 'No series published yet.',
+  },
+  sq: {
+    badge: 'Seri dhe Programe',
+    title: 'Seritë',
+    subtitle: 'Koleksione video të organizuara në episode - ndiqi nga fillimi deri në fund.',
+    empty: 'Ende asnjë seri e publikuar.',
+  },
+}
+
 export default async function SeriesIndexPage() {
   const series = await getSeriesListWithCounts()
+  const lang = await getLang()
+  const t = T[lang]
 
   return (
     <div className="pt-20 lg:pt-24 min-h-screen bg-brand-cream">
       <section className="bg-brand-black py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-4">Seri dhe Programe</p>
-          <h1 className="font-serif text-5xl lg:text-6xl font-bold text-brand-white mb-4">Seritë</h1>
+          <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-4">{t.badge}</p>
+          <h1 className="font-serif text-5xl lg:text-6xl font-bold text-brand-white mb-4">{t.title}</h1>
           <p className="text-white/50 text-lg max-w-xl">
-            Koleksione video të organizuara në episode - ndiqi nga fillimi deri në fund.
+            {t.subtitle}
           </p>
         </div>
       </section>
@@ -24,7 +43,7 @@ export default async function SeriesIndexPage() {
         {series.length === 0 ? (
           <div className="text-center py-20">
             <Layers size={28} className="text-black/20 mx-auto mb-4" />
-            <p className="text-black/40">Ende asnjë seri e publikuar.</p>
+            <p className="text-black/40">{t.empty}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
