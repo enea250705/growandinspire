@@ -64,6 +64,9 @@ const messages: Record<Lang, Dict> = {
     'dash.member': 'Member',
     'dash.adminPanel': 'Admin Panel',
     'dash.signOut': 'Sign Out',
+
+    'lock.membersOnly': 'Members only',
+    'lock.joinToUnlock': 'Join to unlock',
   },
   sq: {
     'nav.learning': 'Mësim',
@@ -118,6 +121,9 @@ const messages: Record<Lang, Dict> = {
     'dash.member': 'Anëtar',
     'dash.adminPanel': 'Paneli i Adminit',
     'dash.signOut': 'Dil',
+
+    'lock.membersOnly': 'Vetëm anëtarë',
+    'lock.joinToUnlock': 'Bashkohu për ta hapur',
   },
 }
 

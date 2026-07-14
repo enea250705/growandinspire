@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { getLang } from '@/lib/i18n-server'
 
 type AuthResult = { ok: true } | { ok: false; error: string }
 
@@ -88,11 +89,12 @@ export async function updatePassword(data: {
   newPassword: string
   confirmPassword: string
 }): Promise<AuthResult> {
+  const lang = await getLang()
   if (data.newPassword !== data.confirmPassword) {
-    return { ok: false, error: 'Fjalëkalimet nuk përputhen.' }
+    return { ok: false, error: lang === 'sq' ? 'Fjalëkalimet nuk përputhen.' : 'Passwords do not match.' }
   }
   if (data.newPassword.length < 6) {
-    return { ok: false, error: 'Fjalëkalimi duhet të ketë të paktën 6 karaktere.' }
+    return { ok: false, error: lang === 'sq' ? 'Fjalëkalimi duhet të ketë të paktën 6 karaktere.' : 'Password must be at least 6 characters.' }
   }
   const supabase = await createClient()
   const { error } = await supabase.auth.updateUser({ password: data.newPassword })

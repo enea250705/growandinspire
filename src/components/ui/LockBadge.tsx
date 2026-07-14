@@ -1,6 +1,9 @@
+'use client'
+
 import { Lock } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { useI18n } from '@/components/i18n/I18nProvider'
 
 interface LockBadgeProps {
   className?: string
@@ -8,6 +11,7 @@ interface LockBadgeProps {
 }
 
 export function LockBadge({ className, size = 'md' }: LockBadgeProps) {
+  const { t } = useI18n()
   return (
     <div
       className={cn(
@@ -20,12 +24,12 @@ export function LockBadge({ className, size = 'md' }: LockBadgeProps) {
         size={size === 'sm' ? 16 : 22}
         strokeWidth={1.5}
       />
-      <p className="text-brand-white text-xs font-medium mb-3">Members only</p>
+      <p className="text-brand-white text-xs font-medium mb-3">{t('lock.membersOnly')}</p>
       <Link
         href="/membership"
         className="text-xs bg-brand-gold text-brand-black px-4 py-1.5 rounded-full font-semibold hover:bg-brand-gold-light transition-colors"
       >
-        Join to unlock
+        {t('lock.joinToUnlock')}
       </Link>
     </div>
   )
