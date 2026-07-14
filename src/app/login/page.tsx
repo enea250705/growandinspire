@@ -6,8 +6,92 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Eye, EyeOff } from 'lucide-react'
 import { signIn, signUp } from '@/lib/actions/auth'
+import { useI18n } from '@/components/i18n/I18nProvider'
+import type { Lang } from '@/lib/i18n'
+
+const CONTENT: Record<Lang, {
+  createdTitle: string
+  createdDesc: string
+  backToLogin: string
+  welcome: string
+  createAccount: string
+  logIn: string
+  signUp: string
+  fullName: string
+  namePh: string
+  email: string
+  password: string
+  forgot: string
+  connecting: string
+  createBtn: string
+  agree: string
+  terms: string
+  and: string
+  privacy: string
+  noAccount: string
+  haveAccount: string
+  signUpFree: string
+  logInLink: string
+  showPw: string
+  hidePw: string
+}> = {
+  en: {
+    createdTitle: 'Account created',
+    createdDesc: 'Check your email and confirm your address to activate your account.',
+    backToLogin: 'Back to login',
+    welcome: 'Welcome back',
+    createAccount: 'Create your account',
+    logIn: 'Log In',
+    signUp: 'Sign Up',
+    fullName: 'Full Name',
+    namePh: 'Arta Kola',
+    email: 'Email',
+    password: 'Password',
+    forgot: 'Forgot password?',
+    connecting: 'Signing in...',
+    createBtn: 'Create Account',
+    agree: 'By signing up you agree to our',
+    terms: 'Terms',
+    and: 'and',
+    privacy: 'Privacy Policy',
+    noAccount: "Don't have an account? ",
+    haveAccount: 'Already a member? ',
+    signUpFree: 'Sign up free',
+    logInLink: 'Log in',
+    showPw: 'Show password',
+    hidePw: 'Hide password',
+  },
+  sq: {
+    createdTitle: 'Llogaria u krijua',
+    createdDesc: 'Kontrollo email-in dhe konfirmo adresën për të aktivizuar llogarinë.',
+    backToLogin: 'Kthehu te hyrja',
+    welcome: 'Mirë se u ktheve',
+    createAccount: 'Krijo llogarinë tënde',
+    logIn: 'Hyr',
+    signUp: 'Regjistrohu',
+    fullName: 'Emri i Plotë',
+    namePh: 'Arta Kola',
+    email: 'Email',
+    password: 'Fjalëkalimi',
+    forgot: 'Harrove fjalëkalimin?',
+    connecting: 'Duke u lidhur...',
+    createBtn: 'Krijo Llogari',
+    agree: 'Duke u regjistruar pranon',
+    terms: 'Kushtet',
+    and: 'dhe',
+    privacy: 'Politikën e Privatësisë',
+    noAccount: 'Nuk ke llogari? ',
+    haveAccount: 'Je tashmë anëtar? ',
+    signUpFree: 'Regjistrohu falas',
+    logInLink: 'Hyr',
+    showPw: 'Shfaq fjalëkalimin',
+    hidePw: 'Fshih fjalëkalimin',
+  },
+}
 
 export default function LoginPage() {
+  const { lang } = useI18n()
+  const c = CONTENT[lang]
   const router = useRouter()
   const [mode, setMode] = useState<'login' | 'signup'>('login')
   const [form, setForm] = useState({ email: '', password: '', name: '' })
@@ -53,15 +137,15 @@ export default function LoginPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h2 className="font-serif text-2xl font-bold text-brand-black mb-2">Account created</h2>
+            <h2 className="font-serif text-2xl font-bold text-brand-black mb-2">{c.createdTitle}</h2>
             <p className="text-black/50 text-sm mb-6">
-              Check your email and confirm your address to activate your account.
+              {c.createdDesc}
             </p>
             <button
               onClick={() => { setMode('login'); setSignupSuccess(false) }}
               className="text-brand-gold text-sm font-medium hover:underline"
             >
-              Back to login
+              {c.backToLogin}
             </button>
           </div>
         </div>
@@ -84,7 +168,7 @@ export default function LoginPage() {
             />
           </Link>
           <p className="text-white/40 text-sm mt-2">
-            {mode === 'login' ? 'Welcome back' : 'Create your account'}
+            {mode === 'login' ? c.welcome : c.createAccount}
           </p>
         </div>
 
@@ -96,7 +180,7 @@ export default function LoginPage() {
                 mode === 'login' ? 'bg-brand-black text-brand-white' : 'text-black/50 hover:text-brand-black'
               }`}
             >
-              Log In
+              {c.logIn}
             </button>
             <button
               onClick={() => { setMode('signup'); setError('') }}
@@ -104,27 +188,27 @@ export default function LoginPage() {
                 mode === 'signup' ? 'bg-brand-black text-brand-white' : 'text-black/50 hover:text-brand-black'
               }`}
             >
-              Sign Up
+              {c.signUp}
             </button>
           </div>
 
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             {mode === 'signup' && (
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-brand-black">Full Name</label>
+                <label className="text-sm font-medium text-brand-black">{c.fullName}</label>
                 <input
                   type="text"
                   required
                   value={form.name}
                   onChange={(e) => set('name', e.target.value)}
-                  placeholder="Arta Kola"
+                  placeholder={c.namePh}
                   className="border border-black/15 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-brand-gold transition-colors"
                 />
               </div>
             )}
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-brand-black">Email</label>
+              <label className="text-sm font-medium text-brand-black">{c.email}</label>
               <input
                 type="email"
                 required
@@ -137,10 +221,10 @@ export default function LoginPage() {
 
             <div className="flex flex-col gap-1.5">
               <div className="flex justify-between items-center">
-                <label className="text-sm font-medium text-brand-black">Password</label>
+                <label className="text-sm font-medium text-brand-black">{c.password}</label>
                 {mode === 'login' && (
                   <Link href="/forgot-password" className="text-xs text-brand-gold hover:underline">
-                    Forgot password?
+                    {c.forgot}
                   </Link>
                 )}
               </div>
@@ -157,7 +241,7 @@ export default function LoginPage() {
                   type="button"
                   onClick={() => setShowPassword((s) => !s)}
                   tabIndex={-1}
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  aria-label={showPassword ? c.hidePw : c.showPw}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-black/40 hover:text-black/70 transition-colors"
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -176,27 +260,27 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full bg-brand-gold text-brand-black py-3.5 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors mt-2 disabled:opacity-50"
             >
-              {loading ? 'Duke u lidhur...' : mode === 'login' ? 'Log In' : 'Create Account'}
+              {loading ? c.connecting : mode === 'login' ? c.logIn : c.createBtn}
             </button>
           </form>
 
           {mode === 'signup' && (
             <p className="text-center text-xs text-black/40 mt-4">
-              By signing up you agree to our{' '}
-              <Link href="/terms" className="text-brand-gold hover:underline">Terms</Link>
-              {' '}and{' '}
-              <Link href="/privacy" className="text-brand-gold hover:underline">Privacy Policy</Link>.
+              {c.agree}{' '}
+              <Link href="/terms" className="text-brand-gold hover:underline">{c.terms}</Link>
+              {' '}{c.and}{' '}
+              <Link href="/privacy" className="text-brand-gold hover:underline">{c.privacy}</Link>.
             </p>
           )}
         </div>
 
         <p className="text-center text-white/40 text-sm mt-6">
-          {mode === 'login' ? "Don't have an account? " : 'Already a member? '}
+          {mode === 'login' ? c.noAccount : c.haveAccount}
           <button
             onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); setError('') }}
             className="text-brand-gold hover:underline"
           >
-            {mode === 'login' ? 'Sign up free' : 'Log in'}
+            {mode === 'login' ? c.signUpFree : c.logInLink}
           </button>
         </p>
       </div>
