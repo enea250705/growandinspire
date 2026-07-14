@@ -4,12 +4,14 @@ import { DashboardSidebar } from '@/components/dashboard/DashboardSidebar'
 import { DASHBOARD_NAV } from '@/components/dashboard/navItems'
 import { isAdmin } from '@/lib/admin'
 import { getMembership, tierLabel } from '@/lib/membership'
+import { getT } from '@/lib/i18n-server'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  const t = await getT()
 
-  const name = user?.user_metadata?.full_name ?? user?.email?.split('@')[0] ?? 'Member'
+  const name = user?.user_metadata?.full_name ?? user?.email?.split('@')[0] ?? t('dash.member')
   const email = user?.email ?? ''
   const [membership, admin] = await Promise.all([getMembership(), isAdmin()])
   const tier = membership ? tierLabel(membership.tier) : 'Free'
@@ -19,14 +21,14 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="lg:hidden mb-6 overflow-x-auto">
           <nav className="flex gap-2 pb-1">
-            {DASHBOARD_NAV.map(({ label, href, icon: Icon }) => (
+            {DASHBOARD_NAV.map(({ key, href, icon: Icon }) => (
               <Link
                 key={href}
                 href={href}
                 className="flex items-center gap-2 whitespace-nowrap rounded-full border border-black/8 bg-brand-white px-3 py-2 text-sm text-black/60 hover:border-brand-gold/30 hover:text-brand-black"
               >
                 <Icon size={14} strokeWidth={1.5} />
-                {label}
+                {t(key)}
               </Link>
             ))}
           </nav>

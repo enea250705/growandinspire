@@ -4,12 +4,69 @@ import { CATEGORY_META, slugify } from '@/lib/content-meta'
 import { getFreeContent, getPremiumContent, getSeriesListWithCounts, getSavedContent, getDownloads } from '@/lib/content'
 import { createClient } from '@/lib/supabase/server'
 import { getMembership, tierLabel } from '@/lib/membership'
+import { getLang } from '@/lib/i18n-server'
+import type { Lang } from '@/lib/i18n'
 import type { ContentItem, Series } from '@/types'
+
+const CONTENT: Record<Lang, {
+  member: string
+  welcome: string
+  subtitle: string
+  statMembership: string
+  statSaved: string
+  statDownloads: string
+  statEvents: string
+  continueWatching: string
+  viewAll: string
+  learningHub: string
+  seriesPrograms: string
+  growExclusive: string
+  nextEvent: string
+  conference: string
+  viewDetails: string
+}> = {
+  en: {
+    member: 'Member',
+    welcome: 'Welcome back',
+    subtitle: 'Here is what is happening in your circle.',
+    statMembership: 'My Membership',
+    statSaved: 'Saved Content',
+    statDownloads: 'My Downloads',
+    statEvents: 'Upcoming Events',
+    continueWatching: 'Continue Watching',
+    viewAll: 'View all',
+    learningHub: 'Learning Hub',
+    seriesPrograms: 'Series and Programs',
+    growExclusive: 'Grow Exclusive',
+    nextEvent: 'Next Event',
+    conference: 'Grow and Inspire Conference',
+    viewDetails: 'View Details',
+  },
+  sq: {
+    member: 'Anëtar',
+    welcome: 'Mirë se u ktheve',
+    subtitle: 'Ja çfarë po ndodh në rrethin tënd.',
+    statMembership: 'Anëtarësimi Im',
+    statSaved: 'Përmbajtja e Ruajtur',
+    statDownloads: 'Shkarkimet e Mia',
+    statEvents: 'Eventet e Ardhshme',
+    continueWatching: 'Vazhdo të Shikosh',
+    viewAll: 'Shiko të gjitha',
+    learningHub: 'Learning Hub',
+    seriesPrograms: 'Seri dhe Programe',
+    growExclusive: 'Grow Exclusive',
+    nextEvent: 'Eventi i Radhës',
+    conference: 'Grow and Inspire Conference',
+    viewDetails: 'Shiko Detajet',
+  },
+}
 
 export default async function DashboardPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  const name = user?.user_metadata?.full_name ?? user?.email?.split('@')[0] ?? 'Member'
+  const lang = await getLang()
+  const c = CONTENT[lang]
+  const name = user?.user_metadata?.full_name ?? user?.email?.split('@')[0] ?? c.member
   const email = user?.email ?? ''
 
   const [membership, recentContent, exclusiveContent, featuredContent, series, saved, downloads] = await Promise.all([
@@ -27,14 +84,16 @@ export default async function DashboardPage() {
     .eq('email', email)
 
   const stats = [
-    { label: 'My Membership', value: membership ? tierLabel(membership.tier) : 'Free', icon: Users, href: '/dashboard/membership' },
-    { label: 'Saved Content', value: `${saved.length}`, icon: BookOpen, href: '/dashboard/saved' },
-    { label: 'My Downloads', value: `${downloads.length}`, icon: Download, href: '/dashboard/downloads' },
-    { label: 'Upcoming Events', value: `${eventCount ?? 0}`, icon: Calendar, href: '/dashboard/events' },
+    { label: c.statMembership, value: membership ? tierLabel(membership.tier) : 'Free', icon: Users, href: '/dashboard/membership' },
+    { label: c.statSaved, value: `${saved.length}`, icon: BookOpen, href: '/dashboard/saved' },
+    { label: c.statDownloads, value: `${downloads.length}`, icon: Download, href: '/dashboard/downloads' },
+    { label: c.statEvents, value: `${eventCount ?? 0}`, icon: Calendar, href: '/dashboard/events' },
   ]
 
-  return <DashboardContent name={name} stats={stats} recentContent={recentContent} exclusiveContent={exclusiveContent} featuredContent={featuredContent} series={series} />
+  return <DashboardContent c={c} name={name} stats={stats} recentContent={recentContent} exclusiveContent={exclusiveContent} featuredContent={featuredContent} series={series} />
 }
+
+type DashContent = (typeof CONTENT)[Lang]
 
 interface Stat {
   label: string
@@ -44,6 +103,7 @@ interface Stat {
 }
 
 function DashboardContent({
+  c,
   name,
   stats,
   recentContent,
@@ -51,6 +111,7 @@ function DashboardContent({
   featuredContent,
   series,
 }: {
+  c: DashContent
   name: string
   stats: Stat[]
   recentContent: ContentItem[]
@@ -62,9 +123,9 @@ function DashboardContent({
     <>
       <div className="mb-8">
         <h1 className="font-serif text-3xl font-bold text-brand-black">
-          Welcome back, {name}.
+          {c.welcome}, {name}.
         </h1>
-        <p className="text-black/50 mt-1">Here is what is happening in your circle.</p>
+        <p className="text-black/50 mt-1">{c.subtitle}</p>
       </div>
 
       <div className="grid grid-cols-2 xl:grid-cols-5 gap-4 mb-10">
@@ -79,9 +140,9 @@ function DashboardContent({
 
       <div className="mb-10">
         <div className="flex items-center justify-between mb-5">
-          <p className="font-semibold text-brand-black">Continue Watching</p>
+          <p className="font-semibold text-brand-black">{c.continueWatching}</p>
           <Link href="/watch" className="text-brand-gold text-sm font-medium hover:underline flex items-center gap-1">
-            View all <ChevronRight size={13} />
+            {c.viewAll} <ChevronRight size={13} />
           </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -123,10 +184,10 @@ function DashboardContent({
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2">
             <PlayCircle size={15} className="text-brand-gold" />
-            <p className="font-semibold text-brand-black">Learning Hub</p>
+            <p className="font-semibold text-brand-black">{c.learningHub}</p>
           </div>
           <Link href="/watch" className="text-brand-gold text-sm font-medium hover:underline flex items-center gap-1">
-            View all <ChevronRight size={13} />
+            {c.viewAll} <ChevronRight size={13} />
           </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -169,10 +230,10 @@ function DashboardContent({
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-2">
               <Layers size={15} className="text-brand-gold" />
-              <p className="font-semibold text-brand-black">Seri dhe Programe</p>
+              <p className="font-semibold text-brand-black">{c.seriesPrograms}</p>
             </div>
             <Link href="/series" className="text-brand-gold text-sm font-medium hover:underline flex items-center gap-1">
-              View all <ChevronRight size={13} />
+              {c.viewAll} <ChevronRight size={13} />
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -204,11 +265,11 @@ function DashboardContent({
       <div className="mb-10">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2">
-            <p className="font-semibold text-brand-black">Grow Exclusive</p>
+            <p className="font-semibold text-brand-black">{c.growExclusive}</p>
             <Lock size={13} className="text-brand-gold" />
           </div>
           <Link href="/watch/grow-exclusive" className="text-brand-gold text-sm font-medium hover:underline flex items-center gap-1">
-            View all <ChevronRight size={13} />
+            {c.viewAll} <ChevronRight size={13} />
           </Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -244,15 +305,15 @@ function DashboardContent({
 
       <div className="bg-brand-black rounded-2xl p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
         <div>
-          <p className="text-brand-gold text-xs font-semibold uppercase tracking-widest mb-2">Next Event</p>
-          <p className="font-serif text-xl font-bold text-brand-white">Grow and Inspire Conference</p>
+          <p className="text-brand-gold text-xs font-semibold uppercase tracking-widest mb-2">{c.nextEvent}</p>
+          <p className="font-serif text-xl font-bold text-brand-white">{c.conference}</p>
           <p className="text-white/50 text-sm mt-1">April 25-26, 2026 · Tirana, Albania</p>
         </div>
         <Link
           href="/dashboard/events"
           className="shrink-0 bg-brand-gold text-brand-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"
         >
-          View Details
+          {c.viewDetails}
         </Link>
       </div>
     </>

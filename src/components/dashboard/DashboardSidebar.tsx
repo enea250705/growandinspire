@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { LogOut, ShieldCheck } from 'lucide-react'
 import { signOut } from '@/lib/actions/auth'
 import { DASHBOARD_NAV } from '@/components/dashboard/navItems'
+import { useI18n } from '@/components/i18n/I18nProvider'
 
 interface Props {
   name: string
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export function DashboardSidebar({ name, email, tier, isAdmin }: Props) {
+  const { t } = useI18n()
   const pathname = usePathname()
   const initial = name[0]?.toUpperCase() ?? 'M'
 
@@ -30,7 +32,7 @@ export function DashboardSidebar({ name, email, tier, isAdmin }: Props) {
         </div>
 
         <nav className="p-2">
-          {DASHBOARD_NAV.map(({ label, href, icon: Icon, exact }) => {
+          {DASHBOARD_NAV.map(({ key, href, icon: Icon, exact }) => {
             const active = exact ? pathname === href : pathname.startsWith(href)
             return (
               <Link
@@ -43,7 +45,7 @@ export function DashboardSidebar({ name, email, tier, isAdmin }: Props) {
                 }`}
               >
                 <Icon size={15} strokeWidth={1.5} />
-                {label}
+                {t(key)}
               </Link>
             )
           })}
@@ -56,7 +58,7 @@ export function DashboardSidebar({ name, email, tier, isAdmin }: Props) {
               className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm bg-brand-gold/10 text-brand-gold-dark hover:bg-brand-gold/20 transition-colors"
             >
               <ShieldCheck size={15} strokeWidth={1.5} />
-              Admin Panel
+              {t('dash.adminPanel')}
             </Link>
           </div>
         )}
@@ -68,7 +70,7 @@ export function DashboardSidebar({ name, email, tier, isAdmin }: Props) {
               className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-red-400 hover:bg-red-50 w-full transition-colors"
             >
               <LogOut size={15} strokeWidth={1.5} />
-              Log Out
+              {t('dash.signOut')}
             </button>
           </form>
         </div>

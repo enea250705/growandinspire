@@ -52,6 +52,18 @@ const messages: Record<Lang, Dict> = {
     'footer.rights': 'Grow and Inspire / Class Media. All rights reserved.',
     'footer.privacy': 'Privacy',
     'footer.terms': 'Terms',
+
+    'dash.nav.dashboard': 'Dashboard',
+    'dash.nav.learning': 'Learning Hub',
+    'dash.nav.membership': 'My Membership',
+    'dash.nav.saved': 'Saved Content',
+    'dash.nav.downloads': 'My Downloads',
+    'dash.nav.applications': 'My Applications',
+    'dash.nav.events': 'Upcoming Events',
+    'dash.nav.settings': 'Settings',
+    'dash.member': 'Member',
+    'dash.adminPanel': 'Admin Panel',
+    'dash.signOut': 'Sign Out',
   },
   sq: {
     'nav.learning': 'Mësim',
@@ -94,6 +106,18 @@ const messages: Record<Lang, Dict> = {
     'footer.rights': 'Grow and Inspire / Class Media. Të gjitha të drejtat e rezervuara.',
     'footer.privacy': 'Privatësia',
     'footer.terms': 'Kushtet',
+
+    'dash.nav.dashboard': 'Paneli',
+    'dash.nav.learning': 'Learning Hub',
+    'dash.nav.membership': 'Anëtarësimi Im',
+    'dash.nav.saved': 'Përmbajtja e Ruajtur',
+    'dash.nav.downloads': 'Shkarkimet e Mia',
+    'dash.nav.applications': 'Aplikimet e Mia',
+    'dash.nav.events': 'Eventet e Ardhshme',
+    'dash.nav.settings': 'Cilësimet',
+    'dash.member': 'Anëtar',
+    'dash.adminPanel': 'Paneli i Adminit',
+    'dash.signOut': 'Dil',
   },
 }
 
