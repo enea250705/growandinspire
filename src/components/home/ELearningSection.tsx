@@ -69,7 +69,6 @@ export async function ELearningSection() {
             </div>
           ) : (
             <div className="group relative rounded-2xl bg-gradient-to-br from-brand-dark to-brand-black border border-white/10 hover:border-brand-gold/30 transition-all overflow-hidden cursor-pointer">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_rgba(0,180,166,0.08)_0%,_transparent_60%)]" />
               <div className="relative p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
                 <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 bg-brand-gold/10 border border-brand-gold/30 rounded-full flex items-center justify-center group-hover:bg-brand-gold/20 transition-colors">
                   <Play size={24} className="text-brand-gold ml-1" strokeWidth={1.5} />
