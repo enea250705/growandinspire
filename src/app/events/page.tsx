@@ -1,36 +1,98 @@
 import Link from 'next/link'
 import { Calendar, MapPin, Users, ArrowRight } from 'lucide-react'
+import { getLang } from '@/lib/i18n-server'
+import type { Lang } from '@/lib/i18n'
 
-const EVENTS = [
-  {
-    id: '2',
-    title: 'Dinner with Alketa',
-    type: 'Exclusive Dinner',
-    date: 'May 15, 2026',
-    location: 'Tirana, Albania',
-    price: 'By application',
-    capacity: '8-12 people',
-    description: 'An exclusive executive dinner - curated conversations with purposeful leaders.',
-    cta: { label: 'Apply to Join', href: '/dinner-with-alketa' },
-    featured: true,
+const CONTENT: Record<Lang, {
+  badge: string
+  title: string
+  subtitle: string
+  featuredLabel: string
+  event: {
+    title: string
+    type: string
+    date: string
+    location: string
+    price: string
+    capacity: string
+    description: string
+    ctaLabel: string
+    href: string
+  }
+  collabBadge: string
+  collabTitle: string
+  collabDesc: string
+  services: { title: string; desc: string }[]
+  contactCta: string
+}> = {
+  en: {
+    badge: 'Events',
+    title: 'Business Events',
+    subtitle: 'Conferences, dinners, coaching cohorts, and networking - curated experiences for purposeful growth.',
+    featuredLabel: 'Featured Event',
+    event: {
+      title: 'Dinner with Alketa',
+      type: 'Exclusive Dinner',
+      date: 'May 15, 2026',
+      location: 'Tirana, Albania',
+      price: 'By application',
+      capacity: '8-12 people',
+      description: 'An exclusive executive dinner - curated conversations with purposeful leaders.',
+      ctaLabel: 'Apply to Join',
+      href: '/dinner-with-alketa',
+    },
+    collabBadge: 'In Collaboration with Class Events',
+    collabTitle: 'Event Organization and Decoration',
+    collabDesc: "Every Grow and Inspire event is produced together with Class Events - the team behind Albania's most refined corporate experiences. From full event organization to premium decoration and staging, Class Events also works directly with businesses for their own occasions.",
+    services: [
+      { title: 'Event Organization', desc: 'Concept, planning, production and coordination for business events of any scale.' },
+      { title: 'Decoration and Staging', desc: 'Premium decoration, floral design and staging tailored to your brand and occasion.' },
+    ],
+    contactCta: 'Contact for Your Event',
   },
-]
+  sq: {
+    badge: 'Evente',
+    title: 'Evente Biznesi',
+    subtitle: 'Konferenca, darka, grupe coaching dhe networking - eksperienca të kuruara për rritje me qëllim.',
+    featuredLabel: 'Eventi Kryesor',
+    event: {
+      title: 'Dinner with Alketa',
+      type: 'Darkë Ekskluzive',
+      date: '15 Maj, 2026',
+      location: 'Tiranë, Shqipëri',
+      price: 'Me aplikim',
+      capacity: '8-12 persona',
+      description: 'Një darkë ekskluzive ekzekutive - biseda të kuruara me liderë me qëllim.',
+      ctaLabel: 'Apliko për të marrë pjesë',
+      href: '/dinner-with-alketa',
+    },
+    collabBadge: 'Në Bashkëpunim me Class Events',
+    collabTitle: 'Organizim dhe Dekorim Eventesh',
+    collabDesc: 'Çdo event i Grow and Inspire prodhohet së bashku me Class Events - ekipi pas eksperiencave korporative më të rafinuara në Shqipëri. Nga organizimi i plotë i eventit te dekorimi dhe skenografia premium, Class Events punon edhe drejtpërdrejt me bizneset për rastet e tyre.',
+    services: [
+      { title: 'Organizim Eventesh', desc: 'Koncept, planifikim, prodhim dhe koordinim për evente biznesi të çdo shkalle.' },
+      { title: 'Dekorim dhe Skenografi', desc: 'Dekorim premium, dizajn floral dhe skenografi sipas brand-it dhe rastit tuaj.' },
+    ],
+    contactCta: 'Kontakto për Eventin Tënd',
+  },
+}
 
-export default function EventsPage() {
-  const featured = EVENTS[0]
-  const rest = EVENTS.slice(1)
+export default async function EventsPage() {
+  const lang = await getLang()
+  const c = CONTENT[lang]
+  const featured = c.event
 
   return (
     <div className="pt-20 lg:pt-24 min-h-screen bg-brand-cream">
       {/* Header */}
       <section className="bg-brand-black py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-4">Events</p>
+          <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-4">{c.badge}</p>
           <h1 className="font-serif text-5xl lg:text-6xl font-bold text-brand-white mb-4">
-            Business Events
+            {c.title}
           </h1>
           <p className="text-white/50 text-lg max-w-xl">
-            Conferences, dinners, coaching cohorts, and networking - curated experiences for purposeful growth.
+            {c.subtitle}
           </p>
         </div>
       </section>
@@ -38,7 +100,7 @@ export default function EventsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
         {/* Featured event */}
         <div className="mb-12">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/40 mb-6">Featured Event</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/40 mb-6">{c.featuredLabel}</p>
           <div className="bg-brand-black rounded-2xl overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-2">
               <div className="p-10 lg:p-14 flex flex-col justify-center">
@@ -65,10 +127,10 @@ export default function EventsPage() {
                 </div>
                 <div className="flex items-center gap-4">
                   <Link
-                    href={featured.cta.href}
+                    href={featured.href}
                     className="inline-flex items-center gap-2 bg-brand-gold text-brand-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"
                   >
-                    {featured.cta.label} <ArrowRight size={14} />
+                    {featured.ctaLabel} <ArrowRight size={14} />
                   </Link>
                   <span className="text-white/40 text-sm">{featured.price}</span>
                 </div>
@@ -83,50 +145,20 @@ export default function EventsPage() {
           </div>
         </div>
 
-        {/* Rest of events grid */}
-        {rest.length > 0 && (
-          <>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/40 mb-6">All Events</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {rest.map((event) => (
-                <div key={event.id} className="bg-brand-white rounded-2xl border border-black/8 p-6 flex flex-col hover:shadow-md transition-shadow">
-                  <span className="text-brand-gold text-xs font-semibold uppercase tracking-widest mb-3">{event.type}</span>
-                  <h3 className="font-serif text-lg font-bold text-brand-black mb-2 leading-snug">{event.title}</h3>
-                  <p className="text-black/50 text-sm leading-relaxed mb-4 flex-1">{event.description}</p>
-                  <div className="flex flex-col gap-2 mb-5 text-xs text-black/40">
-                    <div className="flex items-center gap-2"><Calendar size={12} className="text-brand-gold" />{event.date}</div>
-                    <div className="flex items-center gap-2"><MapPin size={12} className="text-brand-gold" />{event.location}</div>
-                    <div className="flex items-center gap-2"><Users size={12} className="text-brand-gold" />{event.capacity}</div>
-                  </div>
-                  <div className="flex items-center justify-between pt-4 border-t border-black/6">
-                    <span className="text-xs text-black/40">{event.price}</span>
-                    <Link href={event.cta.href} className="text-brand-gold text-sm font-medium hover:underline flex items-center gap-1">
-                      {event.cta.label} <ArrowRight size={13} />
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </>
-        )}
-
         {/* Class Events collaboration */}
         <div className="mt-16 bg-brand-black rounded-2xl p-10 lg:p-14">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             <div>
-              <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-4">In Collaboration with Class Events</p>
+              <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-4">{c.collabBadge}</p>
               <h2 className="font-serif text-3xl lg:text-4xl font-bold text-brand-white mb-4">
-                Event Organization and Decoration
+                {c.collabTitle}
               </h2>
               <p className="text-white/60 leading-relaxed">
-                Every Grow and Inspire event is produced together with Class Events - the team behind Albania&apos;s most refined corporate experiences. From full event organization to premium decoration and staging, Class Events also works directly with businesses for their own occasions.
+                {c.collabDesc}
               </p>
             </div>
             <div className="flex flex-col gap-4">
-              {[
-                { title: 'Event Organization', desc: 'Concept, planning, production and coordination for business events of any scale.' },
-                { title: 'Decoration and Staging', desc: 'Premium decoration, floral design and staging tailored to your brand and occasion.' },
-              ].map((s) => (
+              {c.services.map((s) => (
                 <div key={s.title} className="bg-white/5 border border-white/10 rounded-2xl p-6">
                   <p className="text-brand-white font-semibold mb-1">{s.title}</p>
                   <p className="text-white/50 text-sm leading-relaxed">{s.desc}</p>
@@ -136,7 +168,7 @@ export default function EventsPage() {
                 href="/sponsorship"
                 className="inline-flex items-center justify-center gap-2 bg-brand-gold text-brand-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors w-fit"
               >
-                Contact for Your Event <ArrowRight size={14} />
+                {c.contactCta} <ArrowRight size={14} />
               </Link>
             </div>
           </div>
