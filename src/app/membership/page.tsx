@@ -2,8 +2,44 @@ import { Check } from 'lucide-react'
 import Link from 'next/link'
 import { MembershipForm } from '@/components/forms/MembershipForm'
 import { getMembershipPricing, planFeatures } from '@/lib/plans'
+import { getLang } from '@/lib/i18n-server'
+import type { Lang } from '@/lib/i18n'
+
+const CONTENT: Record<Lang, {
+  badge: string
+  title: string
+  subtitle: string
+  included: string
+  featureCol: string
+  ctaTitle: string
+  ctaDesc: string
+  joinFree: string
+}> = {
+  en: {
+    badge: 'Membership',
+    title: 'Join the Circle',
+    subtitle: 'Choose the plan that fits your ambition. Cancel anytime.',
+    included: "What's Included",
+    featureCol: 'Feature',
+    ctaTitle: 'Not sure which plan?',
+    ctaDesc: "Start free - upgrade when you're ready.",
+    joinFree: 'Join Free',
+  },
+  sq: {
+    badge: 'Anëtarësimi',
+    title: 'Bashkohu',
+    subtitle: 'Zgjidh planin që i përshtatet ambicies tënde. Anulo në çdo kohë.',
+    included: 'Çfarë Përfshihet',
+    featureCol: 'Veçoria',
+    ctaTitle: 'Nuk je i sigurt për planin?',
+    ctaDesc: 'Fillo falas - përmirëso kur je gati.',
+    joinFree: 'Bashkohu Falas',
+  },
+}
 
 export default async function MembershipPage() {
+  const lang = await getLang()
+  const c = CONTENT[lang]
   const { plans, comparison } = await getMembershipPricing()
   // Comparison columns follow the plans; cap at what fits the layout nicely.
   const cols = `minmax(0,1.5fr) repeat(${plans.length}, minmax(0,1fr))`
@@ -12,12 +48,12 @@ export default async function MembershipPage() {
       {/* Header */}
       <section className="bg-brand-black py-20 lg:py-28">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-4">Membership</p>
+          <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-4">{c.badge}</p>
           <h1 className="font-serif text-5xl lg:text-6xl font-bold text-brand-white mb-4">
-            Join the Circle
+            {c.title}
           </h1>
           <p className="text-white/50 text-lg max-w-xl mx-auto">
-            Choose the plan that fits your ambition. Cancel anytime.
+            {c.subtitle}
           </p>
         </div>
       </section>
@@ -88,11 +124,11 @@ export default async function MembershipPage() {
       <section className="pb-20 lg:pb-28">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-serif text-3xl font-bold text-brand-black text-center mb-10">
-            What&apos;s Included
+            {c.included}
           </h2>
           <div className="bg-brand-white rounded-2xl border border-black/8 overflow-x-auto">
             <div style={{ gridTemplateColumns: cols }} className="grid min-w-[520px] bg-brand-black text-brand-white text-xs font-semibold uppercase tracking-widest">
-              <div className="p-4">Feature</div>
+              <div className="p-4">{c.featureCol}</div>
               {plans.map((p) => (
                 <div key={p.id} className={`p-4 text-center ${p.highlight ? 'text-brand-gold' : ''}`}>{p.label}</div>
               ))}
@@ -120,13 +156,13 @@ export default async function MembershipPage() {
       {/* CTA */}
       <section className="bg-brand-black py-20">
         <div className="max-w-2xl mx-auto px-4 text-center">
-          <h2 className="font-serif text-3xl font-bold text-brand-white mb-4">Not sure which plan?</h2>
-          <p className="text-white/50 mb-8">Start free - upgrade when you&apos;re ready.</p>
+          <h2 className="font-serif text-3xl font-bold text-brand-white mb-4">{c.ctaTitle}</h2>
+          <p className="text-white/50 mb-8">{c.ctaDesc}</p>
           <Link
             href="#join"
             className="inline-flex items-center justify-center bg-brand-gold text-brand-black px-8 py-4 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"
           >
-            Join Free
+            {c.joinFree}
           </Link>
         </div>
       </section>
