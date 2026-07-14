@@ -4,10 +4,82 @@ import { useState } from 'react'
 import { UtensilsCrossed, ChevronDown } from 'lucide-react'
 import { Input, Textarea } from '@/components/ui/FormField'
 import { submitDinnerApplication } from '@/lib/actions/forms'
+import { useI18n } from '@/components/i18n/I18nProvider'
+import type { Lang } from '@/lib/i18n'
+
+const CONTENT: Record<Lang, {
+  badge: string
+  title: string
+  intro: React.ReactNode
+  items: { label: string; desc: string }[]
+  applyNow: string
+  formTitle: string
+  sentTitle: string
+  sentDesc: string
+  fields: { name: string; namePh: string; email: string; phone: string; profession: string; professionPh: string; reason: string; reasonPh: string }
+  submit: string
+  submitting: string
+  error: string
+}> = {
+  en: {
+    badge: 'Exclusive Experience',
+    title: 'Dinner with Alketa',
+    intro: (
+      <>An exclusive networking dinner with Alketa&nbsp;Vejsiu - curated food, a premium setting, and conversations that inspire. Limited seats for women leaders and entrepreneurs with vision.</>
+    ),
+    items: [
+      { label: 'Food and Drinks', desc: 'A curated menu, selected wines, and artisan desserts.' },
+      { label: 'Ambiance', desc: 'A premium venue with warm lighting and careful decor.' },
+      { label: 'Audio-Visual', desc: 'Short inspiring presentations and documented moments.' },
+      { label: 'Networking', desc: 'Real connections with successful women from various fields.' },
+    ],
+    applyNow: 'Apply now',
+    formTitle: 'Application Form',
+    sentTitle: 'Application sent!',
+    sentDesc: 'You will be contacted within 48 hours.',
+    fields: {
+      name: 'Full Name', namePh: 'Your full name',
+      email: 'Email', phone: 'Phone Number',
+      profession: 'Profession / Field', professionPh: 'e.g. Entrepreneur, CEO, Consultant...',
+      reason: 'Why do you want to take part?', reasonPh: 'Share a bit of your story and motivation...',
+    },
+    submit: 'Send Application',
+    submitting: 'Sending...',
+    error: 'Something went wrong. Please try again.',
+  },
+  sq: {
+    badge: 'Eksperiencë Ekskluzive',
+    title: 'Dinner with Alketa',
+    intro: (
+      <>Një darkë networking ekskluzive me Alketa&nbsp;Vejsiu - ushqim i zgjedhur, ambient premium, dhe biseda që inspirojnë. Vende të kufizuara për gratë lider dhe sipërmarrëse me vizion.</>
+    ),
+    items: [
+      { label: 'Ushqim dhe Pije', desc: 'Meny e kuruar, verëra të zgjedhura, dhe ëmbëlsira artizanale.' },
+      { label: 'Ambient', desc: 'Lokacion premium me ndriçim të ngrohtë dhe dekor të kujdesshëm.' },
+      { label: 'Audio-Vizual', desc: 'Prezantime të shkurtra inspiruese dhe momente të dokumentuara.' },
+      { label: 'Networking', desc: 'Lidhje reale me gra të suksesshme nga fusha të ndryshme.' },
+    ],
+    applyNow: 'Apliko tani',
+    formTitle: 'Formular Aplikimi',
+    sentTitle: 'Aplikimi u dërgua!',
+    sentDesc: 'Do të kontaktohesh brenda 48 orëve.',
+    fields: {
+      name: 'Emri dhe Mbiemri', namePh: 'Emri juaj i plotë',
+      email: 'Email', phone: 'Numri i Telefonit',
+      profession: 'Profesioni / Fusha', professionPh: 'p.sh. Sipërmarrëse, CEO, Konsulente...',
+      reason: 'Pse dëshiron të jesh pjesë?', reasonPh: 'Ndaj pak nga historia dhe motivimi yt...',
+    },
+    submit: 'Dërgo Aplikimin',
+    submitting: 'Duke dërguar...',
+    error: 'Ka ndodhur një problem. Ju lutem provoni sërish.',
+  },
+}
 
 export function DinnerSection() {
+  const { lang } = useI18n()
+  const c = CONTENT[lang]
   const [form, setForm] = useState({ name: '', email: '', phone: '', profession: '', reason: '' })
-  // On phone the form is collapsed behind the "Apliko tani" button; on desktop
+  // On phone the form is collapsed behind the "Apply now" button; on desktop
   // it's always shown (lg:block) and this state is ignored.
   const [formOpen, setFormOpen] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -31,7 +103,7 @@ export function DinnerSection() {
     })
     setLoading(false)
     if (result.ok) setSubmitted(true)
-    else setError('Ka ndodhur një problem. Ju lutem provoni sërish.')
+    else setError(c.error)
   }
 
   return (
@@ -40,21 +112,16 @@ export function DinnerSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           {/* Left - info */}
           <div>
-            <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">Eksperiencë Ekskluzive</p>
+            <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">{c.badge}</p>
             <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-black mb-6">
-              Dinner with Alketa
+              {c.title}
             </h2>
             <p className="text-black/60 text-lg leading-relaxed mb-8">
-              Një darkë networking ekskluzive me Alketa&nbsp;Vejsiu - ushqim i zgjedhur, ambient premium, dhe biseda që inspirojnë. Vende të kufizuara për gratë lider dhe sipërmarrëse me vizion.
+              {c.intro}
             </p>
 
             <div className="space-y-4">
-              {[
-                { label: 'Ushqim dhe Pije', desc: 'Meny e kuruar, verëra të zgjedhura, dhe ëmbëlsira artizanale.' },
-                { label: 'Ambient', desc: 'Lokacion premium me ndriçim të ngrohtë dhe dekor të kujdesshëm.' },
-                { label: 'Audio-Vizual', desc: 'Prezantime të shkurtra inspiruese dhe momente të dokumentuara.' },
-                { label: 'Networking', desc: 'Lidhje reale me gra të suksesshme nga fusha të ndryshme.' },
-              ].map((item) => (
+              {c.items.map((item) => (
                 <div key={item.label} className="flex gap-4">
                   <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-brand-gold mt-2" />
                   <div>
@@ -74,7 +141,7 @@ export function DinnerSection() {
               className="mt-8 inline-flex items-center gap-3 bg-brand-gold/10 border border-brand-gold/20 rounded-2xl px-5 py-4 lg:pointer-events-none lg:cursor-default"
             >
               <UtensilsCrossed size={20} className="text-brand-gold" strokeWidth={1.5} />
-              <span className="text-sm text-brand-black font-medium">Apliko tani</span>
+              <span className="text-sm text-brand-black font-medium">{c.applyNow}</span>
               <ChevronDown
                 size={18}
                 strokeWidth={1.5}
@@ -83,28 +150,28 @@ export function DinnerSection() {
             </button>
           </div>
 
-          {/* Right - form (collapsed on phone until "Apliko tani" is tapped) */}
+          {/* Right - form (collapsed on phone until "Apply now" is tapped) */}
           <div className={`${formOpen ? 'block' : 'hidden'} lg:block bg-brand-white rounded-3xl border border-black/8 p-8 shadow-sm`}>
-            <h3 className="font-serif text-2xl font-bold text-brand-black mb-6">Formular Aplikimi</h3>
+            <h3 className="font-serif text-2xl font-bold text-brand-black mb-6">{c.formTitle}</h3>
 
             {submitted ? (
               <div className="text-center py-10">
                 <div className="w-12 h-12 bg-brand-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <UtensilsCrossed size={20} className="text-brand-gold" strokeWidth={1.5} />
                 </div>
-                <p className="font-serif text-xl text-brand-black font-medium mb-2">Aplikimi u dërgua!</p>
-                <p className="text-black/50 text-sm">Do të kontaktohesh brenda 48 orëve.</p>
+                <p className="font-serif text-xl text-brand-black font-medium mb-2">{c.sentTitle}</p>
+                <p className="text-black/50 text-sm">{c.sentDesc}</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <Input label="Emri dhe Mbiemri" required placeholder="Emri juaj i plotë" value={form.name} onChange={(e) => set('name', e.target.value)} />
-                <Input label="Email" type="email" required placeholder="email@juaj.com" value={form.email} onChange={(e) => set('email', e.target.value)} />
-                <Input label="Numri i Telefonit" type="tel" placeholder="+355 6X XXX XXXX" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
-                <Input label="Profesioni / Fusha" placeholder="p.sh. Sipërmarrëse, CEO, Konsulente..." value={form.profession} onChange={(e) => set('profession', e.target.value)} />
+                <Input label={c.fields.name} required placeholder={c.fields.namePh} value={form.name} onChange={(e) => set('name', e.target.value)} />
+                <Input label={c.fields.email} type="email" required placeholder="email@juaj.com" value={form.email} onChange={(e) => set('email', e.target.value)} />
+                <Input label={c.fields.phone} type="tel" placeholder="+355 6X XXX XXXX" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
+                <Input label={c.fields.profession} placeholder={c.fields.professionPh} value={form.profession} onChange={(e) => set('profession', e.target.value)} />
                 <Textarea
-                  label="Pse dëshiron të jesh pjesë?"
+                  label={c.fields.reason}
                   required
-                  placeholder="Ndaj pak nga historia dhe motivimi yt..."
+                  placeholder={c.fields.reasonPh}
                   rows={4}
                   value={form.reason}
                   onChange={(e) => set('reason', e.target.value)}
@@ -115,7 +182,7 @@ export function DinnerSection() {
                   disabled={loading}
                   className="w-full bg-brand-black text-brand-white py-3.5 rounded-full text-sm font-semibold hover:bg-brand-dark transition-colors disabled:opacity-50"
                 >
-                  {loading ? 'Duke dërguar...' : 'Dërgo Aplikimin'}
+                  {loading ? c.submitting : c.submit}
                 </button>
               </form>
             )}

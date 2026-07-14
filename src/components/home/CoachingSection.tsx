@@ -1,72 +1,157 @@
 import { Check } from 'lucide-react'
 import Link from 'next/link'
+import { getLang } from '@/lib/i18n-server'
+import type { Lang } from '@/lib/i18n'
 
-const PACKAGES = [
-  {
-    name: 'Paketa Starter',
-    price: '€350',
-    period: '/muaj',
-    tagline: 'Fillo udhëtimin tënd',
-    features: [
-      '2 sesione coaching/muaj (60 min)',
-      'Email support ndërmjet sesioneve',
-      'Materiale dhe burime personalizuara',
-      'Goal-setting framework',
+const CONTENT: Record<Lang, {
+  badge: string
+  title: string
+  desc: string
+  popular: string
+  unsure: string
+  discovery: string
+  packages: {
+    name: string
+    price: string
+    period: string
+    tagline: string
+    features: string[]
+    cta: string
+    highlighted: boolean
+  }[]
+}> = {
+  en: {
+    badge: '1:1 Coaching',
+    title: 'Coaching Packages',
+    desc: 'Personal coaching with Alketa Vejsiu - designed for leaders, entrepreneurs, and ambitious women.',
+    popular: 'Most Popular',
+    unsure: 'Not sure which package to choose?',
+    discovery: 'Book a free discovery session →',
+    packages: [
+      {
+        name: 'Starter Package',
+        price: '€350',
+        period: '/month',
+        tagline: 'Begin your journey',
+        features: [
+          '2 coaching sessions/month (60 min)',
+          'Email support between sessions',
+          'Personalized materials and resources',
+          'Goal-setting framework',
+        ],
+        cta: 'Start Now',
+        highlighted: false,
+      },
+      {
+        name: 'Growth Package',
+        price: '€650',
+        period: '/month',
+        tagline: 'Sustainable growth',
+        features: [
+          '4 coaching sessions/month (60 min)',
+          'Priority email and WhatsApp support',
+          'Personalized materials and resources',
+          'Weekly accountability check-ins',
+          'Access to session recordings',
+        ],
+        cta: 'Apply Now',
+        highlighted: true,
+      },
+      {
+        name: 'Executive Package',
+        price: '€1,200',
+        period: '/month',
+        tagline: 'Maximum performance',
+        features: [
+          '8 coaching sessions/month (90 min)',
+          'Direct 24/7 access',
+          'Full strategy and action plan',
+          'Ongoing mentorship and advisory',
+          'Exclusive business connections network',
+          'Bonus session every quarter',
+        ],
+        cta: 'Apply Now',
+        highlighted: false,
+      },
     ],
-    cta: 'Fillo Tani',
-    highlighted: false,
   },
-  {
-    name: 'Paketa Growth',
-    price: '€650',
-    period: '/muaj',
-    tagline: 'Ndërtim i qëndrueshëm',
-    features: [
-      '4 sesione coaching/muaj (60 min)',
-      'Priority email dhe WhatsApp support',
-      'Materiale dhe burime personalizuara',
-      'Accountability check-ins javore',
-      'Akses në regjistrime sesionesh',
+  sq: {
+    badge: '1:1 Coaching',
+    title: 'Paketa Coaching',
+    desc: 'Coaching personal me Alketa Vejsiu - i dizajnuar për liderë, sipërmarrëse, dhe gra me ambicie të mëdha.',
+    popular: 'Më i Zgjedhur',
+    unsure: 'Nuk je e sigurt cilën paketë të zgjedhësh?',
+    discovery: 'Rezervo një sesion discovery falas →',
+    packages: [
+      {
+        name: 'Paketa Starter',
+        price: '€350',
+        period: '/muaj',
+        tagline: 'Fillo udhëtimin tënd',
+        features: [
+          '2 sesione coaching/muaj (60 min)',
+          'Email support ndërmjet sesioneve',
+          'Materiale dhe burime personalizuara',
+          'Goal-setting framework',
+        ],
+        cta: 'Fillo Tani',
+        highlighted: false,
+      },
+      {
+        name: 'Paketa Growth',
+        price: '€650',
+        period: '/muaj',
+        tagline: 'Ndërtim i qëndrueshëm',
+        features: [
+          '4 sesione coaching/muaj (60 min)',
+          'Priority email dhe WhatsApp support',
+          'Materiale dhe burime personalizuara',
+          'Accountability check-ins javore',
+          'Akses në regjistrime sesionesh',
+        ],
+        cta: 'Apliko Tani',
+        highlighted: true,
+      },
+      {
+        name: 'Paketa Executive',
+        price: '€1,200',
+        period: '/muaj',
+        tagline: 'Performancë maksimale',
+        features: [
+          '8 sesione coaching/muaj (90 min)',
+          'Akses i drejtpërdrejtë 24/7',
+          'Strategji dhe plan veprimi i plotë',
+          'Mentorship dhe advisory i vazhdueshëm',
+          'Rrjet ekskluziv lidhje biznesi',
+          'Sesion bonus çdo tremujor',
+        ],
+        cta: 'Apliko Tani',
+        highlighted: false,
+      },
     ],
-    cta: 'Apliko Tani',
-    highlighted: true,
   },
-  {
-    name: 'Paketa Executive',
-    price: '€1,200',
-    period: '/muaj',
-    tagline: 'Performancë maksimale',
-    features: [
-      '8 sesione coaching/muaj (90 min)',
-      'Akses i drejtpërdrejtë 24/7',
-      'Strategji dhe plan veprimi i plotë',
-      'Mentorship dhe advisory i vazhdueshëm',
-      'Rrjet ekskluziv lidhje biznesi',
-      'Sesion bonus çdo tremujor',
-    ],
-    cta: 'Apliko Tani',
-    highlighted: false,
-  },
-]
+}
 
-export function CoachingSection() {
+export async function CoachingSection() {
+  const lang = await getLang()
+  const c = CONTENT[lang]
   return (
     <section className="bg-brand-black py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">1:1 Coaching</p>
+          <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">{c.badge}</p>
           <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-white mb-4">
-            Paketa Coaching
+            {c.title}
           </h2>
           <p className="text-white/50 text-lg max-w-xl mx-auto">
-            Coaching personal me Alketa Vejsiu - i dizajnuar për liderë, sipërmarrëse, dhe gra me ambicie të mëdha.
+            {c.desc}
           </p>
         </div>
 
         {/* Package Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {PACKAGES.map((pkg) => (
+          {c.packages.map((pkg) => (
             <div
               key={pkg.name}
               className={`relative rounded-3xl p-8 flex flex-col ${
@@ -77,7 +162,7 @@ export function CoachingSection() {
             >
               {pkg.highlighted && (
                 <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-black text-brand-gold text-xs font-bold px-4 py-1 rounded-full whitespace-nowrap">
-                  Më i Zgjedhur
+                  {c.popular}
                 </span>
               )}
 
@@ -126,9 +211,9 @@ export function CoachingSection() {
         </div>
 
         <p className="text-center text-white/30 text-sm mt-10">
-          Nuk je e sigurt cilën pakëtë të zgjedhësh?{' '}
+          {c.unsure}{' '}
           <Link href="/coaching" className="text-brand-gold hover:underline">
-            Rezervo një sesion discovery falas →
+            {c.discovery}
           </Link>
         </p>
       </div>

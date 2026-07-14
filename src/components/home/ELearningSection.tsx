@@ -4,11 +4,51 @@ import { PremiumBadge } from '@/components/ui/LockBadge'
 import { VideoPlayer } from '@/components/watch/VideoPlayer'
 import { getFeatured, getPlayableYoutubeId, getSeriesListWithCounts, getPremiumContent } from '@/lib/content'
 import { CATEGORY_META, slugify } from '@/lib/content-meta'
+import { getLang } from '@/lib/i18n-server'
+import type { Lang } from '@/lib/i18n'
 
-const FREE_CONTENT = {
-  title: 'Trailer - Ç\'është Grow and Inspire?',
-  duration: '3:24',
-  description: 'Zbulo platformën dhe vizionin pas lëvizjes Grow and Inspire.',
+const CONTENT: Record<Lang, {
+  badge: string
+  title: string
+  desc: string
+  trailer: string
+  freeTitle: string
+  freeDesc: string
+  series: string
+  viewAll: string
+  viewSeries: string
+  premium: string
+  unlock: string
+  becomeMember: string
+}> = {
+  en: {
+    badge: 'E-Learning',
+    title: 'Programs and Content',
+    desc: 'Learn from Alketa Vejsiu and field experts. Exclusive programs and premium videos - right next to the community.',
+    trailer: 'Video Trailer',
+    freeTitle: "Trailer - What is Grow and Inspire?",
+    freeDesc: 'Discover the platform and the vision behind the Grow and Inspire movement.',
+    series: 'Series and Programs',
+    viewAll: 'View all →',
+    viewSeries: 'View series →',
+    premium: 'Premium Videos',
+    unlock: 'Unlock',
+    becomeMember: 'Become a Member - Unlock Everything',
+  },
+  sq: {
+    badge: 'E-Learning',
+    title: 'Programet dhe Përmbajtja',
+    desc: 'Mëso nga Alketa Vejsiu dhe ekspertë të fushës. Programet ekskluzive dhe videot premium - ngjitur me komunitetin.',
+    trailer: 'Video Trailer',
+    freeTitle: "Trailer - Ç'është Grow and Inspire?",
+    freeDesc: 'Zbulo platformën dhe vizionin pas lëvizjes Grow and Inspire.',
+    series: 'Seri dhe Programe',
+    viewAll: 'Të gjitha →',
+    viewSeries: 'Shiko serinë →',
+    premium: 'Video Premium',
+    unlock: 'Zhblloko',
+    becomeMember: 'Bëhu Anëtar - Zhblloko të Gjitha',
+  },
 }
 
 const EXCLUSIVE_VIDEOS = [
@@ -19,6 +59,8 @@ const EXCLUSIVE_VIDEOS = [
 ]
 
 export async function ELearningSection() {
+  const lang = await getLang()
+  const c = CONTENT[lang]
   // The free featured episode plays right here as the trailer. It's is_premium=false
   // (getFeatured enforces that), so embedding its youtube_id publicly is safe.
   const [featured, seriesList, premium] = await Promise.all([
@@ -45,12 +87,12 @@ export async function ELearningSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-16">
-          <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">E-Learning</p>
+          <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">{c.badge}</p>
           <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-white mb-4">
-            Programet dhe Përmbajtja
+            {c.title}
           </h2>
           <p className="text-white/50 text-lg max-w-2xl">
-            Mëso nga Alketa Vejsiu dhe ekspertë të fushës. Programet ekskluzive dhe videot premium - ngjitur me komunitetin.
+            {c.desc}
           </p>
         </div>
 
@@ -62,7 +104,7 @@ export async function ELearningSection() {
                 <VideoPlayer youtubeId={trailerId} title={featured?.title} />
               </div>
               <div className="lg:col-span-2">
-                <span className="text-brand-gold text-xs font-semibold uppercase tracking-widest block mb-2">Video Trailer</span>
+                <span className="text-brand-gold text-xs font-semibold uppercase tracking-widest block mb-2">{c.trailer}</span>
                 <h3 className="font-serif text-2xl lg:text-3xl text-brand-white font-medium mb-3">{featured?.title}</h3>
                 <p className="text-white/50 text-sm leading-relaxed mb-5">{featured?.description}</p>
               </div>
@@ -74,9 +116,9 @@ export async function ELearningSection() {
                   <Play size={24} className="text-brand-gold ml-1" strokeWidth={1.5} />
                 </div>
                 <div>
-                  <span className="text-brand-gold text-xs font-semibold uppercase tracking-widest block mb-1">Video Trailer</span>
-                  <h3 className="font-serif text-2xl text-brand-white font-medium mb-1">{FREE_CONTENT.title}</h3>
-                  <p className="text-white/40 text-sm">{FREE_CONTENT.duration} · {FREE_CONTENT.description}</p>
+                  <span className="text-brand-gold text-xs font-semibold uppercase tracking-widest block mb-1">{c.trailer}</span>
+                  <h3 className="font-serif text-2xl text-brand-white font-medium mb-1">{c.freeTitle}</h3>
+                  <p className="text-white/40 text-sm">3:24 · {c.freeDesc}</p>
                 </div>
               </div>
             </div>
@@ -87,8 +129,8 @@ export async function ELearningSection() {
         {seriesList.length > 0 && (
           <div className="mb-16">
             <div className="flex items-center justify-between gap-3 mb-6">
-              <p className="text-white/40 text-xs uppercase tracking-widest">Seri dhe Programe</p>
-              <Link href="/series" className="text-brand-gold text-sm font-medium hover:underline">Të gjitha →</Link>
+              <p className="text-white/40 text-xs uppercase tracking-widest">{c.series}</p>
+              <Link href="/series" className="text-brand-gold text-sm font-medium hover:underline">{c.viewAll}</Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {seriesList.map((s) => (
@@ -104,13 +146,13 @@ export async function ELearningSection() {
                     )}
                     <div className="absolute inset-0 bg-brand-black/30 group-hover:bg-brand-black/15 transition-colors" />
                     <span className="absolute bottom-3 left-3 bg-brand-black/60 text-white/80 text-xs px-2.5 py-1 rounded-full">
-                      {s.videoCount} {s.videoCount === 1 ? 'video' : 'video'}
+                      {s.videoCount} video
                     </span>
                   </div>
                   <div className="p-6">
                     <h3 className="font-serif text-xl text-brand-white font-medium mb-2">{s.title}</h3>
                     {s.description && <p className="text-white/40 text-sm leading-relaxed mb-4 line-clamp-2">{s.description}</p>}
-                    <span className="text-brand-gold text-sm font-medium group-hover:underline">Shiko serinë →</span>
+                    <span className="text-brand-gold text-sm font-medium group-hover:underline">{c.viewSeries}</span>
                   </div>
                 </Link>
               ))}
@@ -121,7 +163,7 @@ export async function ELearningSection() {
         {/* Paid: Exclusive Videos */}
         <div>
           <div className="flex items-center gap-3 mb-6">
-            <p className="text-white/40 text-xs uppercase tracking-widest">Video Premium</p>
+            <p className="text-white/40 text-xs uppercase tracking-widest">{c.premium}</p>
             <PremiumBadge />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -139,7 +181,7 @@ export async function ELearningSection() {
                   <p className="text-white/30 text-xs mt-0.5">{video.category}</p>
                 </div>
                 <span className="shrink-0 text-brand-gold/60 text-xs font-medium group-hover:text-brand-gold transition-colors">
-                  Zhblloko
+                  {c.unlock}
                 </span>
               </Link>
             ))}
@@ -149,7 +191,7 @@ export async function ELearningSection() {
               href="/membership"
               className="inline-flex items-center justify-center bg-brand-gold text-brand-black px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"
             >
-              Bëhu Anëtar - Zhblloko të Gjitha
+              {c.becomeMember}
             </Link>
           </div>
         </div>
