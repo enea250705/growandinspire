@@ -5,19 +5,17 @@ import { RetreatSection } from '@/components/home/RetreatSection'
 import { ConferenceSection } from '@/components/home/ConferenceSection'
 import { CoachingSection } from '@/components/home/CoachingSection'
 import { AngelInvestorSection } from '@/components/home/AngelInvestorSection'
-import { getSettings } from '@/lib/settings'
 
 export const revalidate = 60
 
-export default async function Home() {
-  const s = await getSettings()
+export default function Home() {
   return (
     <>
       <Hero />
       <ELearningSection />
       <DinnerSection />
       <RetreatSection />
-      <ConferenceSection priceEarly={s.conference_price_early} priceStandard={s.conference_price_standard} />
+      <ConferenceSection />
       <CoachingSection />
       <AngelInvestorSection />
     </>
