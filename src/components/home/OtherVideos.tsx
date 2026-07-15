@@ -18,7 +18,7 @@ export interface OtherVideo {
 function Card({ video }: { video: OtherVideo }) {
   return (
     <>
-      <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-white/10 to-brand-black">
+      <div className="relative aspect-video overflow-hidden bg-brand-dark">
         {video.thumb && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -28,19 +28,19 @@ function Card({ video }: { video: OtherVideo }) {
             loading="lazy"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-brand-black/10 to-transparent" />
+        <div className="absolute inset-0 bg-brand-black/10 group-hover:bg-brand-black/35 transition-colors duration-300" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-14 h-14 rounded-full bg-brand-black/50 backdrop-blur-sm ring-1 ring-white/20 flex items-center justify-center transition-all duration-300 group-hover:bg-brand-gold group-hover:ring-brand-gold group-hover:scale-110">
-            <Play size={20} className="text-brand-white ml-0.5 transition-colors group-hover:text-brand-black" fill="currentColor" strokeWidth={0} />
+          <div className="w-12 h-12 rounded-full bg-brand-black/45 ring-1 ring-white/40 flex items-center justify-center opacity-90 transition-all duration-300 group-hover:bg-brand-gold group-hover:ring-brand-gold group-hover:opacity-100 group-hover:scale-110">
+            <Play size={18} className="text-brand-white ml-0.5 transition-colors group-hover:text-brand-black" fill="currentColor" strokeWidth={0} />
           </div>
         </div>
-        <span className="absolute top-3 left-3 bg-brand-black/60 backdrop-blur-sm text-white/80 text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full">
-          {video.category}
-        </span>
       </div>
-      <div className="p-4">
-        <p className="text-brand-white text-sm font-medium leading-snug line-clamp-2 group-hover:text-brand-gold transition-colors">
+      <div className="p-3.5">
+        <p className="text-brand-white text-sm font-medium leading-snug line-clamp-2 mb-1.5 group-hover:text-brand-gold transition-colors">
           {video.title}
+        </p>
+        <p className="text-brand-gold/70 text-[10px] font-semibold uppercase tracking-[0.15em]">
+          {video.category}
         </p>
       </div>
     </>
