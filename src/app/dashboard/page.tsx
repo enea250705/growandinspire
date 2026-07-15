@@ -23,6 +23,7 @@ const CONTENT: Record<Lang, {
   growExclusive: string
   nextEvent: string
   conference: string
+  conferenceWhen: string
   viewDetails: string
 }> = {
   en: {
@@ -40,6 +41,7 @@ const CONTENT: Record<Lang, {
     growExclusive: 'Grow Exclusive',
     nextEvent: 'Next Event',
     conference: 'Grow and Inspire Conference',
+    conferenceWhen: 'April 25-26, 2026 · Tirana, Albania',
     viewDetails: 'View Details',
   },
   sq: {
@@ -57,6 +59,7 @@ const CONTENT: Record<Lang, {
     growExclusive: 'Grow Exclusive',
     nextEvent: 'Eventi i Radhës',
     conference: 'Grow and Inspire Conference',
+    conferenceWhen: '25-26 Prill, 2026 · Tiranë, Shqipëri',
     viewDetails: 'Shiko Detajet',
   },
 }
@@ -309,7 +312,7 @@ function DashboardContent({
         <div>
           <p className="text-brand-gold text-xs font-semibold uppercase tracking-widest mb-2">{c.nextEvent}</p>
           <p className="font-serif text-xl font-bold text-brand-white">{c.conference}</p>
-          <p className="text-white/50 text-sm mt-1">April 25-26, 2026 · Tirana, Albania</p>
+          <p className="text-white/50 text-sm mt-1">{c.conferenceWhen}</p>
         </div>
         <Link
           href="/dashboard/events"
