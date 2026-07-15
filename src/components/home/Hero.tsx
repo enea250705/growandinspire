@@ -29,12 +29,6 @@ export async function Hero() {
               >
                 {t('hero.watch')}
               </Link>
-              <Link
-                href="/membership"
-                className="inline-flex items-center justify-center border border-white/20 text-brand-white px-7 py-3.5 rounded-full text-sm font-medium hover:border-white/50 hover:bg-white/5 transition-colors"
-              >
-                {t('hero.member')}
-              </Link>
             </div>
           </div>
 
