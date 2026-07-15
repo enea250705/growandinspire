@@ -242,7 +242,7 @@ export function RetreatSection() {
               return (
                 <div key={theme.label} className="group bg-white/5 border border-white/10 rounded-2xl p-4 hover:border-brand-gold/30 hover:bg-white/8 transition-all">
                   <Icon size={18} className="text-brand-gold mb-3" strokeWidth={1.5} />
-                  <p className="text-brand-white text-xs font-semibold mb-1">{theme.label}</p>
+                  <p className="text-brand-white text-sm font-semibold mb-1">{theme.label}</p>
                   <p className="text-white/40 text-xs leading-relaxed">{theme.desc}</p>
                 </div>
               )
