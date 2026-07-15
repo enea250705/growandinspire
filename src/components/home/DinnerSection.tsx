@@ -116,7 +116,7 @@ export function DinnerSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           {/* Left - info */}
           <div>
-            <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">{c.badge}</p>
+            <p className="text-brand-gold font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">{c.badge}</p>
             <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-black mb-5">
               {c.title}
             </h2>
