@@ -272,13 +272,24 @@ export async function importYoutubePlaylist(
       ok: false,
       error: process.env.YOUTUBE_API_KEY
         ? 'No videos found. Check the playlist is public/unlisted and the link is correct.'
-        : 'No videos found - YouTube likely blocked the server request. Add a YOUTUBE_API_KEY env var in Vercel for reliable imports (see admin docs).',
+        : 'No videos found - YouTube likely blocked the server request. Use the "paste videos" option instead, or set YOUTUBE_API_KEY.',
     }
   }
 
+  return insertVideos(videos, type, isPremium)
+}
+
+/**
+ * Shared insert path for both importers: dedupe by youtube_id, then bulk insert
+ * keeping playlist/paste order (first item sorts newest).
+ */
+async function insertVideos(
+  videos: PlaylistVideo[],
+  type: string,
+  isPremium: boolean,
+): Promise<Result & { added?: number; skipped?: number; total?: number }> {
   const supabase = createAdminClient()
 
-  // Skip anything already imported (dedupe by youtube_id).
   const { data: existing } = await supabase.from('content_items').select('youtube_id')
   const have = new Set((existing ?? []).map((r: { youtube_id: string | null }) => r.youtube_id).filter(Boolean))
   const fresh = videos.filter((v) => !have.has(v.videoId))
@@ -287,8 +298,6 @@ export async function importYoutubePlaylist(
     return { ok: true, added: 0, skipped: videos.length, total: videos.length }
   }
 
-  // Preserve playlist order: first video gets the newest published_at so it
-  // sorts to the top of the "newest first" listings.
   const base = Date.now()
   const rows = fresh.map((v, i) => ({
     type,
@@ -310,6 +319,42 @@ export async function importYoutubePlaylist(
   revalidatePath('/series')
   revalidatePath('/')
   return { ok: true, added: fresh.length, skipped: videos.length - fresh.length, total: videos.length }
+}
+
+/**
+ * Key-free import: the admin pastes a list of videos captured from the playlist
+ * page in their own browser. Each line is "Title | VIDEO_ID" (or a watch URL).
+ * This avoids YouTube blocking server-side requests entirely.
+ */
+export async function importPastedVideos(
+  text: string,
+  type: string,
+  isPremium: boolean,
+): Promise<Result & { added?: number; skipped?: number; total?: number }> {
+  await requireAdmin()
+
+  const videos: PlaylistVideo[] = []
+  for (const raw of text.split('\n')) {
+    const line = raw.trim()
+    if (!line) continue
+    // Split title from id on the last "|" (title may contain none).
+    const bar = line.lastIndexOf('|')
+    const titlePart = bar >= 0 ? line.slice(0, bar).trim() : ''
+    const idPart = bar >= 0 ? line.slice(bar + 1).trim() : line
+    const videoId = extractYoutubeId(idPart)
+    if (!videoId || !/^[A-Za-z0-9_-]{11}$/.test(videoId)) continue
+    videos.push({ videoId, title: titlePart || videoId })
+  }
+
+  if (videos.length === 0) {
+    return { ok: false, error: 'No valid videos found in the pasted text. Expected lines like "Title | VIDEO_ID".' }
+  }
+
+  // De-dupe within the paste itself.
+  const seen = new Set<string>()
+  const unique = videos.filter((v) => (seen.has(v.videoId) ? false : seen.add(v.videoId)))
+
+  return insertVideos(unique, type, isPremium)
 }
 
 // ---- Series ----------------------------------------------------------------

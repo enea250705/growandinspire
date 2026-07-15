@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react'
 import { Plus, Pencil, Trash2, Lock, X, ListVideo } from 'lucide-react'
 import { Input, Textarea, Select } from '@/components/ui/FormField'
-import { createContent, updateContent, deleteContent, importYoutubePlaylist, type ContentInput } from '@/lib/actions/admin'
+import { createContent, updateContent, deleteContent, importYoutubePlaylist, importPastedVideos, type ContentInput } from '@/lib/actions/admin'
 import type { AdminContentItem, Series } from '@/types'
 
 const TYPE_OPTIONS = [
@@ -49,19 +49,31 @@ export function ContentClient({ items, series }: { items: AdminContentItem[]; se
   const [importPremium, setImportPremium] = useState(false)
   const [importing, setImporting] = useState(false)
   const [importMsg, setImportMsg] = useState<{ ok: boolean; text: string } | null>(null)
+  const [pasteText, setPasteText] = useState('')
+
+  function showResult(res: { ok: boolean; added?: number; skipped?: number; error?: string }) {
+    if (res.ok) {
+      setImportMsg({ ok: true, text: `U shtuan ${res.added} video (${res.skipped} ekzistonin). Duke rifreskuar...` })
+      setTimeout(() => window.location.reload(), 1200)
+    } else {
+      setImportMsg({ ok: false, text: res.error ?? 'Gabim' })
+    }
+  }
 
   async function runImport() {
     if (!importUrl.trim()) return
     setImporting(true)
     setImportMsg(null)
-    const res = await importYoutubePlaylist(importUrl.trim(), importType, importPremium)
+    showResult(await importYoutubePlaylist(importUrl.trim(), importType, importPremium))
     setImporting(false)
-    if (res.ok) {
-      setImportMsg({ ok: true, text: `U shtuan ${res.added} video (${res.skipped} ekzistonin). Duke rifreskuar...` })
-      setTimeout(() => window.location.reload(), 1200)
-    } else {
-      setImportMsg({ ok: false, text: res.error })
-    }
+  }
+
+  async function runPasteImport() {
+    if (!pasteText.trim()) return
+    setImporting(true)
+    setImportMsg(null)
+    showResult(await importPastedVideos(pasteText, importType, importPremium))
+    setImporting(false)
   }
 
   function openNew() {
@@ -151,6 +163,34 @@ export function ContentClient({ items, series }: { items: AdminContentItem[]; se
             {importing ? 'Duke importuar...' : 'Importo Playlist'}
           </button>
         </div>
+        {/* Key-free fallback: paste the list captured from the browser */}
+        <div className="mt-6 pt-6 border-t border-black/8">
+          <p className="text-sm font-semibold text-brand-black mb-1">Ose ngjit listën (pa API)</p>
+          <p className="text-black/50 text-sm mb-3">
+            Nëse importi automatik nuk punon: hap playlist-in në YouTube, scroll deri poshtë që të ngarkohen të gjitha videot,
+            hap Console-n e browser-it (F12) dhe ngjit këtë komandë, pastaj ngjit rezultatin këtu poshtë:
+          </p>
+          <code className="block bg-brand-black text-brand-white/90 text-xs rounded-lg p-3 mb-3 overflow-x-auto whitespace-pre">
+            {`copy([...document.querySelectorAll('a#video-title')].map(a=>a.textContent.trim()+' | '+new URL(a.href).searchParams.get('v')).join('\\n'))`}
+          </code>
+          <Textarea
+            label="Lista e videove (një për rresht: Titulli | VIDEO_ID)"
+            rows={5}
+            placeholder={'Titulli i videos | dQw4w9WgXcQ\nTitulli tjetër | abc123XYZ90'}
+            value={pasteText}
+            onChange={(e) => setPasteText(e.target.value)}
+          />
+          <div className="flex justify-end mt-3">
+            <button
+              onClick={runPasteImport}
+              disabled={importing || !pasteText.trim()}
+              className="flex items-center gap-2 bg-brand-black text-brand-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-brand-dark transition-colors disabled:opacity-50"
+            >
+              {importing ? 'Duke importuar...' : 'Importo nga lista'}
+            </button>
+          </div>
+        </div>
+
         {importMsg && (
           <p className={`text-sm mt-3 ${importMsg.ok ? 'text-green-600' : 'text-red-500'}`}>{importMsg.text}</p>
         )}
