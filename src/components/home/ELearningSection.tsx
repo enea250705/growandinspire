@@ -1,6 +1,5 @@
-import { Play, Lock } from 'lucide-react'
+import { Play } from 'lucide-react'
 import Link from 'next/link'
-import { PremiumBadge } from '@/components/ui/LockBadge'
 import { VideoPlayer } from '@/components/watch/VideoPlayer'
 import { getFeatured, getPlayableYoutubeId, getSeriesListWithCounts, getPremiumContent } from '@/lib/content'
 import { CATEGORY_META, slugify, categoryLabel } from '@/lib/content-meta'
@@ -35,8 +34,8 @@ const CONTENT: Record<Lang, {
     series: 'Series and Programs',
     viewAll: 'View all →',
     viewSeries: 'View series →',
-    premium: 'Premium Videos',
-    unlock: 'Unlock',
+    premium: 'Other videos',
+    unlock: 'Watch',
     becomeMember: 'Watch More',
   },
   sq: {
@@ -53,8 +52,8 @@ const CONTENT: Record<Lang, {
     series: 'Seri dhe Programe',
     viewAll: 'Të gjitha →',
     viewSeries: 'Shiko serinë →',
-    premium: 'Video Premium',
-    unlock: 'Zhblloko',
+    premium: 'Video të tjera',
+    unlock: 'Shiko',
     becomeMember: 'Shiko më shumë',
   },
 }
@@ -172,7 +171,6 @@ export async function ELearningSection() {
         <div>
           <div className="flex items-center gap-3 mb-6">
             <p className="text-white/40 text-xs uppercase tracking-widest">{c.premium}</p>
-            <PremiumBadge />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {premiumVideos.map((video) => (
@@ -182,7 +180,7 @@ export async function ELearningSection() {
                 className="group flex items-center gap-4 rounded-xl border border-white/10 p-4 bg-brand-dark hover:border-brand-gold/40 transition-colors"
               >
                 <div className="flex-shrink-0 w-10 h-10 bg-white/5 rounded-full flex items-center justify-center group-hover:bg-brand-gold/15 transition-colors">
-                  <Lock size={14} className="text-brand-gold/60 group-hover:text-brand-gold transition-colors" strokeWidth={1.5} />
+                  <Play size={14} className="text-brand-gold/60 group-hover:text-brand-gold transition-colors ml-0.5" strokeWidth={1.5} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-brand-white text-sm font-medium truncate">{video.title}</p>
