@@ -33,7 +33,7 @@ const CONTENT: Record<Lang, {
     viewSeries: 'View series →',
     premium: 'Premium Videos',
     unlock: 'Unlock',
-    becomeMember: 'Become a Member - Unlock Everything',
+    becomeMember: 'Watch More',
   },
   sq: {
     badge: 'E-Learning',
@@ -47,7 +47,7 @@ const CONTENT: Record<Lang, {
     viewSeries: 'Shiko serinë →',
     premium: 'Video Premium',
     unlock: 'Zhblloko',
-    becomeMember: 'Bëhu Anëtar - Zhblloko të Gjitha',
+    becomeMember: 'Shiko më shumë',
   },
 }
 
@@ -188,7 +188,7 @@ export async function ELearningSection() {
           </div>
           <div className="mt-8 text-center">
             <Link
-              href="/membership"
+              href="/login"
               className="inline-flex items-center justify-center bg-brand-gold text-brand-black px-7 py-3.5 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"
             >
               {c.becomeMember}

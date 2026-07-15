@@ -68,17 +68,12 @@ export function Navbar() {
               {t('nav.dashboard')}
             </Link>
           ) : (
-            <>
-              <Link href="/login" className="text-sm text-white/70 hover:text-brand-white transition-colors">
-                {t('nav.login')}
-              </Link>
-              <Link
-                href="/membership"
-                className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium hover:bg-brand-gold-light transition-colors"
-              >
-                {t('nav.join')}
-              </Link>
-            </>
+            <Link
+              href="/login"
+              className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium hover:bg-brand-gold-light transition-colors"
+            >
+              {t('nav.login')}
+            </Link>
           )}
         </div>
 
@@ -118,18 +113,13 @@ export function Navbar() {
                 {t('nav.dashboard')}
               </Link>
             ) : (
-              <>
-                <Link href="/login" onClick={() => setOpen(false)} className="text-sm text-white/70 hover:text-brand-white transition-colors py-1">
-                  {t('nav.login')}
-                </Link>
-                <Link
-                  href="/membership"
-                  onClick={() => setOpen(false)}
-                  className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium text-center hover:bg-brand-gold-light transition-colors"
-                >
-                  {t('nav.join')}
-                </Link>
-              </>
+              <Link
+                href="/login"
+                onClick={() => setOpen(false)}
+                className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium text-center hover:bg-brand-gold-light transition-colors"
+              >
+                {t('nav.login')}
+              </Link>
             )}
           </div>
         </div>

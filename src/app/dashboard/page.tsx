@@ -1,9 +1,8 @@
 import Link from 'next/link'
-import { BookOpen, Calendar, Download, Users, Lock, ChevronRight, Layers, PlayCircle } from 'lucide-react'
+import { BookOpen, Calendar, Download, Lock, ChevronRight, Layers, PlayCircle } from 'lucide-react'
 import { CATEGORY_META, slugify, categoryLabel } from '@/lib/content-meta'
 import { getFreeContent, getPremiumContent, getSeriesListWithCounts, getSavedContent, getDownloads } from '@/lib/content'
 import { createClient } from '@/lib/supabase/server'
-import { getMembership, tierLabel, freeTierLabel } from '@/lib/membership'
 import { getLang } from '@/lib/i18n-server'
 import type { Lang } from '@/lib/i18n'
 import type { ContentItem, Series } from '@/types'
@@ -72,8 +71,7 @@ export default async function DashboardPage() {
   const name = user?.user_metadata?.full_name ?? user?.email?.split('@')[0] ?? c.member
   const email = user?.email ?? ''
 
-  const [membership, recentContent, exclusiveContent, featuredContent, series, saved, downloads] = await Promise.all([
-    getMembership(),
+  const [recentContent, exclusiveContent, featuredContent, series, saved, downloads] = await Promise.all([
     getFreeContent(4),
     getPremiumContent(4),
     getFreeContent(8),
@@ -87,7 +85,6 @@ export default async function DashboardPage() {
     .eq('email', email)
 
   const stats = [
-    { label: c.statMembership, value: membership ? tierLabel(membership.tier, lang) : freeTierLabel[lang], icon: Users, href: '/dashboard/membership' },
     { label: c.statSaved, value: `${saved.length}`, icon: BookOpen, href: '/dashboard/saved' },
     { label: c.statDownloads, value: `${downloads.length}`, icon: Download, href: '/dashboard/downloads' },
     { label: c.statEvents, value: `${eventCount ?? 0}`, icon: Calendar, href: '/dashboard/events' },
@@ -101,7 +98,7 @@ type DashContent = (typeof CONTENT)[Lang]
 interface Stat {
   label: string
   value: string
-  icon: typeof Users
+  icon: typeof BookOpen
   href: string
 }
 

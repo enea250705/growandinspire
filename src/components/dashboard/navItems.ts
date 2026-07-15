@@ -11,7 +11,6 @@ export interface DashboardNavItem {
 export const DASHBOARD_NAV: DashboardNavItem[] = [
   { key: 'dash.nav.dashboard', href: '/dashboard', icon: LayoutDashboard, exact: true },
   { key: 'dash.nav.learning', href: '/watch', icon: GraduationCap },
-  { key: 'dash.nav.membership', href: '/dashboard/membership', icon: Users },
   { key: 'dash.nav.saved', href: '/dashboard/saved', icon: BookOpen },
   { key: 'dash.nav.downloads', href: '/dashboard/downloads', icon: Download },
   { key: 'dash.nav.applications', href: '/dashboard/applications', icon: FileText },

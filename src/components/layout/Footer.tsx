@@ -11,7 +11,6 @@ const FOOTER_LINKS = {
     { key: 'footer.link.watch', href: '/watch' },
     { key: 'footer.link.coaching', href: '/coaching' },
     { key: 'footer.link.events', href: '/events' },
-    { key: 'footer.link.membership', href: '/membership' },
   ],
   Apply: [
     { key: 'footer.link.applyNow', href: '/apply' },
