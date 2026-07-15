@@ -10,7 +10,7 @@ import type { Lang } from '@/lib/i18n'
 const CONTENT: Record<Lang, {
   badge: string
   title: string
-  intro: React.ReactNode
+  intro: string[]
   items: { label: string; desc: string }[]
   applyNow: string
   formTitle: string
@@ -22,11 +22,13 @@ const CONTENT: Record<Lang, {
   error: string
 }> = {
   en: {
-    badge: 'Exclusive Experience',
-    title: 'Dinner with Alketa',
-    intro: (
-      <>An exclusive networking dinner with Alketa&nbsp;Vejsiu - curated food, a premium setting, and conversations that inspire. Limited seats for women leaders and entrepreneurs with vision.</>
-    ),
+    badge: 'Dinner with Alketa',
+    title: 'Some conversations deserve more than a meeting.',
+    intro: [
+      'Around the right table, ideas become partnerships.',
+      'Dinner with Alketa is an intimate gathering for founders, executives and business leaders who value authentic conversations, shared experience and meaningful connections.',
+      'Because the most valuable opportunities often begin over dinner.',
+    ],
     items: [
       { label: 'Food and Drinks', desc: 'A curated menu, selected wines, and artisan desserts.' },
       { label: 'Ambiance', desc: 'A premium venue with warm lighting and careful decor.' },
@@ -48,11 +50,13 @@ const CONTENT: Record<Lang, {
     error: 'Something went wrong. Please try again.',
   },
   sq: {
-    badge: 'Eksperiencë Ekskluzive',
-    title: 'Dinner with Alketa',
-    intro: (
-      <>Një darkë networking ekskluzive me Alketa&nbsp;Vejsiu - ushqim i zgjedhur, ambient premium, dhe biseda që inspirojnë. Vende të kufizuara për gratë lider dhe sipërmarrëse me vizion.</>
-    ),
+    badge: 'Dinner with Alketa',
+    title: 'Ka biseda që meritojnë më shumë se një takim.',
+    intro: [
+      'Rreth tavolinës së duhur, idetë kthehen në bashkëpunime.',
+      'Dinner with Alketa është një eksperiencë ekskluzive për sipërmarrës, drejtues dhe profesionistë që vlerësojnë bisedat autentike, shkëmbimin e përvojës dhe lidhjet që zgjasin.',
+      'Sepse mundësitë më të vlefshme shpesh lindin gjatë një darke.',
+    ],
     items: [
       { label: 'Ushqim dhe Pije', desc: 'Meny e kuruar, verëra të zgjedhura, dhe ëmbëlsira artizanale.' },
       { label: 'Ambient', desc: 'Lokacion premium me ndriçim të ngrohtë dhe dekor të kujdesshëm.' },
@@ -113,12 +117,12 @@ export function DinnerSection() {
           {/* Left - info */}
           <div>
             <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">{c.badge}</p>
-            <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-black mb-6">
+            <h2 className="font-serif text-3xl lg:text-4xl font-bold text-brand-black mb-5">
               {c.title}
             </h2>
-            <p className="text-black/60 text-lg leading-relaxed mb-8">
-              {c.intro}
-            </p>
+            <div className="text-black/60 text-lg leading-relaxed mb-8 space-y-4">
+              {c.intro.map((p, i) => <p key={i}>{p}</p>)}
+            </div>
 
             <div className="space-y-4">
               {c.items.map((item) => (

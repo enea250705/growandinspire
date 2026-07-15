@@ -13,7 +13,7 @@ const CONF_PARTICIPATION = ['VIP Dinner', 'Workshops', 'Discussion Groups', 'Net
 const CONTENT: Record<Lang, {
   badge: string
   title: string
-  desc: string
+  desc: string[]
   attendees: string
   popular: string
   tiers: { name: string; badge: string | null; features: string[] }[]
@@ -37,9 +37,13 @@ const CONTENT: Record<Lang, {
   error: string
 }> = {
   en: {
-    badge: 'Annual Event',
-    title: 'Grow and Inspire Business Conference',
-    desc: 'The most important conference for women leaders and entrepreneurs in Albania. International speakers, panel discussions, and real networking opportunities.',
+    badge: 'Business Conference',
+    title: 'The people you meet can change the way you lead.',
+    desc: [
+      'Some conversations stay with you long after they end.',
+      'Grow & Inspire Conference brings together entrepreneurs, leaders and visionaries who believe that meaningful ideas - and meaningful relationships - are the true drivers of growth.',
+      "This isn't about listening. It's about belonging to the room where new possibilities begin.",
+    ],
     attendees: '300+ attendees every year',
     popular: 'Most Popular',
     tiers: [
@@ -60,9 +64,13 @@ const CONTENT: Record<Lang, {
     error: 'Something went wrong. Please try again.',
   },
   sq: {
-    badge: 'Eveniment Vjetor',
-    title: 'Grow and Inspire Business Conference',
-    desc: 'Konferenca më e rëndësishme për gratë lider dhe sipërmarrëse në Shqipëri. Speaker ndërkombëtarë, panel diskutime, dhe mundësi networking të vërteta.',
+    badge: 'Business Conference',
+    title: 'Njerëzit që takon mund të ndryshojnë mënyrën si udhëheq.',
+    desc: [
+      'Ka biseda që vazhdojnë të të shoqërojnë edhe pasi përfundojnë.',
+      'Grow & Inspire Conference bashkon sipërmarrës, drejtues dhe njerëz me vizion që besojnë se rritja lind nga idetë e duhura dhe marrëdhëniet e duhura.',
+      'Kjo nuk është vetëm një konferencë. Është një vend ku fillojnë mundësi të reja.',
+    ],
     attendees: '300+ pjesëmarrëse çdo vit',
     popular: 'Më Popullor',
     tiers: [
@@ -132,12 +140,12 @@ export function ConferenceSection() {
         {/* Header */}
         <div className="text-center mb-16">
           <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">{c.badge}</p>
-          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-black mb-4">
+          <h2 className="font-serif text-3xl lg:text-4xl font-bold text-brand-black mb-5 max-w-3xl mx-auto">
             {c.title}
           </h2>
-          <p className="text-black/60 text-lg max-w-2xl mx-auto">
-            {c.desc}
-          </p>
+          <div className="text-black/60 text-lg max-w-2xl mx-auto space-y-4">
+            {c.desc.map((p, i) => <p key={i}>{p}</p>)}
+          </div>
           <div className="flex items-center justify-center gap-2 mt-4 text-black/40 text-sm">
             <Users size={14} strokeWidth={1.5} />
             <span>{c.attendees}</span>

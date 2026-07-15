@@ -10,7 +10,7 @@ import type { Lang } from '@/lib/i18n'
 const CONTENT: Record<Lang, {
   badge: string
   title: string
-  desc: string
+  desc: string[]
   trailer: string
   freeTitle: string
   freeDesc: string
@@ -22,9 +22,13 @@ const CONTENT: Record<Lang, {
   becomeMember: string
 }> = {
   en: {
-    badge: 'E-Learning',
-    title: 'Programs and Content',
-    desc: 'Learn from Alketa Vejsiu and field experts. Exclusive programs and premium videos - right next to the community.',
+    badge: 'Learning Hub',
+    title: 'Every great journey begins with a different way of thinking.',
+    desc: [
+      'Success rarely starts with having all the answers. It begins with asking better questions.',
+      'Learning Hub is where experience meets perspective - bringing together conversations, ideas and practical insights from Alketa and leading experts to help you think more clearly, communicate with confidence and grow with intention.',
+      'Because the way you think shapes the life you build.',
+    ],
     trailer: 'Video Trailer',
     freeTitle: "Trailer - What is Grow and Inspire?",
     freeDesc: 'Discover the platform and the vision behind the Grow and Inspire movement.',
@@ -36,9 +40,13 @@ const CONTENT: Record<Lang, {
     becomeMember: 'Watch More',
   },
   sq: {
-    badge: 'E-Learning',
-    title: 'Programet dhe Përmbajtja',
-    desc: 'Mëso nga Alketa Vejsiu dhe ekspertë të fushës. Programet ekskluzive dhe videot premium - ngjitur me komunitetin.',
+    badge: 'Learning Hub',
+    title: 'Çdo rrugëtim i madh fillon me një mënyrë ndryshe të të menduarit.',
+    desc: [
+      'Suksesi nuk fillon kur ke të gjitha përgjigjet. Fillon kur nis të bësh pyetjet e duhura.',
+      'Learning Hub bashkon përvojën, perspektivën dhe dijen praktike të Alketës dhe ekspertëve të platformës, për t\'ju ndihmuar të mendoni më qartë, të komunikoni me më shumë besim dhe të ndërtoni rrugën tuaj me vetëdije.',
+      'Sepse mënyra si mendon, përcakton mënyrën si rritesh.',
+    ],
     trailer: 'Video Trailer',
     freeTitle: "Trailer - Ç'është Grow and Inspire?",
     freeDesc: 'Zbulo platformën dhe vizionin pas lëvizjes Grow and Inspire.',
@@ -88,12 +96,12 @@ export async function ELearningSection() {
         {/* Header */}
         <div className="mb-16">
           <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">{c.badge}</p>
-          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-white mb-4">
+          <h2 className="font-serif text-3xl lg:text-4xl font-bold text-brand-white mb-5 max-w-3xl">
             {c.title}
           </h2>
-          <p className="text-white/50 text-lg max-w-2xl">
-            {c.desc}
-          </p>
+          <div className="text-white/50 text-lg max-w-2xl space-y-4">
+            {c.desc.map((p, i) => <p key={i}>{p}</p>)}
+          </div>
         </div>
 
         {/* Free: Video Trailer - plays the free featured episode inline */}

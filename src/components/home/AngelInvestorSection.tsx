@@ -10,7 +10,7 @@ import type { Lang } from '@/lib/i18n'
 const CONTENT: Record<Lang, {
   badge: string
   title: string
-  intro: string
+  intro: string[]
   feat: { title: string; desc: string }[]
   themesLabel: string
   themes: string[]
@@ -36,9 +36,14 @@ const CONTENT: Record<Lang, {
   error: string
 }> = {
   en: {
-    badge: 'Investment Opportunity',
-    title: 'Ideas and Angel Investor',
-    intro: 'Have a business idea with potential? Grow and Inspire connects talented entrepreneurs with angel investors and strategic mentors. If you have vision and determination - we have the network and the resources.',
+    badge: 'Ideas & Angel Investors',
+    title: 'Every great business begins with one idea.',
+    intro: [
+      'The difference lies in what happens next.',
+      'Ideas & Angel Investors is where ambitious founders and aspiring entrepreneurs bring their ideas to the table, receive honest feedback, refine their vision and gain valuable insights from Alketa and industry experts.',
+      'The most promising ideas may also have the opportunity to be introduced to mentors, strategic partners and potential angel investors for further development and future funding opportunities.',
+      'Because every successful business starts with someone who believed in an idea.',
+    ],
     feat: [
       { title: 'Pitch and Feedback', desc: 'Present your idea to our panel and get valuable feedback from industry experts.' },
       { title: 'Connections with Investors', desc: 'Selected projects are presented directly to angel investors and partner foundations.' },
@@ -74,9 +79,14 @@ const CONTENT: Record<Lang, {
     error: 'Something went wrong. Please try again.',
   },
   sq: {
-    badge: 'Mundësi Investimi',
-    title: 'Ideas and Angel Investor',
-    intro: 'Ke një ide biznesi me potencial? Grow and Inspire lidh sipërmarrëset e talentuar me investitorë angjell dhe mentorë strategjik. Nëse ke vizion dhe vendosmëri - ne kemi rrjetin dhe burimet.',
+    badge: 'Ideas & Angel Investors',
+    title: 'Çdo biznes i madh fillon me një ide.',
+    intro: [
+      'Diferencën e bën ajo që ndodh më pas.',
+      'Ideas & Angel Investors është një hapësirë e krijuar për sipërmarrësit, krijuesit dhe njerëzit me vizion që duan të prezantojnë idenë e tyre, të marrin feedback profesional, ta zhvillojnë më tej dhe ta shohin nga një këndvështrim i ri, nën moderimin e Alketa Vejsiut dhe ekspertëve të ftuar.',
+      'Idetë me potencial më të lartë mund të përzgjidhen për t\'u prezantuar para mentorëve, partnerëve strategjikë dhe investitorëve (Angel Investors), duke krijuar mundësi reale për mentorim, bashkëpunim dhe, në raste të veçanta, akses në financim për zhvillimin e tyre.',
+      'Sepse çdo biznes i madh ka filluar nga një ide që dikush vendosi ta besojë.',
+    ],
     feat: [
       { title: 'Pitch dhe Feedback', desc: 'Prezanto idenë tënde para panelit tonë dhe merr feedback të vlefshëm nga ekspertë të industrisë.' },
       { title: 'Lidhje me Investitorë', desc: 'Projektet e zgjedhura prezantohen drejtpërdrejt me investitorë angjell dhe fondacionet partnere.' },
@@ -155,12 +165,12 @@ export function AngelInvestorSection() {
           {/* Left - info */}
           <div>
             <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">{c.badge}</p>
-            <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-black mb-6">
+            <h2 className="font-serif text-3xl lg:text-4xl font-bold text-brand-black mb-5">
               {c.title}
             </h2>
-            <p className="text-black/60 text-lg leading-relaxed mb-8">
-              {c.intro}
-            </p>
+            <div className="text-black/60 text-lg leading-relaxed mb-8 space-y-4">
+              {c.intro.map((p, i) => <p key={i}>{p}</p>)}
+            </div>
 
             <div className="space-y-6 mb-8">
               {c.feat.map((f, i) => {

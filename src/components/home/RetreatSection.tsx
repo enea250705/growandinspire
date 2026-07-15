@@ -12,7 +12,7 @@ const THEME_ICONS = [TrendingUp, Brain, Heart, Users, Compass, Mountain]
 const CONTENT: Record<Lang, {
   badge: string
   title: string
-  desc: React.ReactNode
+  desc: string[]
   formats: { name: string; hours: string; spots: string; desc: string }[]
   themesLabel: string
   themes: { label: string; desc: string }[]
@@ -41,11 +41,13 @@ const CONTENT: Record<Lang, {
   error: string
 }> = {
   en: {
-    badge: 'Premium Experience',
-    title: 'The Grow and Inspire Retreat',
-    desc: (
-      <>A dedicated space away from the daily rhythm - where you pause, reflect, clarify your goals and work on personal and professional challenges. Development is treated as a <span className="text-brand-gold font-medium">360°</span> process: mindset, energy, communication, strategic clarity, emotional balance.</>
-    ),
+    badge: 'Retreats',
+    title: 'The best decisions are rarely made in the middle of the noise.',
+    desc: [
+      'Sometimes, the most powerful step forward is taking a step back.',
+      'Grow & Inspire Retreats are carefully curated experiences designed for entrepreneurs, leaders and professionals who want to pause, reflect and reconnect with what truly matters. Through inspiring conversations, coaching sessions, workshops, mindfulness practices and meaningful connections, each retreat creates the space to gain clarity, restore energy and return with a stronger vision for life, leadership and business.',
+      'Because when your mind is clear, your next move becomes obvious.',
+    ],
     formats: [
       { name: 'One-Day Retreat', hours: '8-10 hours', spots: 'up to 20 seats', desc: 'A deep dive into a single theme. Ideal for recalibration and clarity.' },
       { name: 'Two-Day Retreat', hours: '2 days / 1 night', spots: 'up to 15 seats', desc: 'A transformative experience - reflection, coaching, mindfulness and concrete steps.' },
@@ -103,11 +105,13 @@ const CONTENT: Record<Lang, {
     error: 'Something went wrong. Please try again.',
   },
   sq: {
-    badge: 'Eksperiencë Premium',
-    title: 'The Grow and Inspire Retreat',
-    desc: (
-      <>Një hapësirë e dedikuar jashtë ritmit të përditshëm - ku ndalon, reflekton, qartëson qëllimet dhe punon mbi sfidat personale e profesionale. Zhvillimi trajtohet si proces <span className="text-brand-gold font-medium">360°</span>: mendësi, energji, komunikim, qartësi strategjike, balancë emocionale.</>
-    ),
+    badge: 'Retreats',
+    title: 'Vendimet më të mira rrallë merren në mes të zhurmës.',
+    desc: [
+      'Ndonjëherë, mënyra më e mirë për të ecur përpara është të ndalosh për një moment.',
+      'Grow & Inspire Retreats janë eksperienca të kuruara për sipërmarrës, drejtues dhe profesionistë që duan të largohen nga ritmi i përditshëm për të reflektuar, për të fituar qartësi dhe për t\'u rikthyer me energji dhe drejtim të ri. Përmes bisedave frymëzuese, sesioneve të coaching-ut, workshopeve praktike, aktiviteteve të mindfulness dhe networking-ut me njerëz që ndajnë të njëjtat ambicie, çdo retreat krijon hapësirën për të menduar ndryshe, për të marrë vendime më të mira dhe për të ndërtuar një vizion më të qartë për jetën, lidershipin dhe biznesin.',
+      'Sepse kur ke qartësi, çdo hap bëhet më i sigurt.',
+    ],
     formats: [
       { name: 'Retreat Njëditor', hours: '8-10 orë', spots: 'deri 20 vende', desc: 'Zhytje e thellë në një temë të vetme. Ideal për rikalibrim dhe qartësi.' },
       { name: 'Retreat Dyditor', hours: '2 ditë / 1 natë', spots: 'deri 15 vende', desc: 'Eksperiencë transformuese - reflektim, coaching, mindfulness dhe hapa konkretë.' },
@@ -201,12 +205,12 @@ export function RetreatSection() {
         {/* Header */}
         <div className="max-w-3xl mb-20">
           <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">{c.badge}</p>
-          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-white mb-6">
+          <h2 className="font-serif text-3xl lg:text-4xl font-bold text-brand-white mb-5">
             {c.title}
           </h2>
-          <p className="text-white/60 text-lg leading-relaxed">
-            {c.desc}
-          </p>
+          <div className="text-white/60 text-lg leading-relaxed space-y-4">
+            {c.desc.map((p, i) => <p key={i}>{p}</p>)}
+          </div>
         </div>
 
         {/* Formats */}

@@ -6,7 +6,7 @@ import type { Lang } from '@/lib/i18n'
 const CONTENT: Record<Lang, {
   badge: string
   title: string
-  desc: string
+  desc: string[]
   popular: string
   unsure: string
   discovery: string
@@ -21,9 +21,12 @@ const CONTENT: Record<Lang, {
   }[]
 }> = {
   en: {
-    badge: '1:1 Coaching',
-    title: 'Coaching Packages',
-    desc: 'Personal coaching with Alketa Vejsiu - designed for leaders, entrepreneurs, and ambitious women.',
+    badge: 'Coaching',
+    title: 'Clarity is the beginning of every meaningful decision.',
+    desc: [
+      "Growth isn't about doing more. It's about knowing what truly matters.",
+      'Through a personalised coaching journey, you will gain the clarity, confidence and direction needed to lead yourself, your team and your business with purpose.',
+    ],
     popular: 'Most Popular',
     unsure: 'Not sure which package to choose?',
     discovery: 'Book a free discovery session →',
@@ -76,9 +79,12 @@ const CONTENT: Record<Lang, {
     ],
   },
   sq: {
-    badge: '1:1 Coaching',
-    title: 'Paketa Coaching',
-    desc: 'Coaching personal me Alketa Vejsiu - i dizajnuar për liderë, sipërmarrëse, dhe gra me ambicie të mëdha.',
+    badge: 'Coaching',
+    title: 'Çdo vendim i rëndësishëm fillon me qartësi.',
+    desc: [
+      'Rritja nuk vjen duke bërë më shumë. Vjen duke ditur çfarë ka vërtet rëndësi.',
+      'Programet tona të coaching-ut janë krijuar për t\'ju ndihmuar të fitoni qartësi, besim dhe drejtim në lidership, biznes dhe zhvillimin tuaj personal.',
+    ],
     popular: 'Më i Zgjedhur',
     unsure: 'Nuk je e sigurt cilën paketë të zgjedhësh?',
     discovery: 'Rezervo një sesion discovery falas →',
@@ -141,12 +147,12 @@ export async function CoachingSection() {
         {/* Header */}
         <div className="text-center mb-16">
           <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">{c.badge}</p>
-          <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-white mb-4">
+          <h2 className="font-serif text-3xl lg:text-4xl font-bold text-brand-white mb-5 max-w-3xl mx-auto">
             {c.title}
           </h2>
-          <p className="text-white/50 text-lg max-w-xl mx-auto">
-            {c.desc}
-          </p>
+          <div className="text-white/50 text-lg max-w-2xl mx-auto space-y-4">
+            {c.desc.map((p, i) => <p key={i}>{p}</p>)}
+          </div>
         </div>
 
         {/* Package Cards */}
