@@ -303,7 +303,7 @@ export function RetreatSection() {
               className="w-full flex items-start justify-between gap-4 text-left lg:pointer-events-none lg:cursor-default"
             >
               <span>
-                <span className="block font-serif text-2xl font-bold text-brand-white mb-2">{c.formTitle}</span>
+                <span className="block font-serif text-lg sm:text-xl lg:text-2xl font-bold text-brand-white mb-2">{c.formTitle}</span>
                 <span className="block text-white/40 text-sm">{c.formNote}</span>
               </span>
               <ChevronDown
