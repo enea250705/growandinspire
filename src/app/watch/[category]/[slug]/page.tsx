@@ -9,6 +9,7 @@ import { SaveButton } from '@/components/watch/SaveButton'
 import { PremiumBadge } from '@/components/ui/LockBadge'
 import { createClient } from '@/lib/supabase/server'
 import { isMember as checkMembership } from '@/lib/membership'
+import { CONTENT_LOCKING_ENABLED } from '@/lib/flags'
 import { getLang } from '@/lib/i18n-server'
 import type { Lang } from '@/lib/i18n'
 
@@ -59,7 +60,7 @@ export default async function EpisodePage({ params }: Props) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   const isMember = item.is_premium ? await checkMembership() : false
-  const isLocked = item.is_premium && !isMember
+  const isLocked = CONTENT_LOCKING_ENABLED && item.is_premium && !isMember
   const watermark = user?.email ?? 'Grow and Inspire · Member'
   const youtubeId = isLocked ? null : await getPlayableYoutubeId(item.id)
   const saved = user ? await isSaved(item.id) : false

@@ -4,6 +4,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient as createServerClient } from '@/lib/supabase/server'
 import { createAnonClient } from '@/lib/supabase/anon'
 import { isMember } from '@/lib/membership'
+import { CONTENT_LOCKING_ENABLED } from '@/lib/flags'
 
 // Cookieless anon client for reading public content. content_items has a
 // "public read" RLS policy, so no session is needed. Staying cookieless keeps
@@ -98,16 +99,20 @@ export async function getRecentVideoCards(limit: number): Promise<RecentVideoCar
     .limit(limit)
 
   type Row = { id: string; title: string; type: ContentType; is_premium: boolean; youtube_id: string | null; thumbnail_url: string | null }
-  return ((data as Row[]) ?? []).map((v) => ({
-    id: v.id,
-    title: v.title,
-    type: v.type,
-    is_premium: v.is_premium,
-    thumb: v.thumbnail_url ?? (!v.is_premium && v.youtube_id ? `https://i.ytimg.com/vi/${v.youtube_id}/hqdefault.jpg` : null),
-    // Free videos are publicly playable, so embedding the id is safe (the trailer
-    // already does). Premium ids stay hidden - those cards link to the gated page.
-    youtubeId: !v.is_premium ? v.youtube_id : null,
-  }))
+  return ((data as Row[]) ?? []).map((v) => {
+    // A video is only withheld when locking is on AND it's premium. While
+    // CONTENT_LOCKING_ENABLED is false, every homepage video plays inline for
+    // anyone (no login) - flip that flag to re-gate premium content later.
+    const gated = CONTENT_LOCKING_ENABLED && v.is_premium
+    return {
+      id: v.id,
+      title: v.title,
+      type: v.type,
+      is_premium: v.is_premium,
+      thumb: v.thumbnail_url ?? (v.youtube_id && !gated ? `https://i.ytimg.com/vi/${v.youtube_id}/hqdefault.jpg` : null),
+      youtubeId: gated ? null : v.youtube_id,
+    }
+  })
 }
 
 export async function getFeatured(): Promise<ContentItem | null> {
@@ -141,7 +146,7 @@ export async function getPlayableYoutubeId(id: string): Promise<string | null> {
     .maybeSingle()
 
   if (!data?.youtube_id) return null
-  if (data.is_premium && !(await isMember())) return null
+  if (CONTENT_LOCKING_ENABLED && data.is_premium && !(await isMember())) return null
   return data.youtube_id as string
 }
 
