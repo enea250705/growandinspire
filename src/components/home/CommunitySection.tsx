@@ -40,7 +40,7 @@ export async function CommunitySection() {
         <div className="w-12 h-12 rounded-full border border-brand-gold/30 flex items-center justify-center mx-auto mb-6">
           <Users size={20} className="text-brand-gold" strokeWidth={1.5} />
         </div>
-        <p className="text-brand-gold font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">{c.badge}</p>
+        <p className="text-brand-gold font-serif text-4xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight mb-4">{c.badge}</p>
         <h2 className="font-serif text-3xl lg:text-4xl font-bold text-brand-white mb-6 max-w-2xl mx-auto">
           {c.title}
         </h2>

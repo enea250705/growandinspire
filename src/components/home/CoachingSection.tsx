@@ -146,7 +146,7 @@ export async function CoachingSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <p className="text-brand-gold font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">{c.badge}</p>
+          <p className="text-brand-gold font-serif text-4xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight mb-4">{c.badge}</p>
           <h2 className="font-serif text-3xl lg:text-4xl font-bold text-brand-white mb-5 max-w-3xl mx-auto">
             {c.title}
           </h2>
