@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { sendNotificationEmail, emailFieldsTable } from '@/lib/email'
 
 type ActionResult = { ok: true } | { ok: false; error: string }
 
@@ -56,6 +57,29 @@ export async function submitDinnerApplication(data: {
     instagram: data.instagram || null,
   })
   if (error) return { ok: false, error: error.message }
+
+  // Also email the team (in addition to the admin dashboard). Best-effort: a
+  // failed/unconfigured email never fails the applicant's submission.
+  await sendNotificationEmail({
+    subject: `Dinner with Alketa – aplikim i ri: ${name}`,
+    replyTo: data.email,
+    html: `<h2 style="font:600 18px -apple-system,Segoe UI,Roboto,sans-serif;color:#111">Aplikim i ri për Dinner with Alketa</h2>${emailFieldsTable([
+      ['Emri', name],
+      ['Email', data.email],
+      ['Telefoni', data.phone],
+      ['Profesioni / Pozicioni', data.position],
+      ['Kompania', data.company],
+      ['Industria', data.industry],
+      ['Pse dëshiron të jesh pjesë', data.why_join],
+      ['Pyetje për Alketën', data.question_for_alketa],
+      ['Çfarë sjell', data.what_you_bring],
+      ['Pritshmëri', data.expectations],
+      ['LinkedIn', data.linkedin],
+      ['Instagram', data.instagram],
+      ['Website', data.website || data.website_link],
+    ])}`,
+  })
+
   return { ok: true }
 }
 
