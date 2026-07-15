@@ -12,7 +12,7 @@ export function AmpText({ children }: { children: string }) {
       {parts.map((part, i) => (
         <Fragment key={i}>
           {part}
-          {i < parts.length - 1 && <span className="font-sans font-semibold">&</span>}
+          {i < parts.length - 1 && <span className="font-sans">&</span>}
         </Fragment>
       ))}
     </>
