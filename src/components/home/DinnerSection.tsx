@@ -117,7 +117,7 @@ export function DinnerSection() {
           {/* Left - info */}
           <div>
             <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">{c.badge}</p>
-            <h2 className="font-serif text-3xl lg:text-4xl font-bold text-brand-black mb-5">
+            <h2 className="font-serif text-4xl lg:text-5xl font-bold text-brand-black mb-5">
               {c.title}
             </h2>
             <div className="text-black/60 text-lg leading-relaxed mb-8 space-y-4">
