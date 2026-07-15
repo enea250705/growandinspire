@@ -140,7 +140,7 @@ export function ConferenceSection() {
         {/* Header */}
         <div className="text-center mb-16">
           <p className="text-brand-gold font-serif text-4xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight mb-4">{c.badge}</p>
-          <h2 className="font-serif text-3xl lg:text-4xl font-bold text-brand-black mb-5 max-w-3xl mx-auto">
+          <h2 className="font-serif text-2xl lg:text-4xl font-bold text-brand-black mb-5 max-w-3xl mx-auto">
             {c.title}
           </h2>
           <div className="text-black/60 text-lg max-w-2xl mx-auto space-y-4">
