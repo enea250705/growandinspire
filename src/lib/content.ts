@@ -77,6 +77,8 @@ export interface RecentVideoCard {
   is_premium: boolean
   /** Thumbnail to show publicly, or null to render a placeholder. */
   thumb: string | null
+  /** Playable id for FREE videos (safe to embed); null for premium. */
+  youtubeId: string | null
 }
 
 /**
@@ -102,6 +104,9 @@ export async function getRecentVideoCards(limit: number): Promise<RecentVideoCar
     type: v.type,
     is_premium: v.is_premium,
     thumb: v.thumbnail_url ?? (!v.is_premium && v.youtube_id ? `https://i.ytimg.com/vi/${v.youtube_id}/hqdefault.jpg` : null),
+    // Free videos are publicly playable, so embedding the id is safe (the trailer
+    // already does). Premium ids stay hidden - those cards link to the gated page.
+    youtubeId: !v.is_premium ? v.youtube_id : null,
   }))
 }
 

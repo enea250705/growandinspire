@@ -1,6 +1,7 @@
 import { Play } from 'lucide-react'
 import Link from 'next/link'
 import { VideoPlayer } from '@/components/watch/VideoPlayer'
+import { OtherVideos } from '@/components/home/OtherVideos'
 import { getFeatured, getPlayableYoutubeId, getSeriesListWithCounts, getRecentVideoCards } from '@/lib/content'
 import { CATEGORY_META, slugify, categoryLabel } from '@/lib/content-meta'
 import { getLang } from '@/lib/i18n-server'
@@ -88,8 +89,9 @@ export async function ELearningSection() {
         category: categoryLabel(lang, v.type),
         href: `/watch/${CATEGORY_META[v.type].slug}/${slugify(v.title)}`,
         thumb: v.thumb,
+        youtubeId: v.youtubeId,
       }))
-    : EXCLUSIVE_VIDEOS.map((v) => ({ key: v.title, title: v.title, category: v.category, href: '/watch', thumb: null as string | null }))
+    : EXCLUSIVE_VIDEOS.map((v) => ({ key: v.title, title: v.title, category: v.category, href: '/watch', thumb: null as string | null, youtubeId: null as string | null }))
 
   return (
     <section className="bg-brand-black py-24 lg:py-32">
@@ -174,32 +176,7 @@ export async function ELearningSection() {
           <div className="flex items-center gap-3 mb-6">
             <p className="text-white/40 text-xs uppercase tracking-widest">{c.premium}</p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {otherVideos.map((video) => (
-              <Link
-                key={video.key}
-                href={video.href}
-                className="group rounded-2xl border border-white/10 bg-brand-dark overflow-hidden hover:border-brand-gold/40 transition-colors"
-              >
-                <div className="relative aspect-video bg-gradient-to-br from-brand-dark to-brand-black overflow-hidden">
-                  {video.thumb && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={video.thumb} alt="" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-                  )}
-                  <div className="absolute inset-0 bg-brand-black/25 group-hover:bg-brand-black/10 transition-colors" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-12 h-12 rounded-full bg-brand-black/60 backdrop-blur-sm flex items-center justify-center group-hover:bg-brand-gold transition-colors">
-                      <Play size={18} className="text-brand-white group-hover:text-brand-black ml-0.5 transition-colors" fill="currentColor" strokeWidth={1} />
-                    </div>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <p className="text-brand-white text-sm font-medium line-clamp-2">{video.title}</p>
-                  <p className="text-white/30 text-xs mt-1">{video.category}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <OtherVideos videos={otherVideos} />
           <div className="mt-8 text-center">
             <Link
               href="/login"
