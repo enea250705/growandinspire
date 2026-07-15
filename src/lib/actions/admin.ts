@@ -202,10 +202,13 @@ async function fetchPlaylistViaApi(playlistId: string, apiKey: string): Promise<
  * ytInitialData JSON. Returns the first page of videos (up to ~100).
  */
 async function fetchPlaylistViaScrape(playlistId: string): Promise<PlaylistVideo[]> {
-  const res = await fetch(`https://www.youtube.com/playlist?list=${playlistId}&hl=en`, {
+  const res = await fetch(`https://www.youtube.com/playlist?list=${playlistId}&hl=en&gl=US`, {
     headers: {
       'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0 Safari/537.36',
       'accept-language': 'en-US,en;q=0.9',
+      // Bypass the EU "before you continue" consent interstitial, which returns
+      // a page with ytInitialData but zero video entries.
+      cookie: 'CONSENT=YES+1; SOCS=CAISEwgDEgk0ODE3Nzk3MjQaAmVuIAEaBgiA_LyaBg',
     },
     cache: 'no-store',
   })
@@ -216,21 +219,22 @@ async function fetchPlaylistViaScrape(playlistId: string): Promise<PlaylistVideo
 
   const data = JSON.parse(m[1])
   const out: PlaylistVideo[] = []
-  // Walk the structure defensively - YouTube nests the video list deep and the
-  // exact path shifts, so recurse and collect every playlistVideoRenderer.
-  const stack = [data]
+  // Walk the whole tree and collect any node that looks like a video entry: an
+  // 11-char videoId plus a readable title. This is resilient to YouTube renaming
+  // its renderers (playlistVideoRenderer / videoRenderer / lockup variants).
+  const stack: unknown[] = [data]
   while (stack.length) {
     const node = stack.pop()
     if (!node || typeof node !== 'object') continue
-    const r = (node as Record<string, unknown>).playlistVideoRenderer as
-      | { videoId?: string; title?: { runs?: { text?: string }[]; simpleText?: string } }
-      | undefined
-    if (r?.videoId) {
-      const title = r.title?.runs?.[0]?.text ?? r.title?.simpleText ?? ''
-      if (title && !SKIP_TITLES.has(title)) out.push({ videoId: r.videoId, title })
+    const rec = node as Record<string, unknown>
+    const videoId = rec.videoId
+    if (typeof videoId === 'string' && /^[A-Za-z0-9_-]{11}$/.test(videoId)) {
+      const t = rec.title as { runs?: { text?: string }[]; simpleText?: string } | undefined
+      const title = t?.runs?.[0]?.text ?? t?.simpleText
+      if (title && !SKIP_TITLES.has(title)) out.push({ videoId, title })
     }
-    for (const v of Object.values(node)) {
-      if (v && typeof v === 'object') stack.push(v as Record<string, unknown>)
+    for (const v of Object.values(rec)) {
+      if (v && typeof v === 'object') stack.push(v)
     }
   }
   // De-dupe within the page (recursion can revisit) preserving first-seen order.
@@ -263,7 +267,14 @@ export async function importYoutubePlaylist(
     return { ok: false, error: e instanceof Error ? e.message : 'Failed to read the playlist.' }
   }
 
-  if (videos.length === 0) return { ok: false, error: 'No videos found in that playlist.' }
+  if (videos.length === 0) {
+    return {
+      ok: false,
+      error: process.env.YOUTUBE_API_KEY
+        ? 'No videos found. Check the playlist is public/unlisted and the link is correct.'
+        : 'No videos found - YouTube likely blocked the server request. Add a YOUTUBE_API_KEY env var in Vercel for reliable imports (see admin docs).',
+    }
+  }
 
   const supabase = createAdminClient()
 
