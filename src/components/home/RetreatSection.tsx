@@ -192,6 +192,7 @@ export function RetreatSection() {
       email: form.email,
       phone: form.phone,
       networking_goals: `format:${form.format} theme:${form.theme} message:${form.message}`,
+      source: 'Retreat',
     })
     setLoading(false)
     if (result.ok) setSubmitted(true)

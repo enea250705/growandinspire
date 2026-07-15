@@ -5,6 +5,21 @@ import { sendNotificationEmail, emailFieldsTable } from '@/lib/email'
 
 type ActionResult = { ok: true } | { ok: false; error: string }
 
+// Emails a submission to NOTIFY_EMAIL, clearly labelled with which form it is.
+// Best-effort: a failed/unconfigured email never fails the submission.
+async function notifyForm(
+  formLabel: string,
+  name: string,
+  email: string,
+  rows: [string, string | null | undefined][],
+) {
+  await sendNotificationEmail({
+    subject: `[${formLabel}] – ${name || email}`,
+    replyTo: email,
+    html: `<p style="font:600 12px -apple-system,Segoe UI,Roboto,sans-serif;color:#888;text-transform:uppercase;letter-spacing:1px;margin:0 0 4px">Formular</p><h2 style="font:600 20px -apple-system,Segoe UI,Roboto,sans-serif;color:#111;margin:0 0 16px">${formLabel}</h2>${emailFieldsTable(rows)}`,
+  })
+}
+
 // ---- Dinner with Alketa (full field set) -----------------------------------
 export async function submitDinnerApplication(data: {
   first_name: string
@@ -58,27 +73,21 @@ export async function submitDinnerApplication(data: {
   })
   if (error) return { ok: false, error: error.message }
 
-  // Also email the team (in addition to the admin dashboard). Best-effort: a
-  // failed/unconfigured email never fails the applicant's submission.
-  await sendNotificationEmail({
-    subject: `Dinner with Alketa – aplikim i ri: ${name}`,
-    replyTo: data.email,
-    html: `<h2 style="font:600 18px -apple-system,Segoe UI,Roboto,sans-serif;color:#111">Aplikim i ri për Dinner with Alketa</h2>${emailFieldsTable([
-      ['Emri', name],
-      ['Email', data.email],
-      ['Telefoni', data.phone],
-      ['Profesioni / Pozicioni', data.position],
-      ['Kompania', data.company],
-      ['Industria', data.industry],
-      ['Pse dëshiron të jesh pjesë', data.why_join],
-      ['Pyetje për Alketën', data.question_for_alketa],
-      ['Çfarë sjell', data.what_you_bring],
-      ['Pritshmëri', data.expectations],
-      ['LinkedIn', data.linkedin],
-      ['Instagram', data.instagram],
-      ['Website', data.website || data.website_link],
-    ])}`,
-  })
+  await notifyForm('Dinner with Alketa', name, data.email, [
+    ['Emri', name],
+    ['Email', data.email],
+    ['Telefoni', data.phone],
+    ['Profesioni / Pozicioni', data.position],
+    ['Kompania', data.company],
+    ['Industria', data.industry],
+    ['Pse dëshiron të jesh pjesë', data.why_join],
+    ['Pyetje për Alketën', data.question_for_alketa],
+    ['Çfarë sjell', data.what_you_bring],
+    ['Pritshmëri', data.expectations],
+    ['LinkedIn', data.linkedin],
+    ['Instagram', data.instagram],
+    ['Website', data.website || data.website_link],
+  ])
 
   return { ok: true }
 }
@@ -98,6 +107,15 @@ export async function submitApplication(data: {
     payload: data.payload,
   })
   if (error) return { ok: false, error: error.message }
+
+  const label = data.type === 'investment' ? 'Ideas & Angel Investors'
+    : data.type === 'guest' ? 'Aplikim: Guest'
+    : 'Apliko: Punë (Class)'
+  await notifyForm(label, data.name, data.email, [
+    ['Emri', data.name],
+    ['Email', data.email],
+    ...Object.entries(data.payload) as [string, string][],
+  ])
   return { ok: true }
 }
 
@@ -142,6 +160,24 @@ export async function submitPodcastApplication(data: {
     media_link: data.media_link || null,
   })
   if (error) return { ok: false, error: error.message }
+
+  const name = [data.first_name, data.last_name].filter(Boolean).join(' ').trim()
+  await notifyForm('Podcast Guest', name, data.email, [
+    ['Emri', name],
+    ['Email', data.email],
+    ['Telefoni', data.phone],
+    ['Pozicioni', data.position],
+    ['Kompania', data.company],
+    ['Industria', data.industry],
+    ['Historia / Pse', data.why_story],
+    ['Tema', (data.topics ?? []).join(', ')],
+    ['Tre mësime', data.three_lessons],
+    ['Media e mëparshme', data.prior_media],
+    ['Link media', data.media_link],
+    ['LinkedIn', data.linkedin],
+    ['Instagram', data.instagram],
+    ['Website', data.website],
+  ])
   return { ok: true }
 }
 
@@ -188,6 +224,25 @@ export async function submitIdeaTableApplication(data: {
     pitch_deck_path: data.pitch_deck_path || null,
   })
   if (error) return { ok: false, error: error.message }
+
+  const name = [data.first_name, data.last_name].filter(Boolean).join(' ').trim()
+  await notifyForm('Idea Tables', name, data.email, [
+    ['Emri', name],
+    ['Email', data.email],
+    ['Telefoni', data.phone],
+    ['Qyteti', data.city],
+    ['Emri i idesë', data.idea_name],
+    ['Industritë', (data.industries ?? []).join(', ')],
+    ['Përshkrimi', data.description],
+    ['Problemi që zgjidh', data.problem_solved],
+    ['Audienca', data.target_audience],
+    ['Faza', data.stage],
+    ['Pse prezanton', data.why_present],
+    ['Feedback i dëshiruar', (data.feedback_wanted ?? []).join(', ')],
+    ['LinkedIn', data.linkedin],
+    ['Instagram', data.instagram],
+    ['Website', data.website],
+  ])
   return { ok: true }
 }
 
@@ -226,6 +281,23 @@ export async function submitCoachingApplication(data: {
     availability: data.availability ?? [],
   })
   if (error) return { ok: false, error: error.message }
+
+  const name = [data.first_name, data.last_name].filter(Boolean).join(' ').trim()
+  await notifyForm('Coaching', name, data.email, [
+    ['Emri', name],
+    ['Email', data.email],
+    ['Telefoni', data.phone],
+    ['Qyteti', data.city],
+    ['Pozicioni', data.position],
+    ['Kompania', data.company],
+    ['Industria', data.industry],
+    ['Eksperienca', data.experience],
+    ['Fusha për përmirësim', (data.improve_areas ?? []).join(', ')],
+    ['Sfida më e madhe', data.biggest_challenge],
+    ['Qëllimi 6-mujor', data.six_month_goal],
+    ['Lloji i coaching-ut', data.coaching_type],
+    ['Disponueshmëria', (data.availability ?? []).join(', ')],
+  ])
   return { ok: true }
 }
 
@@ -243,6 +315,8 @@ export async function submitEventRegistration(data: {
   networking_goals?: string
   participation?: string[]
   package?: string
+  /** Which form this came from, for the notification email (Conference vs Retreat). */
+  source?: string
 }): Promise<ActionResult> {
   const supabase = await createClient()
   const name = [data.first_name, data.last_name].filter(Boolean).join(' ').trim()
@@ -264,6 +338,20 @@ export async function submitEventRegistration(data: {
     status: 'pending',
   })
   if (error) return { ok: false, error: error.message }
+
+  await notifyForm(data.source || 'Business Conference', name, data.email, [
+    ['Emri', name],
+    ['Email', data.email],
+    ['Telefoni', data.phone],
+    ['Kompania', data.company],
+    ['Pozicioni', data.position],
+    ['Industria', data.industry],
+    ['Qyteti', data.city],
+    ['Interesat', (data.interests ?? []).join(', ')],
+    ['Detaje', data.networking_goals],
+    ['Pjesëmarrje', (data.participation ?? []).join(', ')],
+    ['Paketa', data.package],
+  ])
   return { ok: true }
 }
 
@@ -298,6 +386,19 @@ export async function submitMembershipSignup(data: {
   if (data.newsletter) {
     await supabase.from('subscribers').insert({ email: data.email })
   }
+
+  const name = [data.first_name, data.last_name].filter(Boolean).join(' ').trim()
+  await notifyForm('Bashkohu / Membership', name, data.email, [
+    ['Emri', name],
+    ['Email', data.email],
+    ['Telefoni', data.phone],
+    ['Profesioni', data.profession],
+    ['Industria', data.industry],
+    ['Interesat', (data.interests ?? []).join(', ')],
+    ['Objektivi kryesor', (data.main_objective ?? []).join(', ')],
+    ['Si na gjeti', data.how_heard],
+    ['Newsletter', data.newsletter ? 'Po' : 'Jo'],
+  ])
   return { ok: true }
 }
 
@@ -322,6 +423,16 @@ export async function submitSponsorshipLead(data: {
     message: data.message || null,
   })
   if (error) return { ok: false, error: error.message }
+
+  await notifyForm('Sponsorship / Partner', data.contact_name, data.email, [
+    ['Kompania', data.company_name],
+    ['Kontakti', data.contact_name],
+    ['Email', data.email],
+    ['Telefoni', data.phone],
+    ['Fusha e interesit', data.interest_area],
+    ['Buxheti', data.budget],
+    ['Mesazhi', data.message],
+  ])
   return { ok: true }
 }
 
@@ -332,6 +443,8 @@ export async function submitCoachingProgramRequest(email: string): Promise<Actio
   const supabase = await createClient()
   const { error } = await supabase.from('coaching_program_requests').insert({ email })
   if (error) return { ok: false, error: error.message }
+
+  await notifyForm('Coaching Program – Shkarkim', '', email, [['Email', email]])
   return { ok: true }
 }
 
@@ -343,5 +456,7 @@ export async function submitNewsletterSignup(email: string): Promise<ActionResul
     if (error.code === '23505') return { ok: false, error: 'already_subscribed' }
     return { ok: false, error: error.message }
   }
+
+  await notifyForm('Newsletter', '', email, [['Email', email]])
   return { ok: true }
 }
