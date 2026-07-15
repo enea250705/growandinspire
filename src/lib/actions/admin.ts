@@ -155,6 +155,152 @@ export async function updateContent(id: string, input: ContentInput): Promise<Re
   return { ok: true }
 }
 
+// ---- YouTube playlist import ----------------------------------------------
+
+type PlaylistVideo = { videoId: string; title: string }
+
+/** Pull the playlist id out of a full URL or accept a bare id. */
+function extractPlaylistId(raw: string): string | null {
+  const s = raw.trim()
+  const m = s.match(/[?&]list=([A-Za-z0-9_-]+)/)
+  if (m) return m[1]
+  if (/^[A-Za-z0-9_-]{10,}$/.test(s)) return s
+  return null
+}
+
+const SKIP_TITLES = new Set(['Private video', 'Deleted video', '[Private video]', '[Deleted video]'])
+
+/**
+ * Fetch a playlist's videos via the official Data API. Requires YOUTUBE_API_KEY.
+ * Paginates through every page (handles playlists larger than 50).
+ */
+async function fetchPlaylistViaApi(playlistId: string, apiKey: string): Promise<PlaylistVideo[]> {
+  const out: PlaylistVideo[] = []
+  let pageToken = ''
+  do {
+    const url = new URL('https://www.googleapis.com/youtube/v3/playlistItems')
+    url.searchParams.set('part', 'snippet')
+    url.searchParams.set('maxResults', '50')
+    url.searchParams.set('playlistId', playlistId)
+    url.searchParams.set('key', apiKey)
+    if (pageToken) url.searchParams.set('pageToken', pageToken)
+    const res = await fetch(url, { cache: 'no-store' })
+    if (!res.ok) throw new Error(`YouTube API ${res.status}: ${(await res.text()).slice(0, 200)}`)
+    const json = await res.json()
+    for (const item of json.items ?? []) {
+      const videoId = item?.snippet?.resourceId?.videoId
+      const title = item?.snippet?.title
+      if (videoId && title && !SKIP_TITLES.has(title)) out.push({ videoId, title })
+    }
+    pageToken = json.nextPageToken ?? ''
+  } while (pageToken)
+  return out
+}
+
+/**
+ * Fallback with no API key: scrape the public playlist page's embedded
+ * ytInitialData JSON. Returns the first page of videos (up to ~100).
+ */
+async function fetchPlaylistViaScrape(playlistId: string): Promise<PlaylistVideo[]> {
+  const res = await fetch(`https://www.youtube.com/playlist?list=${playlistId}&hl=en`, {
+    headers: {
+      'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0 Safari/537.36',
+      'accept-language': 'en-US,en;q=0.9',
+    },
+    cache: 'no-store',
+  })
+  if (!res.ok) throw new Error(`YouTube returned ${res.status}. Try again or set YOUTUBE_API_KEY.`)
+  const html = await res.text()
+  const m = html.match(/ytInitialData\s*=\s*({[\s\S]+?})\s*;\s*<\/script>/)
+  if (!m) throw new Error('Could not read the playlist (YouTube markup changed or the playlist is private).')
+
+  const data = JSON.parse(m[1])
+  const out: PlaylistVideo[] = []
+  // Walk the structure defensively - YouTube nests the video list deep and the
+  // exact path shifts, so recurse and collect every playlistVideoRenderer.
+  const stack = [data]
+  while (stack.length) {
+    const node = stack.pop()
+    if (!node || typeof node !== 'object') continue
+    const r = (node as Record<string, unknown>).playlistVideoRenderer as
+      | { videoId?: string; title?: { runs?: { text?: string }[]; simpleText?: string } }
+      | undefined
+    if (r?.videoId) {
+      const title = r.title?.runs?.[0]?.text ?? r.title?.simpleText ?? ''
+      if (title && !SKIP_TITLES.has(title)) out.push({ videoId: r.videoId, title })
+    }
+    for (const v of Object.values(node)) {
+      if (v && typeof v === 'object') stack.push(v as Record<string, unknown>)
+    }
+  }
+  // De-dupe within the page (recursion can revisit) preserving first-seen order.
+  const seen = new Set<string>()
+  return out.filter((v) => (seen.has(v.videoId) ? false : seen.add(v.videoId)))
+}
+
+/**
+ * Import every video from a YouTube playlist into content_items. Each becomes an
+ * item of `type`, keeping its original YouTube title. Videos already present
+ * (same youtube_id) are skipped, so re-running is safe and only adds new ones.
+ */
+export async function importYoutubePlaylist(
+  playlistUrl: string,
+  type: string,
+  isPremium: boolean,
+): Promise<Result & { added?: number; skipped?: number; total?: number }> {
+  await requireAdmin()
+
+  const playlistId = extractPlaylistId(playlistUrl)
+  if (!playlistId) return { ok: false, error: 'Could not find a playlist id in that link.' }
+
+  let videos: PlaylistVideo[]
+  try {
+    const apiKey = process.env.YOUTUBE_API_KEY
+    videos = apiKey
+      ? await fetchPlaylistViaApi(playlistId, apiKey)
+      : await fetchPlaylistViaScrape(playlistId)
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : 'Failed to read the playlist.' }
+  }
+
+  if (videos.length === 0) return { ok: false, error: 'No videos found in that playlist.' }
+
+  const supabase = createAdminClient()
+
+  // Skip anything already imported (dedupe by youtube_id).
+  const { data: existing } = await supabase.from('content_items').select('youtube_id')
+  const have = new Set((existing ?? []).map((r: { youtube_id: string | null }) => r.youtube_id).filter(Boolean))
+  const fresh = videos.filter((v) => !have.has(v.videoId))
+
+  if (fresh.length === 0) {
+    return { ok: true, added: 0, skipped: videos.length, total: videos.length }
+  }
+
+  // Preserve playlist order: first video gets the newest published_at so it
+  // sorts to the top of the "newest first" listings.
+  const base = Date.now()
+  const rows = fresh.map((v, i) => ({
+    type,
+    title: v.title,
+    description: null,
+    youtube_id: v.videoId,
+    thumbnail_url: null,
+    is_premium: isPremium,
+    published_at: new Date(base - i * 60_000).toISOString(),
+    series_id: null,
+    episode_number: null,
+  }))
+
+  const { error } = await supabase.from('content_items').insert(rows)
+  if (error) return { ok: false, error: error.message }
+
+  revalidatePath('/admin/content')
+  revalidatePath('/watch')
+  revalidatePath('/series')
+  revalidatePath('/')
+  return { ok: true, added: fresh.length, skipped: videos.length - fresh.length, total: videos.length }
+}
+
 // ---- Series ----------------------------------------------------------------
 
 export async function createSeries(input: SeriesInput): Promise<Result> {

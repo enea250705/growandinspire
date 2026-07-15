@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { Plus, Pencil, Trash2, Lock, X } from 'lucide-react'
+import { Plus, Pencil, Trash2, Lock, X, ListVideo } from 'lucide-react'
 import { Input, Textarea, Select } from '@/components/ui/FormField'
-import { createContent, updateContent, deleteContent, type ContentInput } from '@/lib/actions/admin'
+import { createContent, updateContent, deleteContent, importYoutubePlaylist, type ContentInput } from '@/lib/actions/admin'
 import type { AdminContentItem, Series } from '@/types'
 
 const TYPE_OPTIONS = [
@@ -42,6 +42,27 @@ export function ContentClient({ items, series }: { items: AdminContentItem[]; se
   const [form, setForm] = useState<ContentInput>(EMPTY)
   const [error, setError] = useState('')
   const [pending, startTransition] = useTransition()
+
+  // YouTube playlist import
+  const [importUrl, setImportUrl] = useState('')
+  const [importType, setImportType] = useState('podcast')
+  const [importPremium, setImportPremium] = useState(false)
+  const [importing, setImporting] = useState(false)
+  const [importMsg, setImportMsg] = useState<{ ok: boolean; text: string } | null>(null)
+
+  async function runImport() {
+    if (!importUrl.trim()) return
+    setImporting(true)
+    setImportMsg(null)
+    const res = await importYoutubePlaylist(importUrl.trim(), importType, importPremium)
+    setImporting(false)
+    if (res.ok) {
+      setImportMsg({ ok: true, text: `U shtuan ${res.added} video (${res.skipped} ekzistonin). Duke rifreskuar...` })
+      setTimeout(() => window.location.reload(), 1200)
+    } else {
+      setImportMsg({ ok: false, text: res.error })
+    }
+  }
 
   function openNew() {
     setForm({ ...EMPTY, published_at: new Date().toISOString().slice(0, 10) })
@@ -99,6 +120,42 @@ export function ContentClient({ items, series }: { items: AdminContentItem[]; se
 
   return (
     <>
+      {/* Import an entire YouTube playlist at once */}
+      <div className="bg-brand-white rounded-2xl border border-black/8 p-6 mb-6">
+        <div className="flex items-center gap-2 mb-1">
+          <ListVideo size={18} className="text-brand-gold" />
+          <h2 className="font-semibold text-brand-black">Importo nga një Playlist YouTube</h2>
+        </div>
+        <p className="text-black/50 text-sm mb-4">
+          Ngjit linkun e playlist-it. Çdo video shtohet me titullin e saj origjinal. Videot që ekzistojnë tashmë anashkalohen.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-[1fr_200px] gap-4">
+          <Input
+            label="Link i Playlist-it"
+            placeholder="https://youtube.com/playlist?list=..."
+            value={importUrl}
+            onChange={(e) => setImportUrl(e.target.value)}
+          />
+          <Select label="Kategoria" options={TYPE_OPTIONS} value={importType} onChange={(e) => setImportType(e.target.value)} />
+        </div>
+        <div className="flex flex-wrap items-center justify-between gap-4 mt-4">
+          <label className="flex items-center gap-2">
+            <input type="checkbox" checked={importPremium} onChange={(e) => setImportPremium(e.target.checked)} className="w-4 h-4 accent-brand-gold" />
+            <span className="text-sm text-brand-black">Premium (vetëm anëtarë)</span>
+          </label>
+          <button
+            onClick={runImport}
+            disabled={importing || !importUrl.trim()}
+            className="flex items-center gap-2 bg-brand-gold text-brand-black px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors disabled:opacity-50"
+          >
+            {importing ? 'Duke importuar...' : 'Importo Playlist'}
+          </button>
+        </div>
+        {importMsg && (
+          <p className={`text-sm mt-3 ${importMsg.ok ? 'text-green-600' : 'text-red-500'}`}>{importMsg.text}</p>
+        )}
+      </div>
+
       <div className="flex justify-end mb-5">
         <button
           onClick={openNew}
