@@ -304,7 +304,9 @@ async function insertVideos(
     title: v.title,
     description: null,
     youtube_id: v.videoId,
-    thumbnail_url: null,
+    // Store the YouTube thumbnail for free videos so public cards can show it.
+    // Premium items stay null - their video id must not leak via the image URL.
+    thumbnail_url: isPremium ? null : `https://i.ytimg.com/vi/${v.videoId}/hqdefault.jpg`,
     is_premium: isPremium,
     published_at: new Date(base - i * 60_000).toISOString(),
     series_id: null,

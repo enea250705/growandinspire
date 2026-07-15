@@ -70,6 +70,41 @@ export async function getRecentVideos(limit?: number): Promise<ContentItem[]> {
   return (data as ContentItem[]) ?? []
 }
 
+export interface RecentVideoCard {
+  id: string
+  title: string
+  type: ContentType
+  is_premium: boolean
+  /** Thumbnail to show publicly, or null to render a placeholder. */
+  thumb: string | null
+}
+
+/**
+ * Recent videos with a thumbnail for the homepage cards. Runs with the service
+ * role so it can read youtube_id and derive a thumbnail for FREE videos that
+ * don't have a stored thumbnail_url yet. Premium ids are never exposed (their
+ * thumb stays null unless an explicit thumbnail_url was set), and youtube_id
+ * itself is dropped from the returned shape.
+ */
+export async function getRecentVideoCards(limit: number): Promise<RecentVideoCard[]> {
+  const admin = createAdminClient()
+  const { data } = await admin
+    .from('content_items')
+    .select('id, title, type, is_premium, youtube_id, thumbnail_url')
+    .eq('has_video', true)
+    .order('published_at', { ascending: false })
+    .limit(limit)
+
+  type Row = { id: string; title: string; type: ContentType; is_premium: boolean; youtube_id: string | null; thumbnail_url: string | null }
+  return ((data as Row[]) ?? []).map((v) => ({
+    id: v.id,
+    title: v.title,
+    type: v.type,
+    is_premium: v.is_premium,
+    thumb: v.thumbnail_url ?? (!v.is_premium && v.youtube_id ? `https://i.ytimg.com/vi/${v.youtube_id}/hqdefault.jpg` : null),
+  }))
+}
+
 export async function getFeatured(): Promise<ContentItem | null> {
   const { data } = await supabase
     .from('content_items')
