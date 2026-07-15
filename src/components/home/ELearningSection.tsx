@@ -1,7 +1,7 @@
 import { Play } from 'lucide-react'
 import Link from 'next/link'
 import { VideoPlayer } from '@/components/watch/VideoPlayer'
-import { getFeatured, getPlayableYoutubeId, getSeriesListWithCounts, getPremiumContent } from '@/lib/content'
+import { getFeatured, getPlayableYoutubeId, getSeriesListWithCounts, getRecentVideos } from '@/lib/content'
 import { CATEGORY_META, slugify, categoryLabel } from '@/lib/content-meta'
 import { getLang } from '@/lib/i18n-server'
 import type { Lang } from '@/lib/i18n'
@@ -70,24 +70,25 @@ export async function ELearningSection() {
   const c = CONTENT[lang]
   // The free featured episode plays right here as the trailer. It's is_premium=false
   // (getFeatured enforces that), so embedding its youtube_id publicly is safe.
-  const [featured, seriesList, premium] = await Promise.all([
+  const [featured, seriesList, recent] = await Promise.all([
     getFeatured(),
     getSeriesListWithCounts(),
-    getPremiumContent(4),
+    getRecentVideos(5),
   ])
   const trailerId = featured ? await getPlayableYoutubeId(featured.id) : null
 
-  // Real premium videos the admin has added; fall back to the static teaser list
-  // only when none exist yet. Each links to its own watch page, which gates
-  // playback for non-members.
-  const premiumVideos = premium.length > 0
-    ? premium.map((v) => ({
+  // Latest videos the admin has added (any tier), minus the one already playing
+  // as the trailer above. Falls back to the static teaser list only when the
+  // library is still empty. Each links to its own watch page.
+  const otherRecent = recent.filter((v) => v.id !== featured?.id).slice(0, 4)
+  const otherVideos = otherRecent.length > 0
+    ? otherRecent.map((v) => ({
         key: v.id,
         title: v.title,
         category: categoryLabel(lang, v.type),
         href: `/watch/${CATEGORY_META[v.type].slug}/${slugify(v.title)}`,
       }))
-    : EXCLUSIVE_VIDEOS.map((v) => ({ key: v.title, title: v.title, category: v.category, href: '/membership' }))
+    : EXCLUSIVE_VIDEOS.map((v) => ({ key: v.title, title: v.title, category: v.category, href: '/watch' }))
 
   return (
     <section className="bg-brand-black py-24 lg:py-32">
@@ -173,7 +174,7 @@ export async function ELearningSection() {
             <p className="text-white/40 text-xs uppercase tracking-widest">{c.premium}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {premiumVideos.map((video) => (
+            {otherVideos.map((video) => (
               <Link
                 key={video.key}
                 href={video.href}

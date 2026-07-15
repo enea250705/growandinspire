@@ -59,6 +59,17 @@ export async function getPremiumContent(limit?: number): Promise<ContentItem[]> 
   return (data as ContentItem[]) ?? []
 }
 
+/** Most recent videos (any tier), newest first - for the homepage grid. */
+export async function getRecentVideos(limit?: number): Promise<ContentItem[]> {
+  const query = supabase
+    .from('content_items')
+    .select(SELECT)
+    .eq('has_video', true)
+    .order('published_at', { ascending: false })
+  const { data } = limit ? await query.limit(limit) : await query
+  return (data as ContentItem[]) ?? []
+}
+
 export async function getFeatured(): Promise<ContentItem | null> {
   const { data } = await supabase
     .from('content_items')
