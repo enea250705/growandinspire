@@ -204,7 +204,7 @@ export function RetreatSection() {
 
         {/* Header */}
         <div className="max-w-3xl mb-20">
-          <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-3">{c.badge}</p>
+          <p className="text-brand-gold font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">{c.badge}</p>
           <h2 className="font-serif text-3xl lg:text-4xl font-bold text-brand-white mb-5">
             {c.title}
           </h2>
