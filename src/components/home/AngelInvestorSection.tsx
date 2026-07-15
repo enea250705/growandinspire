@@ -5,6 +5,7 @@ import { Lightbulb, TrendingUp, ChevronDown } from 'lucide-react'
 import { Input, Textarea, Select } from '@/components/ui/FormField'
 import { submitApplication } from '@/lib/actions/forms'
 import { useI18n } from '@/components/i18n/I18nProvider'
+import { AmpText } from '@/components/ui/AmpText'
 import type { Lang } from '@/lib/i18n'
 
 const CONTENT: Record<Lang, {
@@ -164,7 +165,7 @@ export function AngelInvestorSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           {/* Left - info */}
           <div>
-            <p className="text-brand-gold font-serif text-4xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight mb-4">{c.badge}</p>
+            <p className="text-brand-gold font-serif text-4xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight mb-4"><AmpText>{c.badge}</AmpText></p>
             <h2 className="font-serif text-3xl lg:text-4xl font-bold text-brand-black mb-5">
               {c.title}
             </h2>
