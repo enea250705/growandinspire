@@ -48,7 +48,7 @@ export async function Hero() {
                   fill
                   priority
                   sizes="(min-width: 1024px) 40vw, 100vw"
-                  className="object-cover object-top"
+                  className="object-contain object-bottom"
                 />
                 {/* gradient for text legibility */}
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/10 to-transparent" />
