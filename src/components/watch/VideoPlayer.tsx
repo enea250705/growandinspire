@@ -61,7 +61,10 @@ export function VideoPlayer({ youtubeId, title, watermark }: VideoPlayerProps) {
       plyrInstance = new Plyr(el as HTMLElement, {
         controls: ['play-large', 'rewind', 'play', 'fast-forward', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
         seekTime: 10,
-        youtube: { noCookie: true, rel: 0 },
+        // hl + cc_lang_pref pin the player to Albanian (the original audio) so
+        // YouTube doesn't auto-dub/translate into the viewer's language, and
+        // cc_load_policy:0 keeps auto-translated captions from loading.
+        youtube: { noCookie: true, rel: 0, hl: 'sq', cc_lang_pref: 'sq', cc_load_policy: 0 },
       }) as unknown as PlyrLike
 
       playerRef.current = plyrInstance
