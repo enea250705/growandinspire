@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Bookmark, Play } from 'lucide-react'
-import { CATEGORY_META, slugify } from '@/lib/content-meta'
+import { CATEGORY_META, slugify, categoryLabel } from '@/lib/content-meta'
 import { getSavedContent } from '@/lib/content'
 import { SaveButton } from '@/components/watch/SaveButton'
 import { getLang } from '@/lib/i18n-server'
@@ -71,7 +71,7 @@ export default async function SavedPage() {
               <div className="p-4 flex items-start justify-between gap-3">
                 <div>
                   <p className="text-xs text-brand-gold font-semibold uppercase tracking-widest mb-1">
-                    {CATEGORY_META[item.type].label}
+                    {categoryLabel(lang, item.type)}
                   </p>
                   <p className="text-sm font-semibold text-brand-black line-clamp-2">{item.title}</p>
                 </div>

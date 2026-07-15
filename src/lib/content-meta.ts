@@ -1,4 +1,5 @@
 import type { ContentType } from '@/types'
+import type { Lang } from '@/lib/i18n'
 
 // Static, non-DB config. Safe to import in client and server components.
 
@@ -33,6 +34,25 @@ export const CATEGORY_META: Record<ContentType, { label: string; slug: string; d
     slug: 'grow-exclusive',
     description: 'Members-only content. Coaching sessions, deep dives, and private recordings.',
   },
+}
+
+// Albanian labels/descriptions for the content categories. Brand product names
+// (Inspire Podcast, Class Business, Revista Class, Grow Exclusive) stay as-is.
+const CATEGORY_SQ: Record<ContentType, { label: string; description: string }> = {
+  podcast: { label: 'Inspire Podcast', description: 'Biseda me liderë, themelues dhe kreativë që formësojnë Shqipërinë dhe më gjerë.' },
+  founder: { label: 'Njih Themeluesin', description: 'Histori themeluesish të papaketuara - kthesat, dështimet, arritjet.' },
+  artist: { label: 'Njih Artistin', description: 'Ku kreativiteti takon biznesin. Artistë shqiptarë që ndërtojnë karriera globale.' },
+  business: { label: 'Class Business', description: 'Korniza, strategji dhe këshilla për ndërtuesin modern të biznesit.' },
+  revista: { label: 'Revista Class', description: 'Artikuj të gjatë dhe reportazhe nga ekipi editorial i Class Media.' },
+  exclusive: { label: 'Grow Exclusive', description: 'Përmbajtje vetëm për anëtarë. Sesione coaching, analiza të thella dhe regjistrime private.' },
+}
+
+export function categoryLabel(lang: Lang, type: ContentType): string {
+  return lang === 'sq' ? CATEGORY_SQ[type].label : CATEGORY_META[type].label
+}
+
+export function categoryDesc(lang: Lang, type: ContentType): string {
+  return lang === 'sq' ? CATEGORY_SQ[type].description : CATEGORY_META[type].description
 }
 
 export const SLUG_TO_TYPE: Record<string, ContentType> = {

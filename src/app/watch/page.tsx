@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { BookOpen, Mic2, Users, Briefcase, Sparkles, Lock } from 'lucide-react'
-import { CATEGORY_META, slugify } from '@/lib/content-meta'
+import { CATEGORY_META, slugify, categoryLabel } from '@/lib/content-meta'
 import { getFeatured, getFreeContent } from '@/lib/content'
 import { ContentCard } from '@/components/watch/ContentCard'
 import { CONTENT_LOCKING_ENABLED } from '@/lib/flags'
@@ -82,7 +82,7 @@ export default async function WatchPage() {
                   className="flex items-center gap-2 px-5 py-4 text-sm font-medium text-black/50 hover:text-brand-black border-b-2 border-transparent hover:border-brand-gold transition-colors whitespace-nowrap"
                 >
                   <Icon size={15} strokeWidth={1.5} />
-                  {meta.label}
+                  {categoryLabel(lang, type)}
                 </Link>
               )
             })}
@@ -122,7 +122,7 @@ export default async function WatchPage() {
                 </div>
                 <div className="p-8 flex flex-col justify-center">
                   <p className="text-brand-gold text-xs font-semibold uppercase tracking-widest mb-3">
-                    {CATEGORY_META[featured.type].label}
+                    {categoryLabel(lang, featured.type)}
                   </p>
                   <h2 className="font-serif text-2xl lg:text-3xl font-bold text-brand-black mb-3">
                     {featured.title}

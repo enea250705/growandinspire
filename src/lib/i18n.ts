@@ -111,7 +111,7 @@ const messages: Record<Lang, Dict> = {
     'footer.terms': 'Kushtet',
 
     'dash.nav.dashboard': 'Paneli',
-    'dash.nav.learning': 'Learning Hub',
+    'dash.nav.learning': 'Qendra e Mësimit',
     'dash.nav.membership': 'Anëtarësimi Im',
     'dash.nav.saved': 'Përmbajtja e Ruajtur',
     'dash.nav.downloads': 'Shkarkimet e Mia',

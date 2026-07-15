@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { PremiumBadge } from '@/components/ui/LockBadge'
 import { VideoPlayer } from '@/components/watch/VideoPlayer'
 import { getFeatured, getPlayableYoutubeId, getSeriesListWithCounts, getPremiumContent } from '@/lib/content'
-import { CATEGORY_META, slugify } from '@/lib/content-meta'
+import { CATEGORY_META, slugify, categoryLabel } from '@/lib/content-meta'
 import { getLang } from '@/lib/i18n-server'
 import type { Lang } from '@/lib/i18n'
 
@@ -77,7 +77,7 @@ export async function ELearningSection() {
     ? premium.map((v) => ({
         key: v.id,
         title: v.title,
-        category: CATEGORY_META[v.type].label,
+        category: categoryLabel(lang, v.type),
         href: `/watch/${CATEGORY_META[v.type].slug}/${slugify(v.title)}`,
       }))
     : EXCLUSIVE_VIDEOS.map((v) => ({ key: v.title, title: v.title, category: v.category, href: '/membership' }))

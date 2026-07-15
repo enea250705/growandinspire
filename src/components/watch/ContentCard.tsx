@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import { Play, FileText } from 'lucide-react'
 import { LockBadge, PremiumBadge } from '@/components/ui/LockBadge'
-import { formatDate, slugify, CATEGORY_META } from '@/lib/content-meta'
+import { formatDate, slugify, CATEGORY_META, categoryLabel } from '@/lib/content-meta'
 import { CONTENT_LOCKING_ENABLED } from '@/lib/flags'
+import { getLang } from '@/lib/i18n-server'
 import type { ContentItem } from '@/types'
 
 interface ContentCardProps {
@@ -10,10 +11,12 @@ interface ContentCardProps {
   isMember?: boolean
 }
 
-export function ContentCard({ item, isMember = false }: ContentCardProps) {
+export async function ContentCard({ item, isMember = false }: ContentCardProps) {
+  const lang = await getLang()
   const gated = CONTENT_LOCKING_ENABLED && item.is_premium
   const isLocked = gated && !isMember
   const categoryMeta = CATEGORY_META[item.type]
+  const label = categoryLabel(lang, item.type)
   const href = `/watch/${categoryMeta.slug}/${slugify(item.title)}`
   const hasVideo = item.has_video
 
@@ -55,7 +58,7 @@ export function ContentCard({ item, isMember = false }: ContentCardProps) {
       {/* Info */}
       <div className="p-4">
         <p className="text-brand-gold text-xs font-semibold uppercase tracking-widest mb-2">
-          {categoryMeta.label}
+          {label}
         </p>
         <h3 className="font-serif font-semibold text-brand-black text-base leading-snug mb-1 line-clamp-2">
           {item.title}

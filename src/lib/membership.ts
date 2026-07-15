@@ -9,14 +9,18 @@ export interface Membership {
   stripe_subscription_id: string | null
 }
 
-const TIER_LABEL: Record<Membership['tier'], string> = {
-  individual: 'Individual',
-  professional: 'Professional',
-  corporate: 'Corporate',
+import type { Lang } from '@/lib/i18n'
+
+const TIER_LABEL: Record<Lang, Record<Membership['tier'], string>> = {
+  en: { individual: 'Individual', professional: 'Professional', corporate: 'Corporate' },
+  sq: { individual: 'Individual', professional: 'Profesional', corporate: 'Korporativ' },
 }
 
-export function tierLabel(tier: Membership['tier']): string {
-  return TIER_LABEL[tier]
+/** Localised name for the "no membership" state. */
+export const freeTierLabel: Record<Lang, string> = { en: 'Free', sq: 'Falas' }
+
+export function tierLabel(tier: Membership['tier'], lang: Lang = 'en'): string {
+  return TIER_LABEL[lang][tier]
 }
 
 /**

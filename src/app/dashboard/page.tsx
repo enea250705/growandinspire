@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import { BookOpen, Calendar, Download, Users, Lock, ChevronRight, Layers, PlayCircle } from 'lucide-react'
-import { CATEGORY_META, slugify } from '@/lib/content-meta'
+import { CATEGORY_META, slugify, categoryLabel } from '@/lib/content-meta'
 import { getFreeContent, getPremiumContent, getSeriesListWithCounts, getSavedContent, getDownloads } from '@/lib/content'
 import { createClient } from '@/lib/supabase/server'
-import { getMembership, tierLabel } from '@/lib/membership'
+import { getMembership, tierLabel, freeTierLabel } from '@/lib/membership'
 import { getLang } from '@/lib/i18n-server'
 import type { Lang } from '@/lib/i18n'
 import type { ContentItem, Series } from '@/types'
@@ -52,7 +52,7 @@ const CONTENT: Record<Lang, {
     statEvents: 'Eventet e Ardhshme',
     continueWatching: 'Vazhdo të Shikosh',
     viewAll: 'Shiko të gjitha',
-    learningHub: 'Learning Hub',
+    learningHub: 'Qendra e Mësimit',
     seriesPrograms: 'Seri dhe Programe',
     growExclusive: 'Grow Exclusive',
     nextEvent: 'Eventi i Radhës',
@@ -84,13 +84,13 @@ export default async function DashboardPage() {
     .eq('email', email)
 
   const stats = [
-    { label: c.statMembership, value: membership ? tierLabel(membership.tier) : 'Free', icon: Users, href: '/dashboard/membership' },
+    { label: c.statMembership, value: membership ? tierLabel(membership.tier, lang) : freeTierLabel[lang], icon: Users, href: '/dashboard/membership' },
     { label: c.statSaved, value: `${saved.length}`, icon: BookOpen, href: '/dashboard/saved' },
     { label: c.statDownloads, value: `${downloads.length}`, icon: Download, href: '/dashboard/downloads' },
     { label: c.statEvents, value: `${eventCount ?? 0}`, icon: Calendar, href: '/dashboard/events' },
   ]
 
-  return <DashboardContent c={c} name={name} stats={stats} recentContent={recentContent} exclusiveContent={exclusiveContent} featuredContent={featuredContent} series={series} />
+  return <DashboardContent c={c} lang={lang} name={name} stats={stats} recentContent={recentContent} exclusiveContent={exclusiveContent} featuredContent={featuredContent} series={series} />
 }
 
 type DashContent = (typeof CONTENT)[Lang]
@@ -104,6 +104,7 @@ interface Stat {
 
 function DashboardContent({
   c,
+  lang,
   name,
   stats,
   recentContent,
@@ -112,6 +113,7 @@ function DashboardContent({
   series,
 }: {
   c: DashContent
+  lang: Lang
   name: string
   stats: Stat[]
   recentContent: ContentItem[]
@@ -171,7 +173,7 @@ function DashboardContent({
               </div>
               <div className="p-3">
                 <p className="text-xs text-brand-gold font-semibold uppercase tracking-widest mb-1">
-                  {CATEGORY_META[item.type].label}
+                  {categoryLabel(lang, item.type)}
                 </p>
                 <p className="text-xs font-semibold text-brand-black line-clamp-2">{item.title}</p>
               </div>
@@ -216,7 +218,7 @@ function DashboardContent({
               </div>
               <div className="p-3">
                 <p className="text-xs text-brand-gold font-semibold uppercase tracking-widest mb-1">
-                  {CATEGORY_META[item.type].label}
+                  {categoryLabel(lang, item.type)}
                 </p>
                 <p className="text-xs font-semibold text-brand-black line-clamp-2">{item.title}</p>
               </div>

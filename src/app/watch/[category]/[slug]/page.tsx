@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Lock, Calendar, ArrowLeft } from 'lucide-react'
-import { CATEGORY_META, SLUG_TO_TYPE, slugify, formatDate } from '@/lib/content-meta'
+import { CATEGORY_META, SLUG_TO_TYPE, slugify, formatDate, categoryLabel } from '@/lib/content-meta'
 import { getAllContent, getContentByType, getContentBySlug, getPlayableYoutubeId, isSaved } from '@/lib/content'
 import { VideoPlayer } from '@/components/watch/VideoPlayer'
 import { ContentCard } from '@/components/watch/ContentCard'
@@ -78,7 +78,7 @@ export default async function EpisodePage({ params }: Props) {
         <div className="flex items-center gap-2 text-sm text-black/40 mb-8">
           <Link href="/watch" className="hover:text-brand-black transition-colors">{t.watch}</Link>
           <span>/</span>
-          <Link href={`/watch/${meta.slug}`} className="hover:text-brand-black transition-colors">{meta.label}</Link>
+          <Link href={`/watch/${meta.slug}`} className="hover:text-brand-black transition-colors">{categoryLabel(lang, type)}</Link>
           <span>/</span>
           <span className="text-brand-black line-clamp-1">{item.title}</span>
         </div>
@@ -86,7 +86,7 @@ export default async function EpisodePage({ params }: Props) {
         {/* Meta */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-brand-gold text-xs font-semibold uppercase tracking-widest">{meta.label}</span>
+            <span className="text-brand-gold text-xs font-semibold uppercase tracking-widest">{categoryLabel(lang, type)}</span>
             {item.is_premium && <PremiumBadge />}
           </div>
           <h1 className="font-serif text-3xl lg:text-4xl font-bold text-brand-black mb-3">{item.title}</h1>
@@ -131,7 +131,7 @@ export default async function EpisodePage({ params }: Props) {
         {related.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/40">{t.moreFrom} {meta.label}</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/40">{t.moreFrom} {categoryLabel(lang, type)}</p>
               <Link href={`/watch/${meta.slug}`} className="text-brand-gold text-sm font-medium hover:underline flex items-center gap-1">
                 {t.viewAll} <ArrowLeft size={13} className="rotate-180" />
               </Link>

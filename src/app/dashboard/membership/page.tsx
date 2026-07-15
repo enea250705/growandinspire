@@ -89,7 +89,7 @@ export default async function MembershipPage() {
               <Crown size={18} className="text-brand-gold" strokeWidth={1.5} />
             </div>
             <div>
-              <p className="text-brand-white font-semibold">{tierLabel(membership.tier)}</p>
+              <p className="text-brand-white font-semibold">{tierLabel(membership.tier, lang)}</p>
               <p className="text-white/40 text-sm">
                 {c.active} · {membership.renews_at ? c.renews(formatDate(membership.renews_at)) : c.noRenewDate}
               </p>

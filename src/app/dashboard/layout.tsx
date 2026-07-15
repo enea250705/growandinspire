@@ -3,18 +3,19 @@ import { createClient } from '@/lib/supabase/server'
 import { DashboardSidebar } from '@/components/dashboard/DashboardSidebar'
 import { DASHBOARD_NAV } from '@/components/dashboard/navItems'
 import { isAdmin } from '@/lib/admin'
-import { getMembership, tierLabel } from '@/lib/membership'
-import { getT } from '@/lib/i18n-server'
+import { getMembership, tierLabel, freeTierLabel } from '@/lib/membership'
+import { getT, getLang } from '@/lib/i18n-server'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   const t = await getT()
+  const lang = await getLang()
 
   const name = user?.user_metadata?.full_name ?? user?.email?.split('@')[0] ?? t('dash.member')
   const email = user?.email ?? ''
   const [membership, admin] = await Promise.all([getMembership(), isAdmin()])
-  const tier = membership ? tierLabel(membership.tier) : 'Free'
+  const tier = membership ? tierLabel(membership.tier, lang) : freeTierLabel[lang]
 
   return (
     <div className="pt-20 lg:pt-24 min-h-screen bg-brand-cream">

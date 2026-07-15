@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { Lock } from 'lucide-react'
 import Link from 'next/link'
-import { CATEGORY_META, SLUG_TO_TYPE } from '@/lib/content-meta'
+import { CATEGORY_META, SLUG_TO_TYPE, categoryLabel, categoryDesc } from '@/lib/content-meta'
 import { getContentByType } from '@/lib/content'
 import { ContentCard } from '@/components/watch/ContentCard'
 import { isMember as checkMembership } from '@/lib/membership'
@@ -65,8 +65,8 @@ export default async function CategoryPage({ params }: Props) {
               <span className="text-brand-gold text-xs font-semibold uppercase tracking-widest">{t.membersOnly}</span>
             </div>
           )}
-          <h1 className="font-serif text-5xl lg:text-6xl font-bold text-brand-white mb-4">{meta.label}</h1>
-          <p className="text-white/50 text-lg max-w-xl">{meta.description}</p>
+          <h1 className="font-serif text-5xl lg:text-6xl font-bold text-brand-white mb-4">{categoryLabel(lang, type)}</h1>
+          <p className="text-white/50 text-lg max-w-xl">{categoryDesc(lang, type)}</p>
         </div>
       </section>
 

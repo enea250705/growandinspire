@@ -167,17 +167,9 @@ export async function CoachingSection() {
               )}
 
               <div className="mb-6">
-                <p className={`text-xs font-semibold uppercase tracking-widest mb-2 ${pkg.highlighted ? 'text-brand-black/60' : 'text-white/40'}`}>
+                <p className={`font-serif text-2xl font-bold mb-1 ${pkg.highlighted ? 'text-brand-black' : 'text-brand-white'}`}>
                   {pkg.name}
                 </p>
-                <div className="flex items-end gap-1 mb-1">
-                  <span className={`font-serif text-4xl font-bold ${pkg.highlighted ? 'text-brand-black' : 'text-brand-white'}`}>
-                    {pkg.price}
-                  </span>
-                  <span className={`text-sm mb-1.5 ${pkg.highlighted ? 'text-brand-black/60' : 'text-white/40'}`}>
-                    {pkg.period}
-                  </span>
-                </div>
                 <p className={`text-sm ${pkg.highlighted ? 'text-brand-black/70' : 'text-white/50'}`}>
                   {pkg.tagline}
                 </p>
