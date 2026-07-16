@@ -87,9 +87,9 @@ export function DinnerPopup() {
         <div className="absolute inset-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/hero-alketa.png"
+            src="/dinner-table.jpg"
             alt=""
-            className="absolute inset-0 w-full h-full object-cover object-top blur-[3px] scale-110"
+            className="absolute inset-0 w-full h-full object-cover blur-[3px] scale-110"
           />
           {/* Darken + gradient so the text stays readable and cool */}
           <div className="absolute inset-0 bg-brand-black/55" />
