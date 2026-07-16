@@ -5,18 +5,24 @@ import { X } from 'lucide-react'
 import { useI18n } from '@/components/i18n/I18nProvider'
 import type { Lang } from '@/lib/i18n'
 
-const CONTENT: Record<Lang, { badge: string; title: string; desc: string; apply: string; dismiss: string }> = {
+const CONTENT: Record<Lang, { badge: string; title: string; desc: string[]; apply: string; dismiss: string }> = {
   en: {
     badge: 'Exclusive Experience',
     title: 'Dinner with Alketa',
-    desc: 'An exclusive dinner for entrepreneurs, leaders and professionals who value authentic conversations and connections that last.',
+    desc: [
+      'Around the right table, ideas turn into partnerships.',
+      'Dinner with Alketa is an exclusive experience for entrepreneurs, leaders and professionals who value authentic conversations, the exchange of experience and connections that last. This event is built for a limited group of participants with a business profile, experience, influence or the potential to contribute to a meaningful conversation on motivation, business growth, decision-making, market challenges and opportunities for collaboration. Its value lies in access to a curated circle of people, the quality of the exchange, and the chance to build deeper professional relationships in an exclusive setting.',
+    ],
     apply: 'Apply now',
     dismiss: 'Maybe later',
   },
   sq: {
     badge: 'Eksperiencë Ekskluzive',
     title: 'Dinner with Alketa',
-    desc: 'Një darkë ekskluzive për sipërmarrës, drejtues dhe profesionistë që vlerësojnë bisedat autentike dhe lidhjet që zgjasin.',
+    desc: [
+      'Rreth tavolinës së duhur, idetë kthehen në bashkëpunime.',
+      'Dinner with Alketa është një eksperiencë ekskluzive për sipërmarrës, drejtues dhe profesionistë që vlerësojnë bisedat autentike, shkëmbimin e përvojës dhe lidhjet që zgjasin. Ky event është ndërtuar për një grup të kufizuar pjesëmarrësish që kanë profil biznesi, eksperiencë, ndikim ose potencial për të kontribuar në një bisedë cilësore mbi motivimin, rritjen e biznesit, vendimmarrjen, sfidat e tregut dhe mundësitë e bashkëpunimit. Vlera e aktivitetit qëndron te aksesi në një rreth të kuruar njerëzish, te cilësia e shkëmbimit dhe te mundësia për të ndërtuar marrëdhënie më të thella profesionale në një ambient ekskluziv.',
+    ],
     apply: 'Apliko tani',
     dismiss: 'Ndoshta më vonë',
   },
@@ -78,7 +84,7 @@ export function DinnerPopup() {
       <div
         role="dialog"
         aria-modal="true"
-        className={`relative w-full max-w-md bg-brand-black border border-brand-gold/25 rounded-3xl overflow-hidden shadow-2xl transition-all duration-300 ${shown ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+        className={`relative w-full max-w-md max-h-[92vh] overflow-y-auto bg-brand-black border border-brand-gold/25 rounded-3xl shadow-2xl transition-all duration-300 ${shown ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
       >
         <button
           onClick={close}
@@ -89,24 +95,30 @@ export function DinnerPopup() {
         </button>
 
         {/* Image */}
-        <div className="relative h-52 sm:h-56 bg-brand-dark">
+        <div className="relative h-44 sm:h-52 bg-brand-dark rounded-t-3xl overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/hero-alketa.png" alt="Alketa Vejsiu" className="absolute inset-0 w-full h-full object-cover object-top" />
           <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/30 to-transparent" />
         </div>
 
         {/* Body */}
-        <div className="px-7 pb-8 -mt-6 relative text-center">
-          <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-2">{c.badge}</p>
-          <h2 className="font-serif text-3xl font-bold text-brand-white mb-3">{c.title}</h2>
-          <p className="text-white/60 text-sm leading-relaxed mb-7">{c.desc}</p>
+        <div className="px-7 pb-8 -mt-6 relative">
+          <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-2 text-center">{c.badge}</p>
+          <h2 className="font-serif text-3xl font-bold text-brand-white mb-4 text-center">{c.title}</h2>
+          <div className="space-y-3 mb-7">
+            {c.desc.map((p, i) => (
+              <p key={i} className={i === 0 ? 'text-brand-white text-base font-medium text-center' : 'text-white/60 text-sm leading-relaxed'}>
+                {p}
+              </p>
+            ))}
+          </div>
           <button
             onClick={apply}
             className="w-full bg-brand-gold text-brand-black py-3.5 rounded-full text-sm font-semibold hover:bg-brand-gold-light transition-colors"
           >
             {c.apply}
           </button>
-          <button onClick={close} className="mt-3 text-white/40 hover:text-white/70 text-sm transition-colors">
+          <button onClick={close} className="mt-3 w-full text-white/40 hover:text-white/70 text-sm transition-colors">
             {c.dismiss}
           </button>
         </div>
