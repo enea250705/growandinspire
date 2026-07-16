@@ -37,7 +37,7 @@ export function DinnerPopup() {
   // Show on every homepage load (including refreshes), shortly after the page
   // renders.
   useEffect(() => {
-    const t = setTimeout(() => setOpen(true), 600)
+    const t = setTimeout(() => setOpen(true), 200)
     return () => clearTimeout(t)
   }, [])
 
