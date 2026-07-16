@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { UtensilsCrossed, ChevronDown } from 'lucide-react'
 import { Input, Textarea } from '@/components/ui/FormField'
 import { submitDinnerApplication } from '@/lib/actions/forms'
@@ -88,6 +88,19 @@ export function DinnerSection() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  // The homepage Dinner popup fires this when "Apply now" is tapped: open the
+  // (mobile-collapsed) form and scroll it into view.
+  useEffect(() => {
+    function openForm() {
+      setFormOpen(true)
+      setTimeout(() => {
+        document.getElementById('dinner-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }, 80)
+    }
+    window.addEventListener('open-dinner-form', openForm)
+    return () => window.removeEventListener('open-dinner-form', openForm)
+  }, [])
+
   function set(field: string, value: string) {
     setForm((f) => ({ ...f, [field]: value }))
   }
@@ -153,7 +166,7 @@ export function DinnerSection() {
           </div>
 
           {/* Right - form (collapsed on phone until "Apply now" is tapped) */}
-          <div className={`${formOpen ? 'block' : 'hidden'} lg:block bg-brand-white rounded-3xl border border-black/8 p-8 shadow-sm`}>
+          <div id="dinner-form" className={`${formOpen ? 'block' : 'hidden'} lg:block bg-brand-white rounded-3xl border border-black/8 p-8 shadow-sm scroll-mt-24`}>
             <h3 className="font-serif text-2xl font-bold text-brand-black mb-6">{c.formTitle}</h3>
 
             {submitted ? (

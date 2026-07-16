@@ -57,9 +57,10 @@ export function DinnerPopup() {
 
   function apply() {
     close()
-    // Let the modal begin closing, then scroll to the Dinner section + form.
+    // Let the modal begin closing, then tell the Dinner section to open its
+    // form and scroll it into view.
     setTimeout(() => {
-      document.getElementById('dinner')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      window.dispatchEvent(new CustomEvent('open-dinner-form'))
     }, 260)
   }
 
