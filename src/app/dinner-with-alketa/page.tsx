@@ -14,6 +14,10 @@ const CONTENT: Record<Lang, {
   line1: string
   line2: string
   line3: string
+  aboutLabel: string
+  about: string[]
+  includesLabel: string
+  includes: { label: string; desc: string }[]
   whoLabel: string
   who: string[]
   features: string[]
@@ -24,15 +28,28 @@ const CONTENT: Record<Lang, {
   en: {
     badge: 'Exclusive Experience',
     title: 'Dinner with Alketa',
-    desc: 'An executive dinner exchange - 8 to 12 carefully selected leaders sharing one table, one evening, and conversations that matter.',
+    desc: 'An executive dinner exchange - a limited group of carefully selected leaders sharing one table, one evening, and conversations that matter.',
     perks: [
-      { label: '8-12 people', desc: 'Select group, carefully curated' },
+      { label: 'Limited seats', desc: 'A select group, carefully curated' },
       { label: 'Invitation only', desc: 'Every seat is earned, not bought' },
       { label: 'Real conversation', desc: 'No pitches. No panels. Pure dialogue.' },
     ],
     line1: 'One table.',
     line2: 'One evening.',
     line3: 'Unlimited impact.',
+    aboutLabel: 'About the Experience',
+    about: [
+      'Around the right table, ideas turn into partnerships.',
+      'Dinner with Alketa is an exclusive experience for entrepreneurs, leaders and professionals who value authentic conversations, the exchange of experience and connections that last. This event is built for a limited group of participants with a business profile, experience, influence or the potential to contribute to a meaningful conversation on motivation, business growth, decision-making, market challenges and opportunities for collaboration.',
+      'Its value lies in access to a curated circle of people, the quality of the exchange, and the chance to build deeper professional relationships in an exclusive setting.',
+    ],
+    includesLabel: "What's Included",
+    includes: [
+      { label: 'Food and Drinks', desc: 'A curated menu, selected wines, and artisan desserts.' },
+      { label: 'Ambiance', desc: 'A premium venue with warm lighting and careful decor.' },
+      { label: 'Audio-Visual', desc: 'Short inspiring presentations and documented moments.' },
+      { label: 'Networking', desc: 'Real connections with successful people from various fields.' },
+    ],
     whoLabel: 'Who Can Apply',
     who: ['Founders and Co-Founders', 'CEOs and Business Owners', 'Executives and Leaders', 'Investors'],
     features: ['Curated Guests', 'Private Dinner', 'Meaningful Conversations', 'High-Impact Networking'],
@@ -43,15 +60,28 @@ const CONTENT: Record<Lang, {
   sq: {
     badge: 'Eksperiencë Ekskluzive',
     title: 'Dinner with Alketa',
-    desc: 'Një shkëmbim darke ekzekutive - 8 deri 12 liderë të përzgjedhur me kujdes që ndajnë një tavolinë, një mbrëmje dhe biseda që kanë rëndësi.',
+    desc: 'Një shkëmbim darke ekzekutive - një grup i kufizuar liderësh të përzgjedhur me kujdes që ndajnë një tavolinë, një mbrëmje dhe biseda që kanë rëndësi.',
     perks: [
-      { label: '8-12 persona', desc: 'Grup i përzgjedhur, i kuruar me kujdes' },
+      { label: 'Vende të kufizuara', desc: 'Grup i përzgjedhur, i kuruar me kujdes' },
       { label: 'Vetëm me ftesë', desc: 'Çdo vend fitohet, nuk blihet' },
       { label: 'Bisedë e vërtetë', desc: 'Pa pitch. Pa panele. Vetëm dialog.' },
     ],
     line1: 'Një tavolinë.',
     line2: 'Një mbrëmje.',
     line3: 'Impakt i pakufizuar.',
+    aboutLabel: 'Rreth Eventit',
+    about: [
+      'Rreth tavolinës së duhur, idetë kthehen në bashkëpunime.',
+      'Dinner with Alketa është një eksperiencë ekskluzive për sipërmarrës, drejtues dhe profesionistë që vlerësojnë bisedat autentike, shkëmbimin e përvojës dhe lidhjet që zgjasin. Ky event është ndërtuar për një grup të kufizuar pjesëmarrësish që kanë profil biznesi, eksperiencë, ndikim ose potencial për të kontribuar në një bisedë cilësore mbi motivimin, rritjen e biznesit, vendimmarrjen, sfidat e tregut dhe mundësitë e bashkëpunimit.',
+      'Vlera e aktivitetit qëndron te aksesi në një rreth të kuruar njerëzish, te cilësia e shkëmbimit dhe te mundësia për të ndërtuar marrëdhënie më të thella profesionale në një ambient ekskluziv.',
+    ],
+    includesLabel: 'Çfarë Përfshin',
+    includes: [
+      { label: 'Ushqim dhe Pije', desc: 'Meny e kuruar, verëra të zgjedhura, dhe ëmbëlsira artizanale.' },
+      { label: 'Ambient', desc: 'Lokacion premium me ndriçim të ngrohtë dhe dekor të kujdesshëm.' },
+      { label: 'Audio-Vizual', desc: 'Prezantime të shkurtra inspiruese dhe momente të dokumentuara.' },
+      { label: 'Networking', desc: 'Lidhje reale me profesionistë nga fusha të ndryshme.' },
+    ],
     whoLabel: 'Kush Mund të Aplikojë',
     who: ['Themelues dhe Ko-Themelues', 'CEO dhe Pronarë Biznesi', 'Drejtues dhe Liderë', 'Investitorë'],
     features: ['Të Ftuar të Kuruar', 'Darkë Private', 'Biseda Kuptimplota', 'Networking me Impakt të Lartë'],
@@ -111,6 +141,33 @@ export default async function DinnerPage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About the experience */}
+      <section className="bg-brand-cream py-16 lg:py-24 border-b border-black/8">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-6">{c.aboutLabel}</p>
+          <div className="flex flex-col gap-6 text-black/70 leading-relaxed text-lg">
+            {c.about.map((p, i) => (
+              <p key={i} className={i === 0 ? 'font-serif text-2xl lg:text-3xl text-brand-black font-medium' : ''}>{p}</p>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* What's included */}
+      <section className="bg-brand-white py-16 lg:py-20 border-b border-black/8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.2em] mb-8 text-center">{c.includesLabel}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {c.includes.map((item) => (
+              <div key={item.label} className="bg-brand-cream rounded-2xl border border-black/8 p-6">
+                <p className="font-semibold text-brand-black mb-1.5">{item.label}</p>
+                <p className="text-black/50 text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
