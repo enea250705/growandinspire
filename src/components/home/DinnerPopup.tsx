@@ -87,7 +87,7 @@ export function DinnerPopup() {
         <div className="absolute inset-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/dinner-table.jpg"
+            src="/dinner-table-2.jpg"
             alt=""
             className="absolute inset-0 w-full h-full object-cover blur-[3px] scale-110"
           />

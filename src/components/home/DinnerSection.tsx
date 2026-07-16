@@ -126,7 +126,7 @@ export function DinnerSection() {
         {/* Horizontal banner photo on top of the section */}
         <div className="relative rounded-3xl overflow-hidden mb-12 lg:mb-16 h-48 sm:h-64 lg:h-80 shadow-sm">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/dinner-table.jpg" alt="Dinner with Alketa" className="w-full h-full object-cover" />
+          <img src="/dinner-table-2.jpg" alt="Dinner with Alketa" className="w-full h-full object-cover" />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           {/* Left - info */}
