@@ -20,6 +20,9 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: 'Grow and Inspire',
   description: 'A premium platform for personal growth, business leadership, meaningful connections, and curated experiences.',
+  // The site ships its own Albanian/English switcher, so tell browsers not to
+  // auto-translate (which also adds those dotted underlines on translated text).
+  other: { google: 'notranslate' },
 }
 
 export default async function RootLayout({
@@ -29,7 +32,7 @@ export default async function RootLayout({
 }>) {
   const lang = await getLang()
   return (
-    <html lang={lang} className={`${inter.variable} ${playfair.variable} h-full`}>
+    <html lang={lang} translate="no" className={`${inter.variable} ${playfair.variable} h-full notranslate`}>
       <body className="min-h-full flex flex-col bg-brand-cream text-brand-black antialiased">
         <I18nProvider initialLang={lang}>
           <Navbar />
