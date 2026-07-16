@@ -25,9 +25,8 @@ const CONTENT: Record<Lang, {
     badge: 'Dinner with Alketa',
     title: 'Some conversations deserve more than a meeting.',
     intro: [
-      'Around the right table, ideas become partnerships.',
-      'Dinner with Alketa is an intimate gathering for founders, executives and business leaders who value authentic conversations, shared experience and meaningful connections.',
-      'Because the most valuable opportunities often begin over dinner.',
+      'Around the right table, ideas turn into partnerships.',
+      'Dinner with Alketa is an exclusive experience for entrepreneurs, leaders and professionals who value authentic conversations, the exchange of experience and connections that last. This event is built for a limited group of participants with a business profile, experience, influence or the potential to contribute to a meaningful conversation on motivation, business growth, decision-making, market challenges and opportunities for collaboration. Its value lies in access to a curated circle of people, the quality of the exchange, and the chance to build deeper professional relationships in an exclusive setting.',
     ],
     items: [
       { label: 'Food and Drinks', desc: 'A curated menu, selected wines, and artisan desserts.' },
@@ -54,8 +53,7 @@ const CONTENT: Record<Lang, {
     title: 'Ka biseda që meritojnë më shumë se një takim.',
     intro: [
       'Rreth tavolinës së duhur, idetë kthehen në bashkëpunime.',
-      'Dinner with Alketa është një eksperiencë ekskluzive për sipërmarrës, drejtues dhe profesionistë që vlerësojnë bisedat autentike, shkëmbimin e përvojës dhe lidhjet që zgjasin.',
-      'Sepse mundësitë më të vlefshme shpesh lindin gjatë një darke.',
+      'Dinner with Alketa është një eksperiencë ekskluzive për sipërmarrës, drejtues dhe profesionistë që vlerësojnë bisedat autentike, shkëmbimin e përvojës dhe lidhjet që zgjasin. Ky event është ndërtuar për një grup të kufizuar pjesëmarrësish që kanë profil biznesi, eksperiencë, ndikim ose potencial për të kontribuar në një bisedë cilësore mbi motivimin, rritjen e biznesit, vendimmarrjen, sfidat e tregut dhe mundësitë e bashkëpunimit. Vlera e aktivitetit qëndron te aksesi në një rreth të kuruar njerëzish, te cilësia e shkëmbimit dhe te mundësia për të ndërtuar marrëdhënie më të thella profesionale në një ambient ekskluziv.',
     ],
     items: [
       { label: 'Ushqim dhe Pije', desc: 'Meny e kuruar, verëra të zgjedhura, dhe ëmbëlsira artizanale.' },
