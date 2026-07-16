@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { UtensilsCrossed, ChevronDown } from 'lucide-react'
+import { UtensilsCrossed, ChevronDown, Calendar, Clock } from 'lucide-react'
 import { Input, Textarea } from '@/components/ui/FormField'
 import { submitDinnerApplication } from '@/lib/actions/forms'
 import { useI18n } from '@/components/i18n/I18nProvider'
@@ -11,7 +11,10 @@ const CONTENT: Record<Lang, {
   badge: string
   title: string
   intro: string[]
-  items: { label: string; desc: string }[]
+  dateLabel: string
+  date: string
+  timeLabel: string
+  time: string
   applyNow: string
   formTitle: string
   sentTitle: string
@@ -28,12 +31,10 @@ const CONTENT: Record<Lang, {
       'Around the right table, ideas turn into partnerships.',
       'Dinner with Alketa is an exclusive experience for entrepreneurs, leaders and professionals who value authentic conversations, the exchange of experience and connections that last. This event is built for a limited group of participants with a business profile, experience, influence or the potential to contribute to a meaningful conversation on motivation, business growth, decision-making, market challenges and opportunities for collaboration. Its value lies in access to a curated circle of people, the quality of the exchange, and the chance to build deeper professional relationships in an exclusive setting.',
     ],
-    items: [
-      { label: 'Food and Drinks', desc: 'A curated menu, selected wines, and artisan desserts.' },
-      { label: 'Ambiance', desc: 'A premium venue with warm lighting and careful decor.' },
-      { label: 'Audio-Visual', desc: 'Short inspiring presentations and documented moments.' },
-      { label: 'Networking', desc: 'Real connections with successful women from various fields.' },
-    ],
+    dateLabel: 'Date',
+    date: '30 July 2026',
+    timeLabel: 'Time',
+    time: '20:00',
     applyNow: 'Apply now',
     formTitle: 'Application Form',
     sentTitle: 'Application sent!',
@@ -55,12 +56,10 @@ const CONTENT: Record<Lang, {
       'Rreth tavolinës së duhur, idetë kthehen në bashkëpunime.',
       'Dinner with Alketa është një eksperiencë ekskluzive për sipërmarrës, drejtues dhe profesionistë që vlerësojnë bisedat autentike, shkëmbimin e përvojës dhe lidhjet që zgjasin. Ky event është ndërtuar për një grup të kufizuar pjesëmarrësish që kanë profil biznesi, eksperiencë, ndikim ose potencial për të kontribuar në një bisedë cilësore mbi motivimin, rritjen e biznesit, vendimmarrjen, sfidat e tregut dhe mundësitë e bashkëpunimit. Vlera e aktivitetit qëndron te aksesi në një rreth të kuruar njerëzish, te cilësia e shkëmbimit dhe te mundësia për të ndërtuar marrëdhënie më të thella profesionale në një ambient ekskluziv.',
     ],
-    items: [
-      { label: 'Ushqim dhe Pije', desc: 'Meny e kuruar, verëra të zgjedhura, dhe ëmbëlsira artizanale.' },
-      { label: 'Ambient', desc: 'Lokacion premium me ndriçim të ngrohtë dhe dekor të kujdesshëm.' },
-      { label: 'Audio-Vizual', desc: 'Prezantime të shkurtra inspiruese dhe momente të dokumentuara.' },
-      { label: 'Networking', desc: 'Lidhje reale me gra të suksesshme nga fusha të ndryshme.' },
-    ],
+    dateLabel: 'Data',
+    date: '30 Korrik 2026',
+    timeLabel: 'Ora',
+    time: '20:00',
     applyNow: 'Apliko tani',
     formTitle: 'Formular Aplikimi',
     sentTitle: 'Aplikimi u dërgua!',
@@ -135,16 +134,21 @@ export function DinnerSection() {
               {c.intro.map((p, i) => <p key={i}>{p}</p>)}
             </div>
 
-            <div className="space-y-4">
-              {c.items.map((item) => (
-                <div key={item.label} className="flex gap-4">
-                  <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-brand-gold mt-2" />
-                  <div>
-                    <p className="font-semibold text-brand-black text-sm">{item.label}</p>
-                    <p className="text-black/50 text-sm">{item.desc}</p>
-                  </div>
+            <div className="flex flex-wrap gap-4">
+              <div className="flex items-center gap-3 bg-brand-white border border-black/8 rounded-2xl px-5 py-4">
+                <Calendar size={22} className="text-brand-gold" strokeWidth={1.5} />
+                <div>
+                  <p className="text-black/40 text-xs uppercase tracking-wider">{c.dateLabel}</p>
+                  <p className="font-semibold text-brand-black">{c.date}</p>
                 </div>
-              ))}
+              </div>
+              <div className="flex items-center gap-3 bg-brand-white border border-black/8 rounded-2xl px-5 py-4">
+                <Clock size={22} className="text-brand-gold" strokeWidth={1.5} />
+                <div>
+                  <p className="text-black/40 text-xs uppercase tracking-wider">{c.timeLabel}</p>
+                  <p className="font-semibold text-brand-black">{c.time}</p>
+                </div>
+              </div>
             </div>
 
             {/* On phone this toggles the form open/closed; on desktop the form
