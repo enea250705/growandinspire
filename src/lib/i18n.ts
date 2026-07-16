@@ -5,7 +5,7 @@
 
 export type Lang = 'en' | 'sq'
 export const LANGS: Lang[] = ['en', 'sq']
-export const DEFAULT_LANG: Lang = 'en'
+export const DEFAULT_LANG: Lang = 'sq'
 export const LANG_COOKIE = 'lang'
 
 type Dict = Record<string, string>
@@ -128,7 +128,9 @@ const messages: Record<Lang, Dict> = {
 }
 
 export function normalizeLang(value?: string | null): Lang {
-  return value === 'sq' ? 'sq' : 'en'
+  // Recognise an explicit choice; anything missing/unknown falls back to the
+  // default language (Albanian).
+  return value === 'sq' ? 'sq' : value === 'en' ? 'en' : DEFAULT_LANG
 }
 
 export function translate(lang: Lang, key: string): string {

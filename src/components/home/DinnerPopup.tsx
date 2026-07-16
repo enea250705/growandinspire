@@ -118,9 +118,6 @@ export function DinnerPopup() {
           >
             {c.apply}
           </button>
-          <button onClick={close} className="mt-3 w-full text-white/40 hover:text-white/70 text-sm transition-colors">
-            {c.dismiss}
-          </button>
         </div>
       </div>
     </div>
