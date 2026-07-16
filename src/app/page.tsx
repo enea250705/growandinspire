@@ -7,12 +7,14 @@ import { CoachingSection } from '@/components/home/CoachingSection'
 import { AngelInvestorSection } from '@/components/home/AngelInvestorSection'
 import { CommunitySection } from '@/components/home/CommunitySection'
 import { FounderQuote } from '@/components/home/FounderQuote'
+import { DinnerPopup } from '@/components/home/DinnerPopup'
 
 export const revalidate = 60
 
 export default function Home() {
   return (
     <>
+      <DinnerPopup />
       <Hero />
       <ELearningSection />
       <DinnerSection />

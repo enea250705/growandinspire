@@ -109,7 +109,7 @@ export function DinnerSection() {
   }
 
   return (
-    <section className="bg-brand-cream py-24 lg:py-32">
+    <section id="dinner" className="bg-brand-cream py-24 lg:py-32 scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           {/* Left - info */}
