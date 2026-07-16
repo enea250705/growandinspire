@@ -28,17 +28,15 @@ const CONTENT: Record<Lang, { badge: string; title: string; desc: string[]; appl
   },
 }
 
-const SEEN_KEY = 'dinnerPopupSeen'
-
 export function DinnerPopup() {
   const { lang } = useI18n()
   const c = CONTENT[lang]
   const [open, setOpen] = useState(false)
   const [shown, setShown] = useState(false) // drives the enter transition
 
-  // Show once per browser session, shortly after the page loads.
+  // Show on every homepage load (including refreshes), shortly after the page
+  // renders.
   useEffect(() => {
-    if (sessionStorage.getItem(SEEN_KEY)) return
     const t = setTimeout(() => setOpen(true), 600)
     return () => clearTimeout(t)
   }, [])
@@ -57,7 +55,6 @@ export function DinnerPopup() {
 
   function close() {
     setShown(false)
-    sessionStorage.setItem(SEEN_KEY, '1')
     setTimeout(() => setOpen(false), 250)
   }
 
