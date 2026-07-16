@@ -121,14 +121,13 @@ export function DinnerSection() {
   }
 
   return (
-    <section id="dinner" className="relative overflow-hidden bg-brand-cream py-24 lg:py-32 scroll-mt-20">
-      {/* Blurry photo backdrop; a strong cream overlay keeps the dark text readable */}
-      <div className="absolute inset-0 -z-0" aria-hidden>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/dinner-table.jpg" alt="" className="w-full h-full object-cover blur-xl scale-110" />
-        <div className="absolute inset-0 bg-brand-cream/88" />
-      </div>
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="dinner" className="bg-brand-cream py-24 lg:py-32 scroll-mt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Horizontal banner photo on top of the section */}
+        <div className="relative rounded-3xl overflow-hidden mb-12 lg:mb-16 h-48 sm:h-64 lg:h-80 shadow-sm">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/dinner-table.jpg" alt="Dinner with Alketa" className="w-full h-full object-cover" />
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           {/* Left - info */}
           <div>
