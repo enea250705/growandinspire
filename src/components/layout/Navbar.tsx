@@ -13,7 +13,7 @@ const NAV_LINKS = [
   { key: 'nav.coaching', href: '/coaching' },
   { key: 'nav.events', href: '/events' },
   { key: 'nav.community', href: '/community' },
-  { key: 'nav.insights', href: '/insights' },
+  { key: 'nav.insights', href: '/watch/revista-class' },
   { key: 'nav.about', href: '/about' },
 ]
 
