@@ -5,7 +5,7 @@ import { X } from 'lucide-react'
 import { useI18n } from '@/components/i18n/I18nProvider'
 import type { Lang } from '@/lib/i18n'
 
-const CONTENT: Record<Lang, { badge: string; title: string; desc: string[]; apply: string; dismiss: string }> = {
+const CONTENT: Record<Lang, { badge: string; title: string; desc: string[]; foodNote: string; apply: string; dismiss: string }> = {
   en: {
     badge: 'Exclusive Experience',
     title: 'Dinner with Alketa',
@@ -13,6 +13,7 @@ const CONTENT: Record<Lang, { badge: string; title: string; desc: string[]; appl
       'Around the right table, ideas turn into partnerships.',
       'Dinner with Alketa is an exclusive experience for entrepreneurs, leaders and professionals who value authentic conversations, the exchange of experience and connections that last. This event is built for a limited group of participants with a business profile, experience, influence or the potential to contribute to a meaningful conversation on motivation, business growth, decision-making, market challenges and opportunities for collaboration. Its value lies in access to a curated circle of people, the quality of the exchange, and the chance to build deeper professional relationships in an exclusive setting.',
     ],
+    foodNote: 'Food and drinks are personally curated by Alketa.',
     apply: 'Apply now',
     dismiss: 'Maybe later',
   },
@@ -23,6 +24,7 @@ const CONTENT: Record<Lang, { badge: string; title: string; desc: string[]; appl
       'Rreth tavolinës së duhur, idetë kthehen në bashkëpunime.',
       'Dinner with Alketa është një eksperiencë ekskluzive për sipërmarrës, drejtues dhe profesionistë që vlerësojnë bisedat autentike, shkëmbimin e përvojës dhe lidhjet që zgjasin. Ky event është ndërtuar për një grup të kufizuar pjesëmarrësish që kanë profil biznesi, eksperiencë, ndikim ose potencial për të kontribuar në një bisedë cilësore mbi motivimin, rritjen e biznesit, vendimmarrjen, sfidat e tregut dhe mundësitë e bashkëpunimit. Vlera e aktivitetit qëndron te aksesi në një rreth të kuruar njerëzish, te cilësia e shkëmbimit dhe te mundësia për të ndërtuar marrëdhënie më të thella profesionale në një ambient ekskluziv.',
     ],
+    foodNote: 'Ushqimi dhe pijet kurohen personalisht nga Alketa.',
     apply: 'Apliko tani',
     dismiss: 'Ndoshta më vonë',
   },
@@ -109,7 +111,7 @@ export function DinnerPopup() {
           <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.25em] mb-3 drop-shadow">{c.badge}</p>
           <h2 className="font-serif text-4xl font-bold text-brand-white mb-2 drop-shadow-lg">{c.title}</h2>
           <div className="w-12 h-px bg-brand-gold/70 mx-auto mb-5" />
-          <div className="space-y-3 mb-8">
+          <div className="space-y-3 mb-6">
             {c.desc.map((p, i) => (
               <p
                 key={i}
@@ -121,6 +123,7 @@ export function DinnerPopup() {
               </p>
             ))}
           </div>
+          <p className="text-brand-gold text-sm italic mb-7 drop-shadow">{c.foodNote}</p>
           <button
             onClick={apply}
             className="w-full bg-brand-gold text-brand-black py-4 rounded-full text-sm font-bold uppercase tracking-wide hover:bg-brand-gold-light transition-colors shadow-lg"

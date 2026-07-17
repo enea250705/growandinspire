@@ -17,6 +17,7 @@ const CONTENT: Record<Lang, {
   time: string
   applyNow: string
   formTitle: string
+  foodNote: string
   sentTitle: string
   sentDesc: string
   fields: { name: string; namePh: string; email: string; phone: string; profession: string; professionPh: string; reason: string; reasonPh: string }
@@ -37,6 +38,7 @@ const CONTENT: Record<Lang, {
     time: '20:00',
     applyNow: 'Apply now',
     formTitle: 'Application Form',
+    foodNote: 'Food and drinks are personally curated by Alketa.',
     sentTitle: 'Application sent!',
     sentDesc: 'You will be contacted within 48 hours.',
     fields: {
@@ -62,6 +64,7 @@ const CONTENT: Record<Lang, {
     time: '20:00',
     applyNow: 'Apliko tani',
     formTitle: 'Formular Aplikimi',
+    foodNote: 'Ushqimi dhe pijet kurohen personalisht nga Alketa.',
     sentTitle: 'Aplikimi u dërgua!',
     sentDesc: 'Do të kontaktohesh brenda 48 orëve.',
     fields: {
@@ -176,7 +179,8 @@ export function DinnerSection() {
 
           {/* Right - form (collapsed on phone until "Apply now" is tapped) */}
           <div id="dinner-form" className={`${formOpen ? 'block' : 'hidden'} lg:block bg-brand-white rounded-3xl border border-black/8 p-8 shadow-sm scroll-mt-24`}>
-            <h3 className="font-serif text-2xl font-bold text-brand-black mb-6">{c.formTitle}</h3>
+            <h3 className="font-serif text-2xl font-bold text-brand-black mb-2">{c.formTitle}</h3>
+            <p className="text-brand-gold text-sm mb-6">{c.foodNote}</p>
 
             {submitted ? (
               <div className="text-center py-10">
