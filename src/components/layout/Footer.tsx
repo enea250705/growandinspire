@@ -21,7 +21,6 @@ const FOOTER_LINKS = {
   Company: [
     { key: 'footer.link.about', href: '/about' },
     { key: 'footer.link.sponsorship', href: '/sponsorship' },
-    { key: 'footer.link.insights', href: '/watch/revista-class' },
   ],
 }
 
