@@ -43,9 +43,39 @@ export async function submitDinnerApplication(data: {
   linkedin?: string
   instagram?: string
   website_link?: string
+  // Extra questions without dedicated columns - stored inside business_description
+  // and included in the notification email.
+  age?: string
+  city?: string
+  biggest_challenge?: string
+  discussion_topic?: string
+  financial_goal_5y?: string
+  valuable_idea?: string
+  better_world?: string
+  objective_12m?: string
+  why_selected?: string
+  specific_value?: string
 }): Promise<ActionResult> {
   const supabase = await createClient()
   const name = [data.first_name, data.last_name].filter(Boolean).join(' ').trim()
+
+  // Extra answers that have no dedicated DB column are folded into
+  // business_description so they're not lost and still show in the admin.
+  const extraRows: [string, string | undefined][] = [
+    ['Mosha', data.age],
+    ['Qyteti', data.city],
+    ['Sfida më e madhe', data.biggest_challenge],
+    ['Tema për diskutim', data.discussion_topic],
+    ['Objektivi financiar (5 vjet)', data.financial_goal_5y],
+    ['Ideja/përvoja më e vlefshme', data.valuable_idea],
+    ['Për një botë më të mirë', data.better_world],
+    ['Objektivi (12 muaj)', data.objective_12m],
+    ['Pse një nga 20', data.why_selected],
+    ['Vlera specifike për të tjerët', data.specific_value],
+  ]
+  const extraText = extraRows.filter(([, v]) => v && v.trim()).map(([l, v]) => `${l}: ${v}`).join('\n')
+  const businessDescription = data.business_description || extraText || null
+
   const { error } = await supabase.from('dinner_applications').insert({
     name,
     first_name: data.first_name,
@@ -60,7 +90,7 @@ export async function submitDinnerApplication(data: {
     founding_year: data.founding_year || null,
     employee_count: data.employee_count || null,
     annual_revenue: data.annual_revenue || null,
-    business_description: data.business_description || null,
+    business_description: businessDescription,
     challenges: data.challenges ?? [],
     why_join: data.why_join || null,
     reason: data.why_join || null, // legacy column kept in sync
@@ -74,19 +104,29 @@ export async function submitDinnerApplication(data: {
   if (error) return { ok: false, error: error.message }
 
   await notifyForm('Dinner with Alketa', name, data.email, [
-    ['Emri', name],
+    ['Emri dhe mbiemri', name],
+    ['Mosha', data.age],
+    ['Qyteti', data.city],
     ['Email', data.email],
     ['Telefoni', data.phone],
-    ['Profesioni / Pozicioni', data.position],
     ['Kompania', data.company],
+    ['Website i kompanisë', data.website || data.website_link],
+    ['Profili profesional (LinkedIn/Instagram)', data.linkedin],
+    ['Vite në treg', data.founding_year],
     ['Industria', data.industry],
-    ['Pse dëshiron të jesh pjesë', data.why_join],
+    ['Punonjës', data.employee_count],
+    ['Xhiroja / faza', data.annual_revenue],
+    ['Pse dëshiron të marrë pjesë', data.why_join],
+    ['Vlera për komunitetin', data.what_you_bring],
+    ['Sfida më e madhe', data.biggest_challenge],
+    ['Tema për diskutim', data.discussion_topic],
+    ['Objektivi financiar (5 vjet)', data.financial_goal_5y],
+    ['Ideja/përvoja më e vlefshme', data.valuable_idea],
+    ['Për një botë më të mirë', data.better_world],
+    ['Objektivi (12 muaj)', data.objective_12m],
+    ['Pse një nga 20', data.why_selected],
+    ['Vlera specifike për të tjerët', data.specific_value],
     ['Pyetje për Alketën', data.question_for_alketa],
-    ['Çfarë sjell', data.what_you_bring],
-    ['Pritshmëri', data.expectations],
-    ['LinkedIn', data.linkedin],
-    ['Instagram', data.instagram],
-    ['Website', data.website || data.website_link],
   ])
 
   return { ok: true }
