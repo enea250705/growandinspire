@@ -154,7 +154,7 @@ export function DinnerSection() {
     function openForm() {
       setFormOpen(true)
       setTimeout(() => {
-        document.getElementById('dinner-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        document.getElementById('dinner-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }, 80)
     }
     window.addEventListener('open-dinner-form', openForm)
