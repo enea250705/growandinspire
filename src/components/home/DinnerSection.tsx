@@ -134,7 +134,7 @@ export function DinnerSection() {
   const { lang } = useI18n()
   const c = CONTENT[lang]
   const [form, setForm] = useState({
-    fullName: '', age: '', city: '', email: '', phone: '',
+    fullName: '', age: '', city: '', email: '',
     company: '', companyWebsite: '', profileLink: '', yearsInMarket: '',
     industry: '', employees: '', revenueStage: '',
     whyJoin: '', valueToCommunity: '', biggestChallenge: '', discussionTopic: '',
@@ -172,7 +172,6 @@ export function DinnerSection() {
     const result = await submitDinnerApplication({
       first_name: form.fullName,
       email: form.email,
-      phone: form.phone,
       company: form.company,
       website: form.companyWebsite,
       linkedin: form.profileLink,
@@ -281,7 +280,6 @@ export function DinnerSection() {
                   <Input label={c.fields.city} value={form.city} onChange={(e) => set('city', e.target.value)} />
                 </div>
                 <Input label={c.fields.email} type="email" required placeholder="email@juaj.com" value={form.email} onChange={(e) => set('email', e.target.value)} />
-                <Input label={c.fields.phone} type="tel" placeholder="+355 6X XXX XXXX" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
                 <Input label={c.fields.company} value={form.company} onChange={(e) => set('company', e.target.value)} />
                 <Input label={c.fields.companyWebsite} value={form.companyWebsite} onChange={(e) => set('companyWebsite', e.target.value)} />
                 <Input label={c.fields.profileLink} value={form.profileLink} onChange={(e) => set('profileLink', e.target.value)} />

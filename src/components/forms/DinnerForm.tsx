@@ -1,165 +1,112 @@
 'use client'
 
 import { useState } from 'react'
-import { Input, Textarea, CheckboxGroup, RadioGroup } from '@/components/ui/FormField'
+import { Input, Textarea } from '@/components/ui/FormField'
 import { Check } from 'lucide-react'
 import { submitDinnerApplication } from '@/lib/actions/forms'
 import { useI18n } from '@/components/i18n/I18nProvider'
 import type { Lang } from '@/lib/i18n'
 
-const EMPLOYEES = [
-  { label: '1-10', value: '1-10' },
-  { label: '11-50', value: '11-50' },
-  { label: '51-100', value: '51-100' },
-  { label: '100+', value: '100+' },
-]
-
 const CONTENT: Record<Lang, {
-  challenges: string[]
-  networking: string[]
-  sentTitle: string
-  sentDesc: string
   title: string
   subtitle: string
-  legPersonal: string
-  legBusiness: string
-  legAbout: string
-  legLeadership: string
-  legNetworking: string
-  legExpectations: string
-  legSocial: string
-  first: string
-  last: string
-  email: string
-  phone: string
-  company: string
-  industry: string
-  position: string
-  foundingYear: string
-  foundingYearPh: string
-  revenue: string
-  employees: string
-  describe: string
-  describePh: string
-  challengeLabel: string
-  whyJoin: string
-  question: string
-  bring: string
-  networkingLabel: string
-  expectations: string
-  legVision: string
-  age: string
-  city: string
-  discussionTopic: string
-  financialGoal5y: string
-  valuableIdea: string
-  betterWorld: string
-  objective12m: string
-  whySelected: string
-  specificValue: string
-  sending: string
+  sentTitle: string
+  sentDesc: string
   submit: string
+  sending: string
   error: string
+  email: string
+  fields: {
+    fullName: string; age: string; city: string
+    company: string; companyWebsite: string; profileLink: string; yearsInMarket: string
+    industry: string; employees: string; revenueStage: string
+    whyJoin: string; valueToCommunity: string; biggestChallenge: string; discussionTopic: string
+    financialGoal5y: string; valuableIdea: string; betterWorld: string; objective12m: string
+    whySelected: string; specificValue: string; questionForAlketa: string
+  }
 }> = {
   en: {
-    challenges: ['Growth', 'Team', 'Leadership', 'Finance', 'Scaling', 'Marketing', 'International Expansion', 'Other'],
-    networking: ['CEO', 'Founders', 'Investors', 'Creatives', 'Executives', 'Women Leaders', 'Startup Founders'],
-    sentTitle: 'Thank you for applying.',
-    sentDesc: 'Every application is reviewed personally by the Grow and Inspire team. If selected, you will receive an invitation with the next steps.',
     title: 'Dinner with Alketa',
     subtitle: 'Every application is reviewed personally by the team.',
-    legPersonal: 'Personal',
-    legBusiness: 'Business',
-    legAbout: 'About Your Business',
-    legLeadership: 'Leadership',
-    legNetworking: 'Networking',
-    legExpectations: 'Expectations',
-    legSocial: 'Social',
-    first: 'First Name', last: 'Last Name', email: 'Email', phone: 'Phone',
-    company: 'Company name', industry: 'Industry', position: 'Your position',
-    foundingYear: 'Founding year', foundingYearPh: 'e.g. 2019',
-    revenue: 'Annual revenue (optional)',
-    employees: 'Number of employees',
-    describe: 'Briefly describe your business.',
-    describePh: 'Max 500 characters',
-    challengeLabel: 'What is your biggest challenge right now?',
-    whyJoin: 'Why do you want to take part in Dinner with Alketa?',
-    question: 'If you could ask Alketa or the group one question, what would it be?',
-    bring: 'What experience or perspective do you think you could bring to the table?',
-    networkingLabel: 'What kind of people would you like to meet?',
-    expectations: 'What do you expect to get from this experience?',
-    legVision: 'Vision & Selection',
-    age: 'Age',
-    city: 'City',
-    discussionTopic: 'What topic would you like to discuss with the other entrepreneurs?',
-    financialGoal5y: 'What is your financial goal for the next five years?',
-    valuableIdea: 'What is the most valuable idea or experience you would share at the table?',
-    betterWorld: 'What would you like to do to make the world a better place?',
-    objective12m: 'What is your main objective for the next 12 months?',
-    whySelected: 'Why do you think you should be one of the 20 selected entrepreneurs?',
-    specificValue: 'What specific value can you bring to the other entrepreneurs at this dinner?',
-    sending: 'Sending...',
+    sentTitle: 'Thank you for applying.',
+    sentDesc: 'Every application is reviewed personally by the Grow and Inspire team. If selected, you will receive an invitation with the next steps.',
     submit: 'Submit',
+    sending: 'Sending...',
     error: 'Something went wrong. Please try again.',
+    email: 'Email',
+    fields: {
+      fullName: 'Full name of the entrepreneur / CEO',
+      age: 'Age',
+      city: 'City',
+      company: 'Company name',
+      companyWebsite: 'Company website',
+      profileLink: 'Your professional website or profile (LinkedIn / Instagram)',
+      yearsInMarket: 'How many years has the company been on the market?',
+      industry: 'What industry does the company operate in?',
+      employees: 'How many employees does the company have?',
+      revenueStage: "Annual revenue or the company's stage of development",
+      whyJoin: 'Why do you want to take part in Dinner with Alketa?',
+      valueToCommunity: 'What value can you bring to this community?',
+      biggestChallenge: 'What is the biggest challenge your business is currently facing?',
+      discussionTopic: 'What topic would you like to discuss with the other entrepreneurs?',
+      financialGoal5y: 'What is your financial goal for the next five years?',
+      valuableIdea: 'What is the most valuable idea or experience you would share at the table?',
+      betterWorld: 'What would you like to do to make the world a better place?',
+      objective12m: 'What is your main objective for the next 12 months?',
+      whySelected: 'Why do you think you should be one of the 20 selected entrepreneurs?',
+      specificValue: 'What specific value can you bring to the other entrepreneurs at this dinner?',
+      questionForAlketa: 'What is the question you would like to ask Alketa?',
+    },
   },
   sq: {
-    challenges: ['Rritje', 'Ekip', 'Lidership', 'Financa', 'Scaling', 'Marketing', 'Ekspansion Ndërkombëtar', 'Tjetër'],
-    networking: ['CEO', 'Themelues', 'Investitorë', 'Kreativë', 'Drejtues', 'Gra Lidere', 'Themelues Startup-esh'],
-    sentTitle: 'Faleminderit për aplikimin.',
-    sentDesc: 'Çdo aplikim shqyrtohet personalisht nga ekipi Grow and Inspire. Nëse përzgjidheni, do të merrni një ftesë me hapat e mëtejshëm.',
     title: 'Dinner with Alketa',
     subtitle: 'Çdo aplikim shqyrtohet personalisht nga ekipi.',
-    legPersonal: 'Personale',
-    legBusiness: 'Biznesi',
-    legAbout: 'Rreth Biznesit Tuaj',
-    legLeadership: 'Lidershipi',
-    legNetworking: 'Networking',
-    legExpectations: 'Pritshmëritë',
-    legSocial: 'Social',
-    first: 'Emër', last: 'Mbiemër', email: 'Email', phone: 'Telefon',
-    company: 'Emri i kompanisë', industry: 'Industria', position: 'Pozicioni juaj',
-    foundingYear: 'Viti i themelimit', foundingYearPh: 'p.sh. 2019',
-    revenue: 'Xhiro vjetore (opsionale)',
-    employees: 'Numri i punonjësve',
-    describe: 'Përshkruani shkurtimisht biznesin tuaj.',
-    describePh: 'Max 500 karaktere',
-    challengeLabel: 'Cila është sfida juaj më e madhe aktualisht?',
-    whyJoin: 'Pse dëshironi të merrni pjesë në Dinner with Alketa?',
-    question: "Nëse do të kishit mundësi t'i bënit një pyetje Alketës ose grupit, cila do të ishte?",
-    bring: "Çfarë eksperience apo perspektive mendoni se mund t'i sillni tavolinës?",
-    networkingLabel: 'Çfarë lloj njerëzish dëshironi të njihni?',
-    expectations: 'Çfarë prisni të merrni nga kjo eksperiencë?',
-    legVision: 'Vizioni & Përzgjedhja',
-    age: 'Mosha',
-    city: 'Qyteti',
-    discussionTopic: 'Për cilën temë do të dëshironit të diskutonit me sipërmarrësit e tjerë?',
-    financialGoal5y: 'Cili është objektivi juaj financiar për pesë vitet e ardhshme?',
-    valuableIdea: 'Cila është ideja ose përvoja më e vlefshme që do të ndani në tavolinë?',
-    betterWorld: 'Çfarë do të dëshironit të bënit për ta bërë botën një vend më të mirë?',
-    objective12m: 'Cili është objektivi juaj kryesor për 12 muajt e ardhshëm?',
-    whySelected: 'Pse mendoni se duhet të jeni një nga 20 sipërmarrësit e përzgjedhur?',
-    specificValue: 'Çfarë vlere specifike mund t’u sillni sipërmarrësve të tjerë në këtë darkë?',
-    sending: 'Duke dërguar...',
+    sentTitle: 'Faleminderit për aplikimin.',
+    sentDesc: 'Çdo aplikim shqyrtohet personalisht nga ekipi Grow and Inspire. Nëse përzgjidheni, do të merrni një ftesë me hapat e mëtejshëm.',
     submit: 'Dërgo',
+    sending: 'Duke dërguar...',
     error: 'Ka ndodhur një problem. Ju lutem provoni sërish.',
+    email: 'Email',
+    fields: {
+      fullName: 'Emri dhe mbiemri i sipërmarrësit / CEO-s',
+      age: 'Mosha',
+      city: 'Qyteti',
+      company: 'Emri i kompanisë',
+      companyWebsite: 'Website-i i kompanisë',
+      profileLink: 'Website ose profili juaj profesional (LinkedIn / Instagram)',
+      yearsInMarket: 'Sa vite ka kompania në treg?',
+      industry: 'Në cilën industri operon kompania?',
+      employees: 'Sa punonjës ka kompania?',
+      revenueStage: 'Xhiroja vjetore ose faza e zhvillimit të biznesit',
+      whyJoin: 'Pse dëshironi të merrni pjesë në Dinner with Alketa?',
+      valueToCommunity: 'Çfarë vlere mund t’i sillni këtij komuniteti?',
+      biggestChallenge: 'Cila është sfida më e madhe me të cilën po përballet aktualisht biznesi juaj?',
+      discussionTopic: 'Për cilën temë do të dëshironit të diskutonit me sipërmarrësit e tjerë?',
+      financialGoal5y: 'Cili është objektivi juaj financiar për pesë vitet e ardhshme?',
+      valuableIdea: 'Cila është ideja ose përvoja më e vlefshme që do të ndani në tavolinë?',
+      betterWorld: 'Çfarë do të dëshironit të bënit për ta bërë botën një vend më të mirë?',
+      objective12m: 'Cili është objektivi juaj kryesor për 12 muajt e ardhshëm?',
+      whySelected: 'Pse mendoni se duhet të jeni një nga 20 sipërmarrësit e përzgjedhur?',
+      specificValue: 'Çfarë vlere specifike mund t’u sillni sipërmarrësve të tjerë në këtë darkë?',
+      questionForAlketa: 'Cila është pyetja që do të dëshironit t’ia bënit Alketës?',
+    },
   },
 }
 
 const EMPTY = {
-  firstName: '', lastName: '', email: '', phone: '', age: '', city: '',
-  company: '', website: '', industry: '', position: '', foundingYear: '', employeeCount: '', annualRevenue: '',
-  businessDescription: '',
-  whyJoin: '', questionForAlketa: '', whatYouBring: '', expectations: '',
-  discussionTopic: '', financialGoal5y: '', valuableIdea: '', betterWorld: '', objective12m: '', whySelected: '', specificValue: '',
-  linkedin: '', instagram: '', socialWebsite: '',
+  fullName: '', email: '', age: '', city: '',
+  company: '', companyWebsite: '', profileLink: '', yearsInMarket: '',
+  industry: '', employees: '', revenueStage: '',
+  whyJoin: '', valueToCommunity: '', biggestChallenge: '', discussionTopic: '',
+  financialGoal5y: '', valuableIdea: '', betterWorld: '', objective12m: '',
+  whySelected: '', specificValue: '', questionForAlketa: '',
 }
 
 export function DinnerForm() {
   const { lang } = useI18n()
   const c = CONTENT[lang]
+  const f = c.fields
   const [form, setForm] = useState(EMPTY)
-  const [challenges, setChallenges] = useState<string[]>([])
-  const [networking, setNetworking] = useState<string[]>([])
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -173,29 +120,21 @@ export function DinnerForm() {
     setLoading(true)
     setError('')
     const result = await submitDinnerApplication({
-      first_name: form.firstName,
-      last_name: form.lastName,
+      first_name: form.fullName,
       email: form.email,
-      phone: form.phone,
       company: form.company,
-      website: form.website,
+      website: form.companyWebsite,
+      linkedin: form.profileLink,
+      founding_year: form.yearsInMarket,
       industry: form.industry,
-      position: form.position,
-      founding_year: form.foundingYear,
-      employee_count: form.employeeCount,
-      annual_revenue: form.annualRevenue,
-      business_description: form.businessDescription,
-      challenges,
+      employee_count: form.employees,
+      annual_revenue: form.revenueStage,
       why_join: form.whyJoin,
+      what_you_bring: form.valueToCommunity,
       question_for_alketa: form.questionForAlketa,
-      what_you_bring: form.whatYouBring,
-      networking_types: networking,
-      expectations: form.expectations,
-      linkedin: form.linkedin,
-      instagram: form.instagram,
-      website_link: form.socialWebsite,
       age: form.age,
       city: form.city,
+      biggest_challenge: form.biggestChallenge,
       discussion_topic: form.discussionTopic,
       financial_goal_5y: form.financialGoal5y,
       valuable_idea: form.valuableIdea,
@@ -216,9 +155,7 @@ export function DinnerForm() {
           <Check size={28} className="text-brand-gold" strokeWidth={2} />
         </div>
         <h3 className="font-serif text-2xl font-bold text-brand-black mb-3">{c.sentTitle}</h3>
-        <p className="text-black/50 max-w-md mx-auto">
-          {c.sentDesc}
-        </p>
+        <p className="text-black/50 max-w-md mx-auto">{c.sentDesc}</p>
       </div>
     )
   }
@@ -230,106 +167,31 @@ export function DinnerForm() {
         <p className="text-black/50 text-sm">{c.subtitle}</p>
       </div>
 
-      <form onSubmit={submit} className="p-8 flex flex-col gap-10">
-        {/* Personal */}
-        <fieldset className="flex flex-col gap-5">
-          <legend className="font-serif text-lg font-bold text-brand-black mb-2">{c.legPersonal}</legend>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <Input label={c.first} required value={form.firstName} onChange={(e) => set('firstName', e.target.value)} />
-            <Input label={c.last} required value={form.lastName} onChange={(e) => set('lastName', e.target.value)} />
-            <Input label={c.email} required type="email" value={form.email} onChange={(e) => set('email', e.target.value)} />
-            <Input label={c.phone} required type="tel" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
-            <Input label={c.age} type="number" value={form.age} onChange={(e) => set('age', e.target.value)} />
-            <Input label={c.city} value={form.city} onChange={(e) => set('city', e.target.value)} />
-          </div>
-        </fieldset>
-
-        {/* Business */}
-        <fieldset className="flex flex-col gap-5">
-          <legend className="font-serif text-lg font-bold text-brand-black mb-2">{c.legBusiness}</legend>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <Input label={c.company} value={form.company} onChange={(e) => set('company', e.target.value)} />
-            <Input label="Website" value={form.website} onChange={(e) => set('website', e.target.value)} placeholder="https://..." />
-            <Input label={c.industry} value={form.industry} onChange={(e) => set('industry', e.target.value)} />
-            <Input label={c.position} value={form.position} onChange={(e) => set('position', e.target.value)} />
-            <Input label={c.foundingYear} value={form.foundingYear} onChange={(e) => set('foundingYear', e.target.value)} placeholder={c.foundingYearPh} />
-            <Input label={c.revenue} value={form.annualRevenue} onChange={(e) => set('annualRevenue', e.target.value)} />
-          </div>
-          <RadioGroup
-            label={c.employees}
-            columns={4}
-            options={EMPLOYEES}
-            value={form.employeeCount}
-            onChange={(v) => set('employeeCount', v)}
-          />
-        </fieldset>
-
-        {/* About your business */}
-        <fieldset className="flex flex-col gap-5">
-          <legend className="font-serif text-lg font-bold text-brand-black mb-2">{c.legAbout}</legend>
-          <Textarea
-            label={c.describe}
-            rows={4}
-            maxLength={500}
-            value={form.businessDescription}
-            onChange={(e) => set('businessDescription', e.target.value)}
-            placeholder={c.describePh}
-          />
-          <p className="text-xs text-black/35 -mt-3">{form.businessDescription.length}/500</p>
-        </fieldset>
-
-        {/* Leadership */}
-        <fieldset className="flex flex-col gap-5">
-          <legend className="font-serif text-lg font-bold text-brand-black mb-2">{c.legLeadership}</legend>
-          <CheckboxGroup
-            label={c.challengeLabel}
-            options={c.challenges}
-            value={challenges}
-            onChange={setChallenges}
-          />
-          <Textarea label={c.whyJoin} required rows={3} value={form.whyJoin} onChange={(e) => set('whyJoin', e.target.value)} />
-          <Textarea label={c.question} rows={3} value={form.questionForAlketa} onChange={(e) => set('questionForAlketa', e.target.value)} />
-          <Textarea label={c.bring} rows={3} value={form.whatYouBring} onChange={(e) => set('whatYouBring', e.target.value)} />
-        </fieldset>
-
-        {/* Networking */}
-        <fieldset className="flex flex-col gap-5">
-          <legend className="font-serif text-lg font-bold text-brand-black mb-2">{c.legNetworking}</legend>
-          <CheckboxGroup
-            label={c.networkingLabel}
-            options={c.networking}
-            value={networking}
-            onChange={setNetworking}
-          />
-        </fieldset>
-
-        {/* Expectations */}
-        <fieldset className="flex flex-col gap-5">
-          <legend className="font-serif text-lg font-bold text-brand-black mb-2">{c.legExpectations}</legend>
-          <Textarea label={c.expectations} rows={3} value={form.expectations} onChange={(e) => set('expectations', e.target.value)} />
-        </fieldset>
-
-        {/* Vision & selection */}
-        <fieldset className="flex flex-col gap-5">
-          <legend className="font-serif text-lg font-bold text-brand-black mb-2">{c.legVision}</legend>
-          <Textarea label={c.discussionTopic} rows={2} value={form.discussionTopic} onChange={(e) => set('discussionTopic', e.target.value)} />
-          <Textarea label={c.financialGoal5y} rows={2} value={form.financialGoal5y} onChange={(e) => set('financialGoal5y', e.target.value)} />
-          <Textarea label={c.valuableIdea} rows={3} value={form.valuableIdea} onChange={(e) => set('valuableIdea', e.target.value)} />
-          <Textarea label={c.betterWorld} rows={2} value={form.betterWorld} onChange={(e) => set('betterWorld', e.target.value)} />
-          <Textarea label={c.objective12m} rows={2} value={form.objective12m} onChange={(e) => set('objective12m', e.target.value)} />
-          <Textarea label={c.whySelected} rows={3} value={form.whySelected} onChange={(e) => set('whySelected', e.target.value)} />
-          <Textarea label={c.specificValue} rows={3} value={form.specificValue} onChange={(e) => set('specificValue', e.target.value)} />
-        </fieldset>
-
-        {/* Social */}
-        <fieldset className="flex flex-col gap-5">
-          <legend className="font-serif text-lg font-bold text-brand-black mb-2">{c.legSocial}</legend>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            <Input label="LinkedIn" value={form.linkedin} onChange={(e) => set('linkedin', e.target.value)} placeholder="https://..." />
-            <Input label="Instagram" value={form.instagram} onChange={(e) => set('instagram', e.target.value)} placeholder="@..." />
-            <Input label="Website" value={form.socialWebsite} onChange={(e) => set('socialWebsite', e.target.value)} placeholder="https://..." />
-          </div>
-        </fieldset>
+      <form onSubmit={submit} className="p-8 flex flex-col gap-4">
+        <Input label={f.fullName} required value={form.fullName} onChange={(e) => set('fullName', e.target.value)} />
+        <Input label={c.email} type="email" required placeholder="email@juaj.com" value={form.email} onChange={(e) => set('email', e.target.value)} />
+        <div className="grid grid-cols-2 gap-4">
+          <Input label={f.age} type="number" value={form.age} onChange={(e) => set('age', e.target.value)} />
+          <Input label={f.city} value={form.city} onChange={(e) => set('city', e.target.value)} />
+        </div>
+        <Input label={f.company} value={form.company} onChange={(e) => set('company', e.target.value)} />
+        <Input label={f.companyWebsite} value={form.companyWebsite} onChange={(e) => set('companyWebsite', e.target.value)} placeholder="https://..." />
+        <Input label={f.profileLink} value={form.profileLink} onChange={(e) => set('profileLink', e.target.value)} />
+        <Input label={f.yearsInMarket} value={form.yearsInMarket} onChange={(e) => set('yearsInMarket', e.target.value)} />
+        <Input label={f.industry} value={form.industry} onChange={(e) => set('industry', e.target.value)} />
+        <Input label={f.employees} value={form.employees} onChange={(e) => set('employees', e.target.value)} />
+        <Input label={f.revenueStage} value={form.revenueStage} onChange={(e) => set('revenueStage', e.target.value)} />
+        <Textarea label={f.whyJoin} required rows={3} value={form.whyJoin} onChange={(e) => set('whyJoin', e.target.value)} />
+        <Textarea label={f.valueToCommunity} rows={3} value={form.valueToCommunity} onChange={(e) => set('valueToCommunity', e.target.value)} />
+        <Textarea label={f.biggestChallenge} rows={3} value={form.biggestChallenge} onChange={(e) => set('biggestChallenge', e.target.value)} />
+        <Textarea label={f.discussionTopic} rows={2} value={form.discussionTopic} onChange={(e) => set('discussionTopic', e.target.value)} />
+        <Textarea label={f.financialGoal5y} rows={2} value={form.financialGoal5y} onChange={(e) => set('financialGoal5y', e.target.value)} />
+        <Textarea label={f.valuableIdea} rows={3} value={form.valuableIdea} onChange={(e) => set('valuableIdea', e.target.value)} />
+        <Textarea label={f.betterWorld} rows={2} value={form.betterWorld} onChange={(e) => set('betterWorld', e.target.value)} />
+        <Textarea label={f.objective12m} rows={2} value={form.objective12m} onChange={(e) => set('objective12m', e.target.value)} />
+        <Textarea label={f.whySelected} rows={3} value={form.whySelected} onChange={(e) => set('whySelected', e.target.value)} />
+        <Textarea label={f.specificValue} rows={3} value={form.specificValue} onChange={(e) => set('specificValue', e.target.value)} />
+        <Textarea label={f.questionForAlketa} rows={2} value={form.questionForAlketa} onChange={(e) => set('questionForAlketa', e.target.value)} />
 
         {error && <p className="text-sm text-red-500">{error}</p>}
 
