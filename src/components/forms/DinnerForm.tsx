@@ -16,6 +16,7 @@ const CONTENT: Record<Lang, {
   sending: string
   error: string
   email: string
+  phone: string
   fields: {
     fullName: string; age: string; city: string
     company: string; companyWebsite: string; profileLink: string; yearsInMarket: string
@@ -34,6 +35,7 @@ const CONTENT: Record<Lang, {
     sending: 'Sending...',
     error: 'Something went wrong. Please try again.',
     email: 'Email',
+    phone: 'Phone number',
     fields: {
       fullName: 'Full name of the entrepreneur / CEO',
       age: 'Age',
@@ -67,6 +69,7 @@ const CONTENT: Record<Lang, {
     sending: 'Duke dërguar...',
     error: 'Ka ndodhur një problem. Ju lutem provoni sërish.',
     email: 'Email',
+    phone: 'Numri i telefonit',
     fields: {
       fullName: 'Emri dhe mbiemri i sipërmarrësit / CEO-s',
       age: 'Mosha',
@@ -94,7 +97,7 @@ const CONTENT: Record<Lang, {
 }
 
 const EMPTY = {
-  fullName: '', email: '', age: '', city: '',
+  fullName: '', email: '', phone: '', age: '', city: '',
   company: '', companyWebsite: '', profileLink: '', yearsInMarket: '',
   industry: '', employees: '', revenueStage: '',
   whyJoin: '', valueToCommunity: '', biggestChallenge: '', discussionTopic: '',
@@ -122,6 +125,7 @@ export function DinnerForm() {
     const result = await submitDinnerApplication({
       first_name: form.fullName,
       email: form.email,
+      phone: form.phone,
       company: form.company,
       website: form.companyWebsite,
       linkedin: form.profileLink,
@@ -170,6 +174,7 @@ export function DinnerForm() {
       <form onSubmit={submit} className="p-8 flex flex-col gap-4">
         <Input label={f.fullName} required value={form.fullName} onChange={(e) => set('fullName', e.target.value)} />
         <Input label={c.email} type="email" required placeholder="email@juaj.com" value={form.email} onChange={(e) => set('email', e.target.value)} />
+        <Input label={c.phone} type="tel" placeholder="+355 6X XXX XXXX" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
         <div className="grid grid-cols-2 gap-4">
           <Input label={f.age} type="number" value={form.age} onChange={(e) => set('age', e.target.value)} />
           <Input label={f.city} value={form.city} onChange={(e) => set('city', e.target.value)} />
