@@ -19,9 +19,11 @@ interface EmailArgs {
 export async function sendNotificationEmail({ subject, html, replyTo }: EmailArgs): Promise<boolean> {
   const apiKey = process.env.RESEND_API_KEY
   const from = process.env.EMAIL_FROM
-  const to = process.env.NOTIFY_EMAIL
+  // Destination inbox. Defaults to the contact address; NOTIFY_EMAIL can
+  // override it (and may be a comma-separated list).
+  const to = process.env.NOTIFY_EMAIL || 'marketing@classbyav.com'
 
-  if (!apiKey || !from || !to) return false
+  if (!apiKey || !from) return false
 
   try {
     const res = await fetch('https://api.resend.com/emails', {
