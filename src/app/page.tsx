@@ -1,4 +1,5 @@
 import { Hero } from '@/components/home/Hero'
+import { AlketaPhoto } from '@/components/home/AlketaPhoto'
 import { ELearningSection } from '@/components/home/ELearningSection'
 import { DinnerSection } from '@/components/home/DinnerSection'
 import { RetreatSection } from '@/components/home/RetreatSection'
@@ -16,6 +17,7 @@ export default function Home() {
     <>
       <DinnerPopup />
       <Hero />
+      <AlketaPhoto />
       <ELearningSection />
       <DinnerSection />
       <RetreatSection />
