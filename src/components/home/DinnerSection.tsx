@@ -262,8 +262,7 @@ export function DinnerSection() {
 
           {/* Right - form (collapsed on phone until "Apply now" is tapped) */}
           <div id="dinner-form" className={`${formOpen ? 'block' : 'hidden'} lg:block bg-brand-white rounded-3xl border border-black/8 p-8 shadow-sm scroll-mt-24`}>
-            <h3 className="font-serif text-2xl font-bold text-brand-black mb-2">{c.formTitle}</h3>
-            <p className="text-brand-gold text-sm mb-6">{c.foodNote}</p>
+            <h3 className="font-serif text-2xl font-bold text-brand-black mb-6">{c.formTitle}</h3>
 
             {submitted ? (
               <div className="text-center py-10">

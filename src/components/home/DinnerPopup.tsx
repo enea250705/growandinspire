@@ -111,7 +111,7 @@ export function DinnerPopup() {
           <p className="text-brand-gold text-xs font-semibold uppercase tracking-[0.25em] mb-3 drop-shadow">{c.badge}</p>
           <h2 className="font-serif text-4xl font-bold text-brand-white mb-2 drop-shadow-lg">{c.title}</h2>
           <div className="w-12 h-px bg-brand-gold/70 mx-auto mb-5" />
-          <div className="space-y-3 mb-6">
+          <div className="space-y-3 mb-8">
             {c.desc.map((p, i) => (
               <p
                 key={i}
@@ -123,7 +123,6 @@ export function DinnerPopup() {
               </p>
             ))}
           </div>
-          <p className="text-brand-gold text-sm italic mb-7 drop-shadow">{c.foodNote}</p>
           <button
             onClick={apply}
             className="w-full bg-brand-gold text-brand-black py-4 rounded-full text-sm font-bold uppercase tracking-wide hover:bg-brand-gold-light transition-colors shadow-lg"
