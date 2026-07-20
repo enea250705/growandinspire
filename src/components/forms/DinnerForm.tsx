@@ -47,6 +47,16 @@ const CONTENT: Record<Lang, {
   bring: string
   networkingLabel: string
   expectations: string
+  legVision: string
+  age: string
+  city: string
+  discussionTopic: string
+  financialGoal5y: string
+  valuableIdea: string
+  betterWorld: string
+  objective12m: string
+  whySelected: string
+  specificValue: string
   sending: string
   submit: string
   error: string
@@ -78,6 +88,16 @@ const CONTENT: Record<Lang, {
     bring: 'What experience or perspective do you think you could bring to the table?',
     networkingLabel: 'What kind of people would you like to meet?',
     expectations: 'What do you expect to get from this experience?',
+    legVision: 'Vision & Selection',
+    age: 'Age',
+    city: 'City',
+    discussionTopic: 'What topic would you like to discuss with the other entrepreneurs?',
+    financialGoal5y: 'What is your financial goal for the next five years?',
+    valuableIdea: 'What is the most valuable idea or experience you would share at the table?',
+    betterWorld: 'What would you like to do to make the world a better place?',
+    objective12m: 'What is your main objective for the next 12 months?',
+    whySelected: 'Why do you think you should be one of the 20 selected entrepreneurs?',
+    specificValue: 'What specific value can you bring to the other entrepreneurs at this dinner?',
     sending: 'Sending...',
     submit: 'Submit',
     error: 'Something went wrong. Please try again.',
@@ -109,6 +129,16 @@ const CONTENT: Record<Lang, {
     bring: "Çfarë eksperience apo perspektive mendoni se mund t'i sillni tavolinës?",
     networkingLabel: 'Çfarë lloj njerëzish dëshironi të njihni?',
     expectations: 'Çfarë prisni të merrni nga kjo eksperiencë?',
+    legVision: 'Vizioni & Përzgjedhja',
+    age: 'Mosha',
+    city: 'Qyteti',
+    discussionTopic: 'Për cilën temë do të dëshironit të diskutonit me sipërmarrësit e tjerë?',
+    financialGoal5y: 'Cili është objektivi juaj financiar për pesë vitet e ardhshme?',
+    valuableIdea: 'Cila është ideja ose përvoja më e vlefshme që do të ndani në tavolinë?',
+    betterWorld: 'Çfarë do të dëshironit të bënit për ta bërë botën një vend më të mirë?',
+    objective12m: 'Cili është objektivi juaj kryesor për 12 muajt e ardhshëm?',
+    whySelected: 'Pse mendoni se duhet të jeni një nga 20 sipërmarrësit e përzgjedhur?',
+    specificValue: 'Çfarë vlere specifike mund t’u sillni sipërmarrësve të tjerë në këtë darkë?',
     sending: 'Duke dërguar...',
     submit: 'Dërgo',
     error: 'Ka ndodhur një problem. Ju lutem provoni sërish.',
@@ -116,10 +146,11 @@ const CONTENT: Record<Lang, {
 }
 
 const EMPTY = {
-  firstName: '', lastName: '', email: '', phone: '',
+  firstName: '', lastName: '', email: '', phone: '', age: '', city: '',
   company: '', website: '', industry: '', position: '', foundingYear: '', employeeCount: '', annualRevenue: '',
   businessDescription: '',
   whyJoin: '', questionForAlketa: '', whatYouBring: '', expectations: '',
+  discussionTopic: '', financialGoal5y: '', valuableIdea: '', betterWorld: '', objective12m: '', whySelected: '', specificValue: '',
   linkedin: '', instagram: '', socialWebsite: '',
 }
 
@@ -163,6 +194,15 @@ export function DinnerForm() {
       linkedin: form.linkedin,
       instagram: form.instagram,
       website_link: form.socialWebsite,
+      age: form.age,
+      city: form.city,
+      discussion_topic: form.discussionTopic,
+      financial_goal_5y: form.financialGoal5y,
+      valuable_idea: form.valuableIdea,
+      better_world: form.betterWorld,
+      objective_12m: form.objective12m,
+      why_selected: form.whySelected,
+      specific_value: form.specificValue,
     })
     setLoading(false)
     if (result.ok) setSubmitted(true)
@@ -199,6 +239,8 @@ export function DinnerForm() {
             <Input label={c.last} required value={form.lastName} onChange={(e) => set('lastName', e.target.value)} />
             <Input label={c.email} required type="email" value={form.email} onChange={(e) => set('email', e.target.value)} />
             <Input label={c.phone} required type="tel" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
+            <Input label={c.age} type="number" value={form.age} onChange={(e) => set('age', e.target.value)} />
+            <Input label={c.city} value={form.city} onChange={(e) => set('city', e.target.value)} />
           </div>
         </fieldset>
 
@@ -265,6 +307,18 @@ export function DinnerForm() {
         <fieldset className="flex flex-col gap-5">
           <legend className="font-serif text-lg font-bold text-brand-black mb-2">{c.legExpectations}</legend>
           <Textarea label={c.expectations} rows={3} value={form.expectations} onChange={(e) => set('expectations', e.target.value)} />
+        </fieldset>
+
+        {/* Vision & selection */}
+        <fieldset className="flex flex-col gap-5">
+          <legend className="font-serif text-lg font-bold text-brand-black mb-2">{c.legVision}</legend>
+          <Textarea label={c.discussionTopic} rows={2} value={form.discussionTopic} onChange={(e) => set('discussionTopic', e.target.value)} />
+          <Textarea label={c.financialGoal5y} rows={2} value={form.financialGoal5y} onChange={(e) => set('financialGoal5y', e.target.value)} />
+          <Textarea label={c.valuableIdea} rows={3} value={form.valuableIdea} onChange={(e) => set('valuableIdea', e.target.value)} />
+          <Textarea label={c.betterWorld} rows={2} value={form.betterWorld} onChange={(e) => set('betterWorld', e.target.value)} />
+          <Textarea label={c.objective12m} rows={2} value={form.objective12m} onChange={(e) => set('objective12m', e.target.value)} />
+          <Textarea label={c.whySelected} rows={3} value={form.whySelected} onChange={(e) => set('whySelected', e.target.value)} />
+          <Textarea label={c.specificValue} rows={3} value={form.specificValue} onChange={(e) => set('specificValue', e.target.value)} />
         </fieldset>
 
         {/* Social */}
