@@ -24,6 +24,10 @@ const FOOTER_LINKS = {
   ],
 }
 
+// While the site shows only Dinner with Alketa, hide the footer navigation
+// columns. Flip to true to bring them back.
+const SHOW_FOOTER_LINKS = false
+
 const SOCIAL = [
   {
     label: 'Instagram',
@@ -135,7 +139,7 @@ export function Footer() {
         </div>
 
         {/* Links grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div className={`grid grid-cols-1 ${SHOW_FOOTER_LINKS ? 'md:grid-cols-4' : ''} gap-12 mb-12`}>
           <div className="col-span-1">
             <Image
               src="/logo-final.png"
@@ -164,7 +168,7 @@ export function Footer() {
             </div>
           </div>
 
-          {Object.entries(FOOTER_LINKS).map(([category, links]) => (
+          {SHOW_FOOTER_LINKS && Object.entries(FOOTER_LINKS).map(([category, links]) => (
             <div key={category}>
               <p className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">{t(`footer.cat.${category}`)}</p>
               <ul className="flex flex-col gap-2">
