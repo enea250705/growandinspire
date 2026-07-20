@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { UtensilsCrossed, ChevronDown, Calendar, Clock } from 'lucide-react'
+import { UtensilsCrossed, ChevronDown, Calendar, Clock, Euro } from 'lucide-react'
 import { Input, Textarea } from '@/components/ui/FormField'
 import { submitDinnerApplication } from '@/lib/actions/forms'
 import { useI18n } from '@/components/i18n/I18nProvider'
@@ -15,6 +15,8 @@ const CONTENT: Record<Lang, {
   date: string
   timeLabel: string
   time: string
+  priceLabel: string
+  price: string
   applyNow: string
   formTitle: string
   foodNote: string
@@ -36,6 +38,8 @@ const CONTENT: Record<Lang, {
     date: '30 July 2026',
     timeLabel: 'Time',
     time: '20:00',
+    priceLabel: 'Price',
+    price: '199€',
     applyNow: 'Apply now',
     formTitle: 'Application Form',
     foodNote: 'Food and drinks are personally curated by Alketa.',
@@ -62,6 +66,8 @@ const CONTENT: Record<Lang, {
     date: '30 Korrik 2026',
     timeLabel: 'Ora',
     time: '20:00',
+    priceLabel: 'Çmimi',
+    price: '199€',
     applyNow: 'Apliko tani',
     formTitle: 'Formular Aplikimi',
     foodNote: 'Ushqimi dhe pijet kurohen personalisht nga Alketa.',
@@ -155,6 +161,13 @@ export function DinnerSection() {
                 <div>
                   <p className="text-black/40 text-xs uppercase tracking-wider">{c.timeLabel}</p>
                   <p className="font-semibold text-brand-black">{c.time}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 bg-brand-white border border-black/8 rounded-2xl px-5 py-4">
+                <Euro size={22} className="text-brand-gold" strokeWidth={1.5} />
+                <div>
+                  <p className="text-black/40 text-xs uppercase tracking-wider">{c.priceLabel}</p>
+                  <p className="font-semibold text-brand-black">{c.price}</p>
                 </div>
               </div>
             </div>
