@@ -16,6 +16,10 @@ const NAV_LINKS = [
   { key: 'nav.about', href: '/about' },
 ]
 
+// While the site shows only Dinner with Alketa, hide all navigation (menu links,
+// login button and the mobile hamburger). Flip to true to bring it all back.
+const SHOW_NAV = false
+
 export function Navbar() {
   const { t } = useI18n()
   const [open, setOpen] = useState(false)
@@ -45,21 +49,23 @@ export function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden lg:flex items-center gap-6">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm text-white/70 hover:text-brand-white transition-colors"
-            >
-              {t(link.key)}
-            </Link>
-          ))}
-        </div>
+        {SHOW_NAV && (
+          <div className="hidden lg:flex items-center gap-6">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm text-white/70 hover:text-brand-white transition-colors"
+              >
+                {t(link.key)}
+              </Link>
+            ))}
+          </div>
+        )}
 
         <div className="hidden lg:flex items-center gap-3">
           <LanguageSwitcher />
-          {loggedIn ? (
+          {SHOW_NAV && (loggedIn ? (
             <Link
               href="/dashboard"
               className="text-sm bg-brand-gold text-brand-black px-4 py-2 rounded-full font-medium hover:bg-brand-gold-light transition-colors"
@@ -73,24 +79,26 @@ export function Navbar() {
             >
               {t('nav.login')}
             </Link>
-          )}
+          ))}
         </div>
 
         <div className="flex items-center gap-3 lg:hidden">
           <LanguageSwitcher />
-          <button
-            type="button"
-            className="text-brand-white p-2 -m-2"
-            onClick={() => setOpen(!open)}
-            aria-label="Toggle menu"
-          >
-            {open ? <X size={22} /> : <Menu size={22} />}
-          </button>
+          {SHOW_NAV && (
+            <button
+              type="button"
+              className="text-brand-white p-2 -m-2"
+              onClick={() => setOpen(!open)}
+              aria-label="Toggle menu"
+            >
+              {open ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          )}
         </div>
       </nav>
 
       {/* Mobile menu */}
-      {open && (
+      {SHOW_NAV && open && (
         <div className="lg:hidden bg-brand-black border-t border-white/10 px-4 py-4 flex flex-col gap-4">
           {NAV_LINKS.map((link) => (
             <Link
