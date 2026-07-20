@@ -148,9 +148,15 @@ export function Footer() {
               height={240}
               className="h-24 w-auto object-contain mb-3"
             />
-            <p className="text-sm leading-relaxed mb-6">
+            <p className="text-sm leading-relaxed mb-4">
               {t('footer.tagline')}
             </p>
+            <a
+              href="mailto:marketing@classbyav.com"
+              className="inline-block text-sm text-brand-gold hover:text-brand-gold-light transition-colors mb-6"
+            >
+              marketing@classbyav.com
+            </a>
             {/* Social icons */}
             <div className="flex items-center gap-3">
               {SOCIAL.map(({ svg, label, href }) => (
