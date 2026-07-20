@@ -37,12 +37,12 @@ export async function Hero() {
             <div className="relative">
               <div className="relative aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden bg-brand-black">
                 <Image
-                  src="/hero-alketa.png"
+                  src="/alketa-home.jpg"
                   alt="Alketa Vejsiu"
                   fill
                   priority
                   sizes="(min-width: 1024px) 40vw, 100vw"
-                  className="object-contain object-bottom"
+                  className="object-cover object-top"
                 />
                 {/* gradient for text legibility */}
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-brand-black/10 to-transparent" />
