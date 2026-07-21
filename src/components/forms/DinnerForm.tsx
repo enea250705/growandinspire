@@ -174,12 +174,12 @@ export function DinnerForm() {
       <form onSubmit={submit} className="p-8 flex flex-col gap-4">
         <Input label={f.fullName} required value={form.fullName} onChange={(e) => set('fullName', e.target.value)} />
         <Input label={c.email} type="email" required placeholder="email@juaj.com" value={form.email} onChange={(e) => set('email', e.target.value)} />
-        <Input label={c.phone} type="tel" placeholder="+355 6X XXX XXXX" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
+        <Input label={c.phone} type="tel" required placeholder="+355 6X XXX XXXX" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
         <div className="grid grid-cols-2 gap-4">
           <Input label={f.age} type="number" value={form.age} onChange={(e) => set('age', e.target.value)} />
           <Input label={f.city} value={form.city} onChange={(e) => set('city', e.target.value)} />
         </div>
-        <Input label={f.company} value={form.company} onChange={(e) => set('company', e.target.value)} />
+        <Input label={f.company} required value={form.company} onChange={(e) => set('company', e.target.value)} />
         <Input label={f.companyWebsite} value={form.companyWebsite} onChange={(e) => set('companyWebsite', e.target.value)} placeholder="https://..." />
         <Input label={f.profileLink} value={form.profileLink} onChange={(e) => set('profileLink', e.target.value)} />
         <Input label={f.yearsInMarket} value={form.yearsInMarket} onChange={(e) => set('yearsInMarket', e.target.value)} />
@@ -188,8 +188,8 @@ export function DinnerForm() {
         <Input label={f.revenueStage} value={form.revenueStage} onChange={(e) => set('revenueStage', e.target.value)} />
         <Textarea label={f.whyJoin} required rows={3} value={form.whyJoin} onChange={(e) => set('whyJoin', e.target.value)} />
         <Textarea label={f.valueToCommunity} rows={3} value={form.valueToCommunity} onChange={(e) => set('valueToCommunity', e.target.value)} />
-        <Textarea label={f.biggestChallenge} rows={3} value={form.biggestChallenge} onChange={(e) => set('biggestChallenge', e.target.value)} />
-        <Textarea label={f.discussionTopic} rows={2} value={form.discussionTopic} onChange={(e) => set('discussionTopic', e.target.value)} />
+        <Textarea label={f.biggestChallenge} required rows={3} value={form.biggestChallenge} onChange={(e) => set('biggestChallenge', e.target.value)} />
+        <Textarea label={f.discussionTopic} required rows={2} value={form.discussionTopic} onChange={(e) => set('discussionTopic', e.target.value)} />
         <Textarea label={f.financialGoal5y} rows={2} value={form.financialGoal5y} onChange={(e) => set('financialGoal5y', e.target.value)} />
         <Textarea label={f.valuableIdea} rows={3} value={form.valuableIdea} onChange={(e) => set('valuableIdea', e.target.value)} />
         <Textarea label={f.betterWorld} rows={2} value={form.betterWorld} onChange={(e) => set('betterWorld', e.target.value)} />

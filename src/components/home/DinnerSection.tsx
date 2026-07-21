@@ -407,8 +407,8 @@ export function DinnerSection() {
                 <Input label={c.fields.city} value={form.city} onChange={(e) => set('city', e.target.value)} />
               </div>
               <Input label={c.fields.email} type="email" required placeholder="email@juaj.com" value={form.email} onChange={(e) => set('email', e.target.value)} />
-              <Input label={c.fields.phone} type="tel" placeholder="+355 6X XXX XXXX" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
-              <Input label={c.fields.company} value={form.company} onChange={(e) => set('company', e.target.value)} />
+              <Input label={c.fields.phone} type="tel" required placeholder="+355 6X XXX XXXX" value={form.phone} onChange={(e) => set('phone', e.target.value)} />
+              <Input label={c.fields.company} required value={form.company} onChange={(e) => set('company', e.target.value)} />
               <Input label={c.fields.companyWebsite} value={form.companyWebsite} onChange={(e) => set('companyWebsite', e.target.value)} />
               <Input label={c.fields.profileLink} value={form.profileLink} onChange={(e) => set('profileLink', e.target.value)} />
               <Input label={c.fields.yearsInMarket} value={form.yearsInMarket} onChange={(e) => set('yearsInMarket', e.target.value)} />
@@ -417,8 +417,8 @@ export function DinnerSection() {
               <Input label={c.fields.revenueStage} value={form.revenueStage} onChange={(e) => set('revenueStage', e.target.value)} />
               <Textarea label={c.fields.whyJoin} required rows={3} value={form.whyJoin} onChange={(e) => set('whyJoin', e.target.value)} />
               <Textarea label={c.fields.valueToCommunity} rows={3} value={form.valueToCommunity} onChange={(e) => set('valueToCommunity', e.target.value)} />
-              <Textarea label={c.fields.biggestChallenge} rows={3} value={form.biggestChallenge} onChange={(e) => set('biggestChallenge', e.target.value)} />
-              <Textarea label={c.fields.discussionTopic} rows={2} value={form.discussionTopic} onChange={(e) => set('discussionTopic', e.target.value)} />
+              <Textarea label={c.fields.biggestChallenge} required rows={3} value={form.biggestChallenge} onChange={(e) => set('biggestChallenge', e.target.value)} />
+              <Textarea label={c.fields.discussionTopic} required rows={2} value={form.discussionTopic} onChange={(e) => set('discussionTopic', e.target.value)} />
               <Textarea label={c.fields.financialGoal5y} rows={2} value={form.financialGoal5y} onChange={(e) => set('financialGoal5y', e.target.value)} />
               <Textarea label={c.fields.valuableIdea} rows={3} value={form.valuableIdea} onChange={(e) => set('valuableIdea', e.target.value)} />
               <Textarea label={c.fields.betterWorld} rows={2} value={form.betterWorld} onChange={(e) => set('betterWorld', e.target.value)} />
