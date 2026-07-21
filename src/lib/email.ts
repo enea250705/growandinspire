@@ -14,14 +14,16 @@ interface EmailArgs {
   html: string
   /** Reply-To, so hitting "reply" answers the applicant directly. */
   replyTo?: string
+  /** Recipient override. Defaults to the team inbox (NOTIFY_EMAIL / contact). */
+  to?: string
 }
 
-export async function sendNotificationEmail({ subject, html, replyTo }: EmailArgs): Promise<boolean> {
+export async function sendNotificationEmail({ subject, html, replyTo, to: toOverride }: EmailArgs): Promise<boolean> {
   const apiKey = process.env.RESEND_API_KEY
   const from = process.env.EMAIL_FROM
   // Destination inbox. Defaults to the contact address; NOTIFY_EMAIL can
   // override it (and may be a comma-separated list).
-  const to = process.env.NOTIFY_EMAIL || 'marketing@classbyav.com'
+  const to = toOverride || process.env.NOTIFY_EMAIL || 'marketing@classbyav.com'
 
   if (!apiKey || !from) return false
 

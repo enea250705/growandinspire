@@ -129,6 +129,20 @@ export async function submitDinnerApplication(data: {
     ['Pyetje për Alketën', data.question_for_alketa],
   ])
 
+  // Confirmation email to the applicant.
+  if (data.email) {
+    await sendNotificationEmail({
+      to: data.email,
+      replyTo: 'marketing@classbyav.com',
+      subject: 'Aplikimi juaj për Dinner with Alketa',
+      html: `<div style="font:15px/1.7 -apple-system,Segoe UI,Roboto,sans-serif;color:#111">
+        <p>Faleminderit për interesin për t'u bërë pjesë e Dinner with Alketa.</p>
+        <p>Aplikimi juaj u mor me sukses. Ekipi organizues do ta shqyrtojë me kujdes dhe do t'ju kontaktojë së shpejti me më shumë detaje mbi procesin e përzgjedhjes dhe hapat në vijim.</p>
+        <p style="margin-top:24px">Ekipi Organizues<br/>Grow &amp; Inspire by Alketa Vejsiu &amp; Co.</p>
+      </div>`,
+    })
+  }
+
   return { ok: true }
 }
 
