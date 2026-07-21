@@ -297,7 +297,7 @@ export function DinnerSection() {
   }
 
   return (
-    <section id="dinner" className="bg-brand-cream py-20 lg:py-28 scroll-mt-20">
+    <section id="dinner" className="bg-brand-cream pt-28 lg:pt-40 pb-20 lg:pb-28 scroll-mt-20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Banner */}
         <div className="relative rounded-3xl overflow-hidden h-52 sm:h-64 lg:h-80 shadow-sm">
