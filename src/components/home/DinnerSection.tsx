@@ -14,6 +14,7 @@ const CONTENT: Record<Lang, {
   title: string
   lead: string
   intro: string[]
+  highlights: string[]
   dateLabel: string
   date: string
   timeLabel: string
@@ -55,6 +56,12 @@ const CONTENT: Record<Lang, {
     intro: [
       'Dinner with Alketa is a private experience that brings together entrepreneurs, company leaders and visionary professionals, in an evening dedicated to ideas, dialogue and meaningful connections.',
       'Every detail is designed to create an environment where conversations unfold naturally, perspectives expand and relationships are built on trust.',
+    ],
+    highlights: [
+      'Food and drinks are covered by Alketa.',
+      'A gathering at Château Braha — a unique culinary experience and wine tasting.',
+      'Networking.',
+      'The presentation of a new, innovative platform.',
     ],
     dateLabel: 'Date',
     date: '30 July 2026',
@@ -141,6 +148,12 @@ const CONTENT: Record<Lang, {
     intro: [
       'Dinner with Alketa është një eksperiencë private që bashkon sipërmarrës, drejtues kompanish dhe profesionistë me vizion, në një mbrëmje të dedikuar ideve, dialogut dhe lidhjeve me vlerë.',
       'Çdo detaj është menduar për të krijuar një ambient ku bisedat zhvillohen natyrshëm, perspektivat zgjerohen dhe marrëdhëniet ndërtohen mbi besim.',
+    ],
+    highlights: [
+      'Pijet dhe ushqimi janë të mbuluara nga Alketa.',
+      'Takimi në Château Braha — një përvojë unike kulinare dhe degustim vere.',
+      'Networking.',
+      'Prezantimi i një platforme të re inovative.',
     ],
     dateLabel: 'Data',
     date: '30 Korrik 2026',
@@ -313,6 +326,17 @@ export function DinnerSection() {
           <div className="text-black/60 text-lg leading-relaxed space-y-4">
             {c.intro.map((p, i) => <p key={i}>{p}</p>)}
           </div>
+
+          <ul className="mt-8 inline-flex flex-col gap-3 text-left mx-auto">
+            {c.highlights.map((item) => (
+              <li key={item} className="flex items-start gap-3">
+                <span className="mt-1 w-5 h-5 rounded-full bg-brand-gold/15 flex items-center justify-center shrink-0">
+                  <Check size={12} className="text-brand-gold" strokeWidth={2.5} />
+                </span>
+                <span className="text-brand-black text-lg leading-relaxed">{item}</span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* Date / time / price / apply */}
