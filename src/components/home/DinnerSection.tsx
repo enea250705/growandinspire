@@ -333,7 +333,6 @@ export function DinnerSection() {
               </div>
             </div>
           </div>
-          <p className="text-brand-black font-medium">{c.priceText}</p>
           <button
             type="button"
             onClick={scrollToForm}
