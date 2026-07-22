@@ -116,9 +116,15 @@ export function Footer() {
             </p>
             <a
               href="mailto:marketing@classbyav.com"
-              className="inline-block text-sm text-brand-gold hover:text-brand-gold-light transition-colors mb-6"
+              className="block text-sm text-brand-gold hover:text-brand-gold-light transition-colors"
             >
               marketing@classbyav.com
+            </a>
+            <a
+              href="tel:+355692090234"
+              className="block text-sm text-brand-gold hover:text-brand-gold-light transition-colors mb-6"
+            >
+              +355 69 209 0234
             </a>
             {/* Social icons */}
             <div className="flex items-center gap-3">
