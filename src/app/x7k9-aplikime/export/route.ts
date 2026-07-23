@@ -2,9 +2,10 @@ import { NextResponse } from 'next/server'
 import { isAdmin } from '@/lib/admin'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { DATA_VIEW_KEY } from '@/lib/data-view'
+import { DINNER_EXTRA_FIELDS, parseDinnerExtras } from '@/lib/dinner-extras'
 
-// Columns exported to the spreadsheet, in order: [db field, Excel header].
-const COLUMNS: [string, string][] = [
+// Direct columns from the row: [db field, Excel header].
+const DIRECT_BEFORE: [string, string][] = [
   ['created_at', 'Data'],
   ['name', 'Emri dhe mbiemri'],
   ['email', 'Email'],
@@ -19,8 +20,12 @@ const COLUMNS: [string, string][] = [
   ['why_join', 'Pse dëshiron të marrë pjesë'],
   ['what_you_bring', 'Vlera për komunitetin'],
   ['question_for_alketa', 'Pyetje për Alketën'],
-  ['business_description', 'Detaje shtesë (mosha, qyteti, sfida, tema, etj.)'],
-  ['status', 'Statusi'],
+]
+
+const HEADERS: string[] = [
+  ...DIRECT_BEFORE.map(([, h]) => h),
+  ...DINNER_EXTRA_FIELDS.map((f) => f.header),
+  'Statusi',
 ]
 
 function esc(v: unknown): string {
@@ -28,6 +33,15 @@ function esc(v: unknown): string {
   let s = Array.isArray(v) ? v.join('; ') : String(v)
   if (/[",\n\r]/.test(s)) s = '"' + s.replace(/"/g, '""') + '"'
   return s
+}
+
+function rowCells(r: Record<string, unknown>): string[] {
+  const extras = parseDinnerExtras(r.business_description as string | null)
+  return [
+    ...DIRECT_BEFORE.map(([key]) => esc(r[key])),
+    ...DINNER_EXTRA_FIELDS.map((f) => esc(extras[f.key] ?? '')),
+    esc(r.status),
+  ]
 }
 
 export async function GET(request: Request) {
@@ -43,9 +57,9 @@ export async function GET(request: Request) {
     .order('created_at', { ascending: false })
 
   const rows = data ?? []
-  const header = COLUMNS.map(([, label]) => esc(label)).join(',')
+  const header = HEADERS.map((label) => esc(label)).join(',')
   const body = rows
-    .map((r) => COLUMNS.map(([col]) => esc((r as Record<string, unknown>)[col])).join(','))
+    .map((r) => rowCells(r as Record<string, unknown>).join(','))
     .join('\n')
 
   // Prepend a UTF-8 BOM so Excel reads Albanian characters correctly.
