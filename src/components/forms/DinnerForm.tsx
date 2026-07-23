@@ -5,6 +5,7 @@ import { Input, Textarea } from '@/components/ui/FormField'
 import { Check } from 'lucide-react'
 import { submitDinnerApplication } from '@/lib/actions/forms'
 import { useI18n } from '@/components/i18n/I18nProvider'
+import { isValidEmail, isValidPhone, isValidWebsite, isValidProfile } from '@/lib/validation'
 import type { Lang } from '@/lib/i18n'
 
 const CONTENT: Record<Lang, {
@@ -15,6 +16,9 @@ const CONTENT: Record<Lang, {
   submit: string
   sending: string
   error: string
+  errEmail: string
+  errPhone: string
+  errWebsite: string
   email: string
   phone: string
   fields: {
@@ -34,6 +38,9 @@ const CONTENT: Record<Lang, {
     submit: 'Submit',
     sending: 'Sending...',
     error: 'Something went wrong. Please try again.',
+    errEmail: 'Please enter a valid email address.',
+    errPhone: 'Please enter a valid phone number (digits only).',
+    errWebsite: 'Please enter a valid website (e.g. www.example.com).',
     email: 'Email',
     phone: 'Phone number',
     fields: {
@@ -68,6 +75,9 @@ const CONTENT: Record<Lang, {
     submit: 'Dërgo',
     sending: 'Duke dërguar...',
     error: 'Ka ndodhur një problem. Ju lutem provoni sërish.',
+    errEmail: 'Ju lutem vendosni një email të vlefshëm.',
+    errPhone: 'Ju lutem vendosni një numër telefoni të vlefshëm (vetëm numra).',
+    errWebsite: 'Ju lutem vendosni një website të vlefshëm (p.sh. www.shembull.com).',
     email: 'Email',
     phone: 'Numri i telefonit',
     fields: {
@@ -120,6 +130,11 @@ export function DinnerForm() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
+    // Require real contact details before sending.
+    if (!isValidEmail(form.email)) return setError(c.errEmail)
+    if (!isValidPhone(form.phone)) return setError(c.errPhone)
+    if (form.companyWebsite.trim() && !isValidWebsite(form.companyWebsite)) return setError(c.errWebsite)
+    if (form.profileLink.trim() && !isValidProfile(form.profileLink)) return setError(c.errWebsite)
     setLoading(true)
     setError('')
     const result = await submitDinnerApplication({

@@ -5,6 +5,7 @@ import { UtensilsCrossed, Calendar, Clock, MessageCircle, Users, Link2, Sparkles
 import { Input, Textarea } from '@/components/ui/FormField'
 import { submitDinnerApplication } from '@/lib/actions/forms'
 import { useI18n } from '@/components/i18n/I18nProvider'
+import { isValidEmail, isValidPhone, isValidWebsite, isValidProfile } from '@/lib/validation'
 import type { Lang } from '@/lib/i18n'
 
 const AWAITS_ICONS = [MessageCircle, Users, Link2, UtensilsCrossed, Sparkles]
@@ -48,6 +49,9 @@ const CONTENT: Record<Lang, {
   submit: string
   submitting: string
   error: string
+  errEmail: string
+  errPhone: string
+  errWebsite: string
 }> = {
   en: {
     badge: 'DINNER WITH ALKETA',
@@ -140,6 +144,9 @@ const CONTENT: Record<Lang, {
     submit: 'Send Application',
     submitting: 'Sending...',
     error: 'Something went wrong. Please try again.',
+    errEmail: 'Please enter a valid email address.',
+    errPhone: 'Please enter a valid phone number (digits only).',
+    errWebsite: 'Please enter a valid website (e.g. www.example.com).',
   },
   sq: {
     badge: 'DINNER WITH ALKETA',
@@ -232,6 +239,9 @@ const CONTENT: Record<Lang, {
     submit: 'Dërgo Aplikimin',
     submitting: 'Duke dërguar...',
     error: 'Ka ndodhur një problem. Ju lutem provoni sërish.',
+    errEmail: 'Ju lutem vendosni një email të vlefshëm.',
+    errPhone: 'Ju lutem vendosni një numër telefoni të vlefshëm (vetëm numra).',
+    errWebsite: 'Ju lutem vendosni një website të vlefshëm (p.sh. www.shembull.com).',
   },
 }
 
@@ -277,6 +287,11 @@ export function DinnerSection() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    // Require real contact details before sending.
+    if (!isValidEmail(form.email)) return setError(c.errEmail)
+    if (!isValidPhone(form.phone)) return setError(c.errPhone)
+    if (form.companyWebsite.trim() && !isValidWebsite(form.companyWebsite)) return setError(c.errWebsite)
+    if (form.profileLink.trim() && !isValidProfile(form.profileLink)) return setError(c.errWebsite)
     setLoading(true)
     setError('')
     const result = await submitDinnerApplication({
