@@ -155,7 +155,7 @@ export default async function AdminApplicationsPage() {
           <p className="text-black/50">Shqyrto dhe aprovo aplikimet. Çdo aplikim rishikohet manualisht.</p>
         </div>
         <a
-          href="/admin/applications/export"
+          href="/x7k9-aplikime/export"
           className="shrink-0 inline-flex items-center gap-2 bg-brand-black text-brand-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-brand-dark transition-colors"
         >
           Shkarko për Excel (CSV)

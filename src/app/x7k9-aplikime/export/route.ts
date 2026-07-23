@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { isAdmin } from '@/lib/admin'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { DATA_VIEW_KEY } from '@/lib/data-view'
 
 // Columns exported to the spreadsheet, in order: [db field, Excel header].
 const COLUMNS: [string, string][] = [
@@ -29,8 +30,9 @@ function esc(v: unknown): string {
   return s
 }
 
-export async function GET() {
-  if (!(await isAdmin())) {
+export async function GET(request: Request) {
+  const key = new URL(request.url).searchParams.get('k')
+  if (key !== DATA_VIEW_KEY && !(await isAdmin())) {
     return new NextResponse('Forbidden', { status: 403 })
   }
 
@@ -43,7 +45,7 @@ export async function GET() {
   const rows = data ?? []
   const header = COLUMNS.map(([, label]) => esc(label)).join(',')
   const body = rows
-    .map((r) => COLUMNS.map(([key]) => esc((r as Record<string, unknown>)[key])).join(','))
+    .map((r) => COLUMNS.map(([col]) => esc((r as Record<string, unknown>)[col])).join(','))
     .join('\n')
 
   // Prepend a UTF-8 BOM so Excel reads Albanian characters correctly.
