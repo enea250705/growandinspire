@@ -149,9 +149,17 @@ export default async function AdminApplicationsPage() {
 
   return (
     <>
-      <div className="mb-8">
-        <h1 className="font-serif text-3xl font-bold text-brand-black mb-1">Applications</h1>
-        <p className="text-black/50">Shqyrto dhe aprovo aplikimet. Çdo aplikim rishikohet manualisht.</p>
+      <div className="mb-8 flex items-start justify-between gap-4 flex-wrap">
+        <div>
+          <h1 className="font-serif text-3xl font-bold text-brand-black mb-1">Applications</h1>
+          <p className="text-black/50">Shqyrto dhe aprovo aplikimet. Çdo aplikim rishikohet manualisht.</p>
+        </div>
+        <a
+          href="/admin/applications/export"
+          className="shrink-0 inline-flex items-center gap-2 bg-brand-black text-brand-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-brand-dark transition-colors"
+        >
+          Shkarko për Excel (CSV)
+        </a>
       </div>
       <ApplicationsClient items={items} />
     </>
