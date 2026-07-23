@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { submitNewsletterSignup } from '@/lib/actions/forms'
 import { useI18n } from '@/components/i18n/I18nProvider'
@@ -44,6 +45,7 @@ const SOCIAL = [
 
 export function Footer() {
   const { t } = useI18n()
+  const pathname = usePathname()
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
   const [subError, setSubError] = useState('')
@@ -61,6 +63,9 @@ export function Footer() {
       setSubError(t('footer.subError'))
     }
   }
+
+  // Standalone internal pages render without the site chrome.
+  if (pathname?.startsWith('/x7k9-aplikime')) return null
 
   return (
     <footer className="bg-brand-black text-white/60">

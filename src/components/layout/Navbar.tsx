@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
@@ -22,6 +23,7 @@ const SHOW_NAV = false
 
 export function Navbar() {
   const { t } = useI18n()
+  const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [loggedIn, setLoggedIn] = useState(false)
 
@@ -33,6 +35,9 @@ export function Navbar() {
     })
     return () => subscription.unsubscribe()
   }, [])
+
+  // Standalone internal pages render without the site chrome.
+  if (pathname?.startsWith('/x7k9-aplikime')) return null
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-brand-black/95 backdrop-blur-sm border-b border-white/10">
