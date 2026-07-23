@@ -5,12 +5,16 @@ export function isValidEmail(v: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())
 }
 
-/** Real phone number: digits only (spaces, +, -, () allowed), 7-15 digits, no letters. */
+/**
+ * Real phone number that MUST include a country prefix (e.g. +355).
+ * Digits only after the "+", 8-15 digits, no letters.
+ */
 export function isValidPhone(v: string): boolean {
   const s = v.trim()
   if (/[a-zA-Z]/.test(s)) return false
+  if (!s.startsWith('+')) return false
   const digits = s.replace(/\D/g, '')
-  return digits.length >= 7 && digits.length <= 15
+  return digits.length >= 8 && digits.length <= 15
 }
 
 /** A real website/URL, with or without the http(s):// prefix. */
