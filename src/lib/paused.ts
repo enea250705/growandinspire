@@ -1,6 +1,6 @@
 // Master on/off switch for the whole public site. While true, every public
 // page is replaced by a simple "paused" screen. Flip to false to restore.
-export const SITE_PAUSED = true
+export const SITE_PAUSED = false
 
 // Self-contained HTML for the paused screen (no external assets needed).
 export const PAUSED_HTML = `<!doctype html>
