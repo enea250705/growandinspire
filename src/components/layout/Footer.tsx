@@ -166,7 +166,12 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs">© {new Date().getFullYear()} {t('footer.rights')}</p>
+          <p className="text-xs">
+            © {new Date().getFullYear()} Grow and Inspire. All rights reserved. Designed by{' '}
+            <a href="https://netech-360.com" target="_blank" rel="noopener noreferrer" className="hover:text-brand-white transition-colors">
+              netech-360.com
+            </a>
+          </p>
           <div className="flex gap-4">
             <Link href="/privacy" className="text-xs hover:text-brand-white transition-colors">{t('footer.privacy')}</Link>
             <Link href="/terms" className="text-xs hover:text-brand-white transition-colors">{t('footer.terms')}</Link>
