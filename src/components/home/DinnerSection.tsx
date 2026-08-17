@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { UtensilsCrossed, Calendar, Clock, MessageCircle, Users, Link2, Sparkles, Check } from 'lucide-react'
 import { Input, Textarea } from '@/components/ui/FormField'
+import { DinnerAlbum } from '@/components/home/DinnerAlbum'
 import { submitDinnerApplication } from '@/lib/actions/forms'
 import { useI18n } from '@/components/i18n/I18nProvider'
 import { isValidEmail, isValidPhone, isValidWebsite, isValidProfile } from '@/lib/validation'
@@ -327,11 +328,8 @@ export function DinnerSection() {
   return (
     <section id="dinner" className="bg-brand-cream pt-28 lg:pt-40 pb-20 lg:pb-28 scroll-mt-20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Banner */}
-        <div className="relative rounded-3xl overflow-hidden h-52 sm:h-64 lg:h-80 shadow-sm">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/dinner-table-3.jpg" alt="Dinner with Alketa" className="w-full h-full object-cover" />
-        </div>
+        {/* Banner album (auto-rotating) */}
+        <DinnerAlbum />
 
         {/* Intro */}
         <div className="text-center max-w-3xl mx-auto mt-12 lg:mt-16">
