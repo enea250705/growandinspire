@@ -322,7 +322,7 @@ export function DinnerSection() {
     })
     setLoading(false)
     if (result.ok) setSubmitted(true)
-    else setError(c.error)
+    else setError(result.error ? `${c.error} (${result.error})` : c.error)
   }
 
   return (
