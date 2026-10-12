@@ -17,14 +17,17 @@ export function isValidPhone(v: string): boolean {
   return digits.length >= 8 && digits.length <= 15
 }
 
-/** A real website/URL, with or without the http(s):// prefix. */
+/**
+ * Looks like a link: something with a domain in it (firma.al, www.firma.al,
+ * https://firma.al/path?x=1, instagram.com/firma, a pasted list of links...).
+ * Kept deliberately loose - applicants were getting blocked by edge cases
+ * (query strings, trailing dots, non-ASCII domains, several links at once).
+ */
 export function isValidWebsite(v: string): boolean {
-  return /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,}(\/\S*)?$/i.test(v.trim())
+  return /[^\s.]+\.[^\s.]{2,}/u.test(v.trim())
 }
 
-/** A professional profile: a website URL or an @handle. */
+/** A professional profile: a link, an @handle, or a plain profile name. */
 export function isValidProfile(v: string): boolean {
-  const s = v.trim()
-  if (s.startsWith('@')) return s.length > 1
-  return isValidWebsite(s)
+  return v.trim().length >= 2
 }
